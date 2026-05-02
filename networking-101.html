@@ -36,6 +36,13 @@ body::after{content:'';position:fixed;inset:0;
   background:rgba(8,10,13,0.85);backdrop-filter:blur(20px);
   border-bottom:1px solid var(--bd);
   display:flex;align-items:center;padding:0 1.5rem;gap:1.25rem}
+.nav-back{font-family:var(--mono);font-size:0.65rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--t3);text-decoration:none;display:flex;align-items:center;gap:.4rem;
+  padding:.3rem .7rem;border:1px solid var(--bd2);border-radius:6px;white-space:nowrap;
+  transition:all .2s;flex-shrink:0}
+.nav-back:hover{color:var(--t1);border-color:var(--cr);background:rgba(200,39,61,.07)}
+.nav-back svg{width:12px;height:12px;transition:transform .2s}
+.nav-back:hover svg{transform:translateX(-2px)}
 .nav-logo{font-family:var(--mono);font-size:0.7rem;color:var(--cr);letter-spacing:.12em;white-space:nowrap}
 .nav-logo span{color:var(--t3)}
 .nav-bar{flex:1;height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
@@ -345,6 +352,10 @@ code{font-family:var(--mono);font-size:.78rem;background:rgba(0,0,0,.5);
 <body>
 
 <nav class="nav">
+  <a class="nav-back" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    Hub
+  </a>
   <div class="nav-logo">HUIT <span>/ Co-op 2025 /</span> Networking</div>
   <div class="nav-bar"><div class="nav-fill" id="navFill"></div></div>
   <div class="nav-prog" id="navProg">0 / 6</div>
