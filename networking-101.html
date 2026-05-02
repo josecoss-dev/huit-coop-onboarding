@@ -347,6 +347,252 @@ code{font-family:var(--mono);font-size:.78rem;background:rgba(0,0,0,.5);
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--t4)}
+
+
+/* ══ NEW MODULES CSS ══ */
+/* ══ APIPA ══ */
+.apipa-vis{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;
+  padding:1.5rem;background:var(--s2);border:1px solid var(--bd);border-radius:8px;margin:1.25rem 0}
+.apipa-normal,.apipa-bad{text-align:center;padding:1rem 1.5rem;border-radius:8px;min-width:180px}
+.apipa-normal{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25)}
+.apipa-bad{background:rgba(200,39,61,.08);border:1px solid rgba(200,39,61,.25)}
+.apipa-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--t3);margin-bottom:.4rem}
+.apipa-addr{font-family:var(--mono);font-size:1.1rem;font-weight:700;margin-bottom:.35rem}
+.apipa-normal .apipa-addr{color:var(--green)}
+.apipa-bad .apipa-addr{color:var(--cr)}
+.apipa-sub{font-size:.75rem;color:var(--t3)}
+.apipa-arrow{font-size:1.5rem;color:var(--t4)}
+
+/* ══ PING DEMO ══ */
+.ping-demo{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1.25rem;
+  font-family:var(--mono);font-size:.75rem;margin:1.25rem 0}
+.ping-line{display:flex;align-items:center;gap:.6rem;padding:.3rem 0;opacity:0;
+  animation:pingFade 0.4s ease forwards}
+@keyframes pingFade{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+.ping-arrow{color:var(--cr);font-size:1rem;flex-shrink:0}
+.ping-text{color:var(--t2)}
+.ping-servers{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem;margin:1rem 0}
+.ps-card{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1rem;text-align:center;
+  transition:border-color .2s,transform .2s}
+.ps-card:hover{border-color:var(--cr);transform:translateY(-2px)}
+.ps-ip{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:.3rem}
+.ps-name{font-weight:600;font-size:.85rem;color:var(--t1);margin-bottom:.2rem}
+.ps-use{font-size:.75rem;color:var(--t3)}
+.latency-bar-wrap{margin:1rem 0}
+.latency-scale{display:flex;border-radius:6px;overflow:hidden;height:56px}
+.lat-seg{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.2rem;font-family:var(--mono);font-size:.62rem;color:rgba(0,0,0,.7);font-weight:700;
+  transition:flex .3s}
+.lat-lbl{font-size:.58rem;font-weight:400}
+.code-block{background:var(--s3);border:1px solid var(--bd);border-left:3px solid var(--gold);
+  border-radius:0 6px 6px 0;padding:.75rem 1rem;font-family:var(--mono);font-size:.78rem;
+  color:var(--t1);margin:.75rem 0}
+
+/* ══ COMMANDS ══ */
+.cmd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:.85rem;margin-top:1rem}
+.cmd-card{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1.1rem;
+  transition:border-color .2s}
+.cmd-card:hover{border-color:var(--bd2)}
+.cmd-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;gap:.5rem}
+.cmd-name{font-family:var(--mono);font-size:.78rem;color:var(--gold);background:rgba(0,0,0,.4);
+  padding:.25rem .55rem;border-radius:4px;border:1px solid rgba(240,192,64,.2)}
+.cmd-tag{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;
+  padding:.2rem .55rem;border-radius:99px;background:var(--s3);color:var(--t3);border:1px solid var(--bd);flex-shrink:0}
+.cmd-tag.core{background:rgba(200,39,61,.1);color:var(--cr);border-color:rgba(200,39,61,.3)}
+.cmd-desc{font-size:.82rem;color:var(--t2);line-height:1.6;margin-bottom:.75rem}
+.cmd-out{background:rgba(0,0,0,.5);border:1px solid var(--bd);border-radius:6px;
+  padding:.65rem .85rem;font-family:var(--mono);font-size:.68rem;color:#86efac;line-height:1.7}
+
+/* ══ RSSI ══ */
+.rssi-meter-wrap{margin:1.25rem 0}
+.rssi-bar-container{display:flex;flex-direction:column;gap:.75rem}
+.rssi-track{height:14px;background:linear-gradient(90deg,var(--green),#86efac,var(--gold),#fb923c,#f87171);
+  border-radius:7px;position:relative;margin-bottom:.25rem}
+.rssi-labels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.6rem;color:var(--t3)}
+.rssi-zones{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-top:.75rem}
+.mac-wifi-dropdown{background:#fff;border-radius:10px;padding:0;overflow:hidden;
+  max-width:300px;margin:1rem auto;box-shadow:0 8px 32px rgba(0,0,0,.4);font-family:var(--sans)}
+.mac-wifi-header{background:#1c1c1e;color:#fff;padding:.6rem 1rem;font-size:.82rem;font-weight:600;
+  text-align:center}
+.mac-wifi-row{display:flex;justify-content:space-between;padding:.45rem 1rem;font-size:.78rem;
+  border-bottom:1px solid #f0f0f0;color:#1c1c1e}
+.mac-wifi-row:last-child{border:none}
+.ap-name-demo{background:var(--s2);border:1px solid var(--bd);border-radius:8px;
+  padding:1.5rem;margin:1rem 0;text-align:center}
+.ap-name-parts{display:flex;align-items:center;justify-content:center;gap:0;
+  font-family:var(--mono);font-size:1.4rem;font-weight:700;margin-bottom:1rem}
+.ap-part{padding:.25rem .6rem;border-radius:4px}
+.ap-part.loc{background:rgba(96,165,250,.15);color:var(--blue);border:1px solid rgba(96,165,250,.3)}
+.ap-part.num{background:rgba(240,192,64,.15);color:var(--gold);border:1px solid rgba(240,192,64,.3)}
+.ap-dash{color:var(--t3);padding:0 .1rem}
+.ap-name-explainer{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;font-size:.82rem;color:var(--t2)}
+.ap-part-lbl{display:inline-block;font-family:var(--mono);font-size:.62rem;padding:.15rem .5rem;
+  border-radius:4px;margin-right:.4rem}
+.ap-part-lbl.loc{background:rgba(96,165,250,.15);color:var(--blue)}
+.ap-part-lbl.num{background:rgba(240,192,64,.15);color:var(--gold)}
+
+/* ══ 3D ARUBA AP ══ */
+.ap-3d-section{display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start;margin:1.25rem 0}
+@media(max-width:700px){.ap-3d-section{grid-template-columns:1fr}}
+.ap-3d-wrap{display:flex;flex-direction:column;align-items:center;gap:1rem}
+.ap-3d-scene{perspective:800px;width:220px;height:220px;display:flex;align-items:center;justify-content:center}
+.ap-3d-device{width:200px;height:200px;transform-style:preserve-3d;
+  animation:apFloat 4s ease-in-out infinite;cursor:grab}
+.ap-3d-device:active{cursor:grabbing}
+@keyframes apFloat{0%,100%{transform:rotateX(12deg) rotateY(-8deg)}
+  50%{transform:rotateX(8deg) rotateY(8deg)}}
+.ap-shell{width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(ellipse at 35% 30%,#f8f8f8 0%,#d8d8d8 50%,#b0b0b0 100%);
+  box-shadow:0 20px 60px rgba(0,0,0,.5),0 8px 20px rgba(0,0,0,.3),
+    inset 0 1px 2px rgba(255,255,255,.8),inset 0 -2px 4px rgba(0,0,0,.2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;overflow:visible}
+.ap-logo{font-family:var(--sans);font-size:1rem;font-weight:700;color:#555;letter-spacing:.05em;
+  margin-bottom:.3rem}
+.ap-label-tag{background:#fff;border:1px solid #ddd;border-radius:3px;padding:.3rem .5rem;
+  text-align:center;min-width:90px}
+.ap-label-name{font-family:var(--mono);font-size:.45rem;color:#222;font-weight:600}
+.ap-label-bar{font-size:.4rem;color:#333;letter-spacing:.05em;margin:.15rem 0}
+.ap-label-serial{font-family:var(--mono);font-size:.5rem;color:#555}
+.ap-led-row{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:4px}
+.ap-led-group{display:flex;gap:6px}
+.ap-led{width:7px;height:7px;border-radius:50%;background:#374151;
+  box-shadow:0 0 2px rgba(0,0,0,.5);transition:all .4s ease;cursor:pointer}
+.ap-led.off{background:#2a2a2a}
+.ap-led.green-solid{background:var(--green);box-shadow:0 0 6px var(--green),0 0 12px rgba(34,197,94,.4)}
+.ap-led.blue-solid{background:#60a5fa;box-shadow:0 0 6px #60a5fa,0 0 12px rgba(96,165,250,.4)}
+.ap-led.amber-solid{background:#f59e0b;box-shadow:0 0 6px #f59e0b,0 0 12px rgba(245,158,11,.4)}
+.ap-led.red-solid{background:#f87171;box-shadow:0 0 8px #f87171,0 0 16px rgba(248,113,113,.5)}
+.ap-led.blink-green{background:var(--green);box-shadow:0 0 8px var(--green);animation:ledBlink 1s ease-in-out infinite}
+.ap-led.blink-blue{background:#60a5fa;animation:ledBlink 2s ease-in-out infinite}
+.ap-led.blink-amber{background:#f59e0b;animation:ledBlinkAmber 2s ease-in-out infinite}
+@keyframes ledBlink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes ledBlinkAmber{0%,80%,100%{opacity:1}85%,95%{opacity:.1}}
+.ap-led-labels{display:flex;gap:6px;font-family:var(--mono);font-size:.45rem;color:#888;margin-top:2px}
+.ap-mount-arm{position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);
+  width:8px;height:45px;background:linear-gradient(180deg,#b0b0b0,#888);border-radius:2px}
+.ap-3d-controls{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center}
+.ap-ctrl-btn{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;
+  padding:.3rem .75rem;border-radius:99px;border:1px solid var(--bd2);background:var(--s3);
+  color:var(--t3);cursor:pointer;transition:all .15s}
+.ap-ctrl-btn:hover,.ap-ctrl-btn.on{border-color:var(--cr);color:var(--cr);background:rgba(200,39,61,.08)}
+.ap-state-label{font-family:var(--mono);font-size:.65rem;color:var(--t3);text-align:center}
+.ap-led-guide{flex:1}
+.led-callout-grid{display:flex;flex-direction:column;gap:.75rem;margin-top:.75rem}
+.led-callout{display:flex;align-items:flex-start;gap:.75rem}
+.led-callout-num{width:24px;height:24px;border-radius:50%;background:#f59e0b;color:#000;
+  font-weight:800;font-size:.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.led-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:.75rem}
+.led-table th{background:rgba(200,39,61,.15);color:var(--cr);font-family:var(--mono);
+  font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;padding:.6rem .85rem;text-align:left}
+.led-table td{padding:.6rem .85rem;border-bottom:1px solid var(--bd);color:var(--t2);vertical-align:middle}
+.led-table tr.alt td{background:rgba(255,255,255,.02)}
+.tled{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.4rem;vertical-align:middle}
+.blink-green{background:var(--green);animation:ledBlink 1s ease-in-out infinite;
+  box-shadow:0 0 4px var(--green)}
+.blink-amber{background:#f59e0b;animation:ledBlinkAmber 2s ease-in-out infinite}
+.blink-blue{background:#60a5fa;animation:ledBlink 2s ease-in-out infinite}
+
+/* ══ WALL JACKS ══ */
+.jack-diagram{display:flex;align-items:flex-start;gap:2rem;flex-wrap:wrap;
+  background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1.5rem;margin:1rem 0}
+.jack-plate{width:80px;height:100px;background:linear-gradient(135deg,#e8e8e8,#d0d0d0);
+  border-radius:6px;border:2px solid #b0b0b0;
+  box-shadow:0 4px 12px rgba(0,0,0,.3),inset 0 1px 2px rgba(255,255,255,.8);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;flex-shrink:0}
+.jack-port-label{font-family:var(--mono);font-size:.55rem;color:#333;font-weight:700;text-align:center}
+.jack-hole{width:16px;height:12px;background:#222;border-radius:3px 3px 0 0;
+  border:1px solid #111;box-shadow:inset 0 2px 4px rgba(0,0,0,.8)}
+.jack-explainer{flex:1;display:flex;flex-direction:column;gap:.85rem}
+.jack-part-row{display:flex;align-items:flex-start;gap:.85rem}
+.jack-part-badge{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;font-family:var(--mono);font-size:.8rem;font-weight:800;flex-shrink:0}
+.jack-part-badge.d-type{background:rgba(96,165,250,.15);color:var(--blue);border:1px solid rgba(96,165,250,.3)}
+.jack-part-badge.p-num{background:rgba(240,192,64,.15);color:var(--gold);border:1px solid rgba(240,192,64,.3)}
+.jack-part-badge.p-panel{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.25)}
+.jack-part-text{font-size:.83rem;color:var(--t2);line-height:1.6;padding-top:.1rem}
+
+/* ══ NETALLY ══ */
+.lr-device-wrap{display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;
+  margin:1rem 0;flex-wrap:wrap}
+@media(max-width:640px){.lr-device-wrap{grid-template-columns:1fr}}
+.lr-device{width:200px;flex-shrink:0;font-family:var(--mono)}
+.lr-screen{background:#1a2e1a;border:2px solid #2a4a2a;border-radius:8px 8px 0 0;
+  padding:.75rem;min-height:160px}
+.lr-screen-title{font-size:.55rem;text-transform:uppercase;letter-spacing:.15em;
+  color:#4ade80;margin-bottom:.65rem;text-align:center;border-bottom:1px solid #2a4a2a;padding-bottom:.4rem}
+.lr-result-row{display:flex;justify-content:space-between;align-items:center;
+  padding:.2rem 0;font-size:.65rem;border-bottom:1px solid rgba(74,222,128,.1)}
+.lr-key{color:#6b7280}
+.lr-val{color:#d1fae5;font-weight:600}
+.lr-val.green{color:#4ade80}
+.lr-val.gold{color:#fbbf24}
+.lr-progress-bar{height:4px;background:#1a4a1a;border-radius:2px;margin-top:.65rem;overflow:hidden}
+.lr-progress-fill{height:100%;background:linear-gradient(90deg,#22c55e,#4ade80);
+  border-radius:2px;width:0%;animation:lrScan 3s ease-in-out infinite}
+@keyframes lrScan{0%{width:0%}70%{width:100%}100%{width:100%}}
+.lr-body{background:linear-gradient(180deg,#374151,#1f2937);border:2px solid #4b5563;
+  border-top:none;border-radius:0 0 8px 8px;padding:.75rem;display:flex;
+  flex-direction:column;align-items:center;gap:.4rem}
+.lr-port-label{font-size:.55rem;color:#6b7280;text-transform:uppercase;letter-spacing:.1em}
+.lr-led-row{display:flex;gap:6px}
+.lr-led{width:8px;height:8px;border-radius:50%}
+.lr-led.green{background:#22c55e;box-shadow:0 0 6px #22c55e}
+.lr-led.pulsing{animation:ledBlink 1s ease-in-out infinite}
+.lr-led.off{background:#374151}
+.lr-brand{font-size:.55rem;color:#4b5563;text-align:center;line-height:1.4}
+.lr-brand span{display:block;font-size:.5rem}
+.lrf-item{background:var(--s2);border:1px solid var(--bd);border-radius:6px;
+  padding:.75rem;font-size:.82rem;color:var(--t2);line-height:1.6}
+.wiremap-wrap{display:grid;grid-template-columns:auto 1fr;gap:1.5rem;
+  align-items:start;margin:1rem 0}
+@media(max-width:640px){.wiremap-wrap{grid-template-columns:1fr}}
+.wiremap-device{width:200px;flex-shrink:0}
+.wiremap-screen{background:#1a2e1a;border:2px solid #2a4a2a;border-radius:8px 8px 0 0;padding:.75rem}
+.wiremap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin:.5rem 0}
+.wm-pair{border-radius:4px;padding:.3rem .2rem;text-align:center;font-size:.55rem;
+  font-family:var(--mono);border:1px solid transparent;transition:all .3s}
+.wm-pair.ok{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3);color:#4ade80}
+.wm-pair.fail{background:rgba(200,39,61,.15);border-color:rgba(200,39,61,.3);color:#f87171}
+.wiremap-length{font-family:var(--mono);font-size:.65rem;color:#6b7280;margin-top:.5rem;text-align:center}
+.wiremap-len-val{color:#fbbf24}
+.wiremap-result{text-align:center;font-family:var(--mono);font-size:.75rem;
+  margin-top:.35rem;padding:.3rem;border-top:1px solid #2a4a2a}
+.wiremap-legend{display:flex;flex-direction:column;gap:.5rem}
+.wml-item{display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:var(--t2)}
+.wm-pin{display:inline-block;width:14px;height:14px;border-radius:3px;flex-shrink:0}
+.wm-pin.ok{background:rgba(34,197,94,.3);border:1px solid var(--green)}
+.wm-pin.open{background:rgba(200,39,61,.2);border:1px solid var(--cr)}
+.wm-pin.short{background:rgba(251,146,60,.2);border:1px solid #fb923c}
+.wm-pin.split{background:rgba(240,192,64,.2);border:1px solid var(--gold)}
+.wm-pin.cross{background:rgba(167,139,250,.2);border:1px solid #a78bfa}
+
+/* ══ TICKET ══ */
+.ticket-checklist{display:flex;flex-direction:column;gap:.4rem;margin:1.25rem 0}
+.ticket-item{display:flex;align-items:flex-start;gap:.85rem;padding:.9rem 1rem;
+  background:var(--s2);border:1px solid var(--bd);border-radius:8px;cursor:pointer;
+  transition:border-color .2s,background .2s}
+.ticket-item:hover{border-color:var(--bd2)}
+.ticket-item.checked{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05)}
+.ticket-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--bd2);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;margin-top:1px;font-size:.7rem;color:transparent}
+.ticket-item.checked .ticket-check{background:var(--green);border-color:var(--green);color:#fff}
+.ticket-label{font-weight:600;font-size:.88rem;color:var(--t1);margin-bottom:.25rem}
+.ticket-detail{font-size:.78rem;color:var(--t3);line-height:1.55;display:none}
+.ticket-item.checked .ticket-detail{display:block;color:var(--t2)}
+.ticket-progress-wrap{display:flex;align-items:center;gap:1rem;margin-top:.75rem}
+.ticket-prog-bar{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden}
+.ticket-prog-fill{height:100%;background:linear-gradient(90deg,var(--cr),var(--green));
+  width:0%;transition:width .4s ease;border-radius:3px}
+.ticket-prog-label{font-family:var(--mono);font-size:.65rem;color:var(--t3);white-space:nowrap}
+.ticket-template{background:rgba(0,0,0,.4);border:1px solid var(--bd);border-left:3px solid var(--cr);
+  border-radius:0 8px 8px 0;padding:1.1rem 1.25rem;font-family:var(--mono);font-size:.72rem;
+  color:var(--t2);line-height:1.8}
+.tt-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:var(--cr);
+  margin-bottom:.75rem}
 </style>
 </head>
 <body>
@@ -747,7 +993,534 @@ code{font-family:var(--mono);font-size:.78rem;background:rgba(0,0,0,.5);
   </div>
 </div>
 
-<!-- ══ MODULE 6 — QUIZ ══ -->
+<!-- ══ MODULE 6: APIPA ══ -->
+<div class="mod vis" id="mod14" data-i="14">
+  <div class="mod-hd" onclick="toggleMod('mod6')">
+    <div class="mod-num">06</div>
+    <div class="mod-title">APIPA — When Your IP Starts with 169.254</div>
+    <div class="mod-badge">Diagnostics</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">What Is APIPA?</div>
+    <p><strong>APIPA</strong> stands for <strong>Automatic Private IP Addressing</strong>. When a device can't reach a DHCP server to get a real IP address, Windows automatically assigns itself an address in the range <code>169.254.0.1</code> to <code>169.254.255.254</code>. This is a self-assigned fallback — it means the device has no valid network connection.</p>
+    <div class="box warn"><div class="box-lbl">⚠ What It Looks Like</div><p>If you run <code>ipconfig</code> and see an address starting with <code>169.254</code> — that's APIPA. The device cannot reach the internet or Harvard resources. This is always a symptom, never a solution.</p></div>
+    <div class="apipa-vis">
+      <div class="apipa-normal"><div class="apipa-label">Normal IP</div><div class="apipa-addr">10.243.16.42</div><div class="apipa-sub">Assigned by DHCP server ✓</div></div>
+      <div class="apipa-arrow">→</div>
+      <div class="apipa-bad"><div class="apipa-label">APIPA (Problem!)</div><div class="apipa-addr">169.254.44.17</div><div class="apipa-sub">Self-assigned — no DHCP ✗</div></div>
+    </div>
+    <div class="sec-label" style="margin-top:1.5rem">Why Does It Happen?</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">🔌</div><div class="ccard-title">Not plugged in</div><div class="ccard-desc">Ethernet cable disconnected or not seated properly. Check both ends.</div></div>
+      <div class="ccard"><div class="ccard-icon">🔒</div><div class="ccard-title">Port not registered</div><div class="ccard-desc">Ethernet port not registered in ClearPass — device isn't authorized on the network.</div></div>
+      <div class="ccard"><div class="ccard-icon">📡</div><div class="ccard-title">DHCP server unreachable</div><div class="ccard-desc">Network infrastructure issue — DHCP server down or the device is on an isolated VLAN.</div></div>
+      <div class="ccard"><div class="ccard-icon">🔁</div><div class="ccard-title">Driver/adapter issue</div><div class="ccard-desc">NIC driver problem or adapter malfunction preventing proper DHCP negotiation.</div></div>
+    </div>
+    <div class="sec-label" style="margin-top:1.5rem">How to Fix It</div>
+    <ol class="steps">
+      <li>Run <code>ipconfig /release</code> then <code>ipconfig /renew</code> — forces the device to re-request an IP from DHCP</li>
+      <li>Check the physical connection — reseat the Ethernet cable if wired, or reconnect to Wi-Fi</li>
+      <li>If wired, verify the port is registered in ClearPass or tools.noc.harvard.edu</li>
+      <li>Restart the network adapter: <code>netsh interface set interface "Wi-Fi" disable</code> then <code>enable</code></li>
+      <li>If none of the above work, escalate to the HUIT networking team with the MAC address and port label</li>
+    </ol>
+    <div class="box ok"><div class="box-lbl">✓ Quick Memory Aid</div><p>169.254 = "I gave up waiting for DHCP." Always signals a connectivity failure, not a valid network state.</p></div>
+  </div>
+</div>
+
+<!-- ══ MODULE 7: PING, LATENCY, PACKET LOSS ══ -->
+<div class="mod vis" id="mod7" data-i="7">
+  <div class="mod-hd" onclick="toggleMod('mod7')">
+    <div class="mod-num">07</div>
+    <div class="mod-title">Ping, Latency & Packet Loss</div>
+    <div class="mod-badge">Diagnostics</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">What Does Ping Do?</div>
+    <p>Ping sends a small packet called an <strong>ICMP Echo Request</strong> to a target address and waits for an <strong>ICMP Echo Reply</strong>. It measures how long that round trip takes — this is your <strong>Round Trip Time (RTT)</strong>, measured in milliseconds (ms). It's the most fundamental network diagnostic tool you have.</p>
+    <div class="ping-demo">
+      <div class="ping-line" style="animation-delay:0s"><span class="ping-arrow">→</span><span class="ping-text">Request: Your device → <strong>8.8.8.8</strong></span></div>
+      <div class="ping-line" style="animation-delay:.8s"><span class="ping-arrow" style="transform:scaleX(-1);display:inline-block">→</span><span class="ping-text">Reply: <strong>8.8.8.8</strong> → Your device: <span style="color:var(--green)">time=12ms TTL=118</span></span></div>
+      <div class="ping-line" style="animation-delay:1.6s"><span class="ping-arrow">→</span><span class="ping-text">Request: Your device → <strong>8.8.8.8</strong></span></div>
+      <div class="ping-line" style="animation-delay:2.4s"><span class="ping-arrow" style="transform:scaleX(-1);display:inline-block">→</span><span class="ping-text">Reply: <strong>8.8.8.8</strong> → Your device: <span style="color:var(--green)">time=11ms TTL=118</span></span></div>
+      <div class="ping-line" style="animation-delay:3.2s"><span class="ping-arrow">→</span><span class="ping-text">Request: Your device → <strong>8.8.8.8</strong></span></div>
+      <div class="ping-line" style="animation-delay:4s"><span class="ping-arrow" style="transform:scaleX(-1);display:inline-block">→</span><span class="ping-text" style="color:#f87171">Request timed out — <span style="color:#f87171">Packet Lost!</span></span></div>
+    </div>
+    <div class="sec-label" style="margin-top:1.5rem">Ping Servers to Use at Harvard</div>
+    <div class="ping-servers">
+      <div class="ps-card"><div class="ps-ip">8.8.8.8</div><div class="ps-name">Google DNS</div><div class="ps-use">Best general internet test</div></div>
+      <div class="ps-card"><div class="ps-ip">1.1.1.1</div><div class="ps-name">Cloudflare DNS</div><div class="ps-use">Fast, reliable baseline</div></div>
+      <div class="ps-card"><div class="ps-ip">8.8.4.4</div><div class="ps-name">Google DNS Alt</div><div class="ps-use">Useful if 8.8.8.8 is filtered</div></div>
+      <div class="ps-card"><div class="ps-ip">harvard.edu</div><div class="ps-name">Harvard Domain</div><div class="ps-use">Tests Harvard DNS resolution</div></div>
+    </div>
+    <p style="font-size:.82rem;color:var(--t3);margin-top:.75rem">Basic usage: <code>ping 8.8.8.8</code> — Windows sends 4 packets by default. Use <code>ping -t 8.8.8.8</code> for continuous ping (Ctrl+C to stop).</p>
+    <div class="sec-label" style="margin-top:1.5rem">Latency — What the Numbers Mean</div>
+    <div class="latency-bar-wrap">
+      <div class="latency-scale">
+        <div class="lat-seg" style="background:var(--green);flex:2"><span>&lt;30ms</span><span class="lat-lbl">Excellent</span></div>
+        <div class="lat-seg" style="background:#86efac;flex:2"><span>30–60ms</span><span class="lat-lbl">Good</span></div>
+        <div class="lat-seg" style="background:var(--gold);flex:2"><span>60–100ms</span><span class="lat-lbl">Acceptable</span></div>
+        <div class="lat-seg" style="background:#fb923c;flex:2"><span>100–200ms</span><span class="lat-lbl">Noticeable</span></div>
+        <div class="lat-seg" style="background:#f87171;flex:2"><span>&gt;200ms</span><span class="lat-lbl">Problem</span></div>
+      </div>
+    </div>
+    <p style="font-size:.83rem;color:var(--t2);margin-top:.75rem">On campus hitting <code>8.8.8.8</code>, you should see under 20ms. If you're seeing 100ms+ to Google on a wired connection, something is wrong with the path — could be congested uplink, routing issue, or a faulty cable.</p>
+    <div class="sec-label" style="margin-top:1.5rem">Packet Loss</div>
+    <p>Packet loss is when packets you send don't come back. Even 1–2% packet loss causes significant issues for video calls, VoIP, and real-time applications. Look at the summary line ping prints when it stops:</p>
+    <div class="code-block">Packets: Sent = 100, Received = 97, Lost = 3 <span style="color:var(--cr)">(3% loss)</span></div>
+    <div class="cgrid" style="margin-top:1rem">
+      <div class="ccard"><div class="ccard-icon" style="background:rgba(34,197,94,.1)">0%</div><div class="ccard-title">No Loss</div><div class="ccard-desc">Perfect — all packets returned. Normal on a healthy wired connection.</div></div>
+      <div class="ccard"><div class="ccard-icon" style="background:rgba(240,192,64,.1)">1–2%</div><div class="ccard-title">Minor Loss</div><div class="ccard-desc">Noticeable on calls and streaming. Investigate — possibly a weak Wi-Fi signal or flaky cable.</div></div>
+      <div class="ccard"><div class="ccard-icon" style="background:rgba(251,146,60,.1)">3–5%</div><div class="ccard-title">Significant</div><div class="ccard-desc">Users will complain. Calls drop, video freezes. Escalate to networking team.</div></div>
+      <div class="ccard"><div class="ccard-icon" style="background:rgba(200,39,61,.15)">5%+</div><div class="ccard-title">Severe</div><div class="ccard-desc">Network is functionally broken for most applications. Immediate escalation required.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 8: POWERSHELL COMMANDS ══ -->
+<div class="mod vis" id="mod8" data-i="8">
+  <div class="mod-hd" onclick="toggleMod('mod8')">
+    <div class="mod-num">08</div>
+    <div class="mod-title">Network Troubleshooting Commands</div>
+    <div class="mod-badge">Reference</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <p>These are the commands you'll run every day. Memorize the ones marked <span style="font-family:var(--mono);font-size:.7rem;color:var(--cr);background:rgba(200,39,61,.1);padding:.1rem .4rem;border-radius:3px">core</span> — they'll solve 80% of connectivity issues.</p>
+    <div class="cmd-grid">
+      <div class="cmd-card">
+        <div class="cmd-header"><code class="cmd-name">ipconfig /all</code><span class="cmd-tag core">Core</span></div>
+        <div class="cmd-desc">Shows <strong>all</strong> network adapter info: IP address, MAC address, DNS servers, gateway, DHCP server, lease info. Your first command on any connectivity problem.</div>
+        <div class="cmd-out">Ethernet adapter Ethernet:<br>  Physical Address. . : A4-83-E7-2C-11-F0<br>  IPv4 Address. . . . : 10.243.16.42<br>  Subnet Mask . . . . : 255.255.255.0<br>  Default Gateway . . : 10.243.16.1<br>  DNS Servers . . . . : 10.0.0.2</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-header"><code class="cmd-name">ping 8.8.8.8 -t</code><span class="cmd-tag core">Core</span></div>
+        <div class="cmd-desc">Continuous ping to Google. Tests internet connectivity and shows latency in real time. <code>Ctrl+C</code> to stop and see packet loss summary.</div>
+        <div class="cmd-out">Reply from 8.8.8.8: bytes=32 time=12ms TTL=118<br>Reply from 8.8.8.8: bytes=32 time=11ms TTL=118<br>Request timed out.<br>Reply from 8.8.8.8: bytes=32 time=13ms TTL=118</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-header"><code class="cmd-name">tracert 8.8.8.8</code><span class="cmd-tag core">Core</span></div>
+        <div class="cmd-desc">Traces every router hop from your machine to the destination. Shows where packets slow down or die. Invaluable for pinpointing where on the path the problem is.</div>
+        <div class="cmd-out">1    &lt;1ms    &lt;1ms    &lt;1ms  10.243.16.1<br>2     3ms     2ms     3ms  10.0.0.1<br>3    11ms    11ms    10ms  72.14.192.1<br>4    12ms    12ms    12ms  8.8.8.8</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-header"><code class="cmd-name">nslookup harvard.edu</code><span class="cmd-tag">DNS</span></div>
+        <div class="cmd-desc">Queries DNS to resolve a domain name to an IP. Tests whether DNS is working. If this fails but ping to an IP works, you have a DNS problem, not a connectivity problem.</div>
+        <div class="cmd-out">Server:  10.0.0.2<br>Address: 10.0.0.2<br><br>Name: harvard.edu<br>Addresses: 23.185.0.1, 23.185.0.2</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-header"><code class="cmd-name">ipconfig /release & /renew</code><span class="cmd-tag core">Core</span></div>
+        <div class="cmd-desc">Releases the current IP lease and requests a new one from DHCP. Essential when you see a 169.254 address. Run release first, then renew.</div>
+        <div class="cmd-out">ipconfig /release<br>ipconfig /renew<br><br># Forces fresh DHCP negotiation</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-header"><code class="cmd-name">ipconfig /flushdns</code><span class="cmd-tag">DNS</span></div>
+        <div class="cmd-desc">Clears the local DNS cache. Run this when a site worked before but now resolves to the wrong IP, or after network config changes.</div>
+        <div class="cmd-out">Successfully flushed the DNS<br>Resolver Cache.</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-header"><code class="cmd-name">netsh wlan show interfaces</code><span class="cmd-tag">Wi-Fi</span></div>
+        <div class="cmd-desc">Shows full Wi-Fi status: connected SSID, signal strength (%), channel, authentication type, and radio type. Use this to check signal quality and what network you're on.</div>
+        <div class="cmd-out">SSID         : Harvard Secure<br>Signal       : 72%<br>Radio type   : 802.11ax<br>Channel      : 36<br>Receive rate : 540 Mbps</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-header"><code class="cmd-name">Test-NetConnection</code><span class="cmd-tag">PS</span></div>
+        <div class="cmd-desc">PowerShell's modern replacement for ping. Can also test specific TCP ports: <code>Test-NetConnection harvard.edu -Port 443</code>. Useful for testing if a service is reachable.</div>
+        <div class="cmd-out">ComputerName: harvard.edu<br>RemoteAddress: 23.185.0.1<br>PingSucceeded: True<br>PingReplyDetails (RTT): 12ms</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 9: RSSI ══ -->
+<div class="mod vis" id="mod9" data-i="9">
+  <div class="mod-hd" onclick="toggleMod('mod9')">
+    <div class="mod-num">09</div>
+    <div class="mod-title">RSSI — How Strong Is Your Wi-Fi Signal?</div>
+    <div class="mod-badge">Wi-Fi</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">What Is RSSI?</div>
+    <p><strong>RSSI</strong> (Received Signal Strength Indicator) measures how strong the Wi-Fi signal is between a device and the access point. It's measured in <strong>dBm</strong> (decibel-milliwatts) — a negative number where <em>closer to zero = stronger</em>. -30 dBm is excellent; -90 dBm is practically unusable.</p>
+    <div class="rssi-meter-wrap">
+      <div class="rssi-bar-container">
+        <div class="rssi-track">
+          <div class="rssi-fill" id="rssiDemo"></div>
+        </div>
+        <div class="rssi-labels">
+          <span>-30 dBm</span><span>-50 dBm</span><span>-67 dBm</span><span>-80 dBm</span><span>-90 dBm</span>
+        </div>
+        <div class="rssi-zones">
+          <div style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:4px;padding:.4rem .6rem;font-size:.72rem;text-align:center"><strong style="color:var(--green)">Excellent</strong><br><span style="color:var(--t3)">-30 to -50</span><br><span style="color:var(--t3)">Right next to AP</span></div>
+          <div style="background:rgba(134,239,172,.1);border:1px solid rgba(134,239,172,.25);border-radius:4px;padding:.4rem .6rem;font-size:.72rem;text-align:center"><strong style="color:#86efac">Good</strong><br><span style="color:var(--t3)">-50 to -67</span><br><span style="color:var(--t3)">Same room as AP</span></div>
+          <div style="background:rgba(240,192,64,.1);border:1px solid rgba(240,192,64,.25);border-radius:4px;padding:.4rem .6rem;font-size:.72rem;text-align:center"><strong style="color:var(--gold)">Fair</strong><br><span style="color:var(--t3)">-67 to -80</span><br><span style="color:var(--t3)">Far, walls in way</span></div>
+          <div style="background:rgba(200,39,61,.1);border:1px solid rgba(200,39,61,.25);border-radius:4px;padding:.4rem .6rem;font-size:.72rem;text-align:center"><strong style="color:var(--cr)">Poor</strong><br><span style="color:var(--t3)">-80 to -90+</span><br><span style="color:var(--t3)">Too far / blocked</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tabs" style="margin-top:1.5rem">
+      <button class="tab on" onclick="switchTab(this,'t-rssi-win')">🪟 Windows</button>
+      <button class="tab" onclick="switchTab(this,'t-rssi-mac')">🍎 macOS</button>
+    </div>
+    <div class="tpanel on" id="t-rssi-win">
+      <div class="sec-label">Checking RSSI on Windows</div>
+      <p>Windows reports signal as a percentage in most UIs, but you can get the real dBm value:</p>
+      <ol class="steps">
+        <li>Open PowerShell or CMD and run: <code>netsh wlan show interfaces</code></li>
+        <li>Look for the <code>Signal</code> field — this is a 0–100% value (not dBm directly)</li>
+        <li>For raw dBm, run: <code>(netsh wlan show interfaces) -match "Signal"</code></li>
+        <li>For detailed RSSI in dBm, use: <code>Get-NetAdapter | Get-NetAdapterStatistics</code> or check Wireless Diagnostics tools</li>
+      </ol>
+      <div class="cmd-out" style="margin-top:.75rem">C:\> netsh wlan show interfaces<br><br>Name                   : Wi-Fi<br>Description            : Intel Wi-Fi 6E<br>SSID                   : Harvard Secure<br><span style="color:var(--gold)">Signal                 : 72%</span><br>Radio type             : 802.11ax (Wi-Fi 6E)<br>Channel                : 6<br>Receive rate (Mbps)    : 574</div>
+      <div class="box info" style="margin-top:1rem"><div class="box-lbl">💡 Converting % to dBm (Approximate)</div><p>Windows % is a rough estimate: 100% ≈ -50 dBm, 75% ≈ -67 dBm, 50% ≈ -75 dBm, 25% ≈ -85 dBm. Below 50% (under ~-75 dBm), users will have a bad experience.</p></div>
+    </div>
+    <div class="tpanel" id="t-rssi-mac">
+      <div class="sec-label">Checking RSSI on macOS — Option + Click</div>
+      <ol class="steps">
+        <li>Hold the <code>Option</code> key on your keyboard</li>
+        <li>While holding Option, click the <strong>Wi-Fi icon</strong> in the menu bar</li>
+        <li>A detailed dropdown appears with RSSI, noise, channel, and TX rate for your current connection</li>
+        <li>Look for <code>RSSI</code> — the value in dBm. Also check <code>Noise</code> and the resulting <code>SNR</code> (Signal-to-Noise Ratio)</li>
+      </ol>
+      <div class="mac-wifi-dropdown">
+        <div class="mac-wifi-header">Wi-Fi Details</div>
+        <div class="mac-wifi-row"><span>Network</span><span style="color:var(--t1)">Harvard Secure</span></div>
+        <div class="mac-wifi-row"><span>BSSID</span><span style="color:var(--gold);font-family:var(--mono);font-size:.72rem">a4:83:e7:2c:11:f0</span></div>
+        <div class="mac-wifi-row"><span>RSSI</span><span style="color:var(--green)">-62 dBm</span></div>
+        <div class="mac-wifi-row"><span>Noise</span><span style="color:var(--t2)">-95 dBm</span></div>
+        <div class="mac-wifi-row"><span>TX Rate</span><span style="color:var(--t2)">540 Mbps</span></div>
+        <div class="mac-wifi-row"><span>Channel</span><span style="color:var(--t2)">6 (2.4 GHz)</span></div>
+        <div class="mac-wifi-row"><span>Security</span><span style="color:var(--t2)">WPA2 Enterprise</span></div>
+        <div class="mac-wifi-row"><span>Country Code</span><span style="color:var(--t2)">US</span></div>
+      </div>
+      <div class="box ok" style="margin-top:1rem"><div class="box-lbl">✓ SNR — The Real Number</div><p>SNR = RSSI minus Noise. In the example above: -62 - (-95) = 33 dB SNR. Higher SNR = better connection quality. 25+ dB is good. Under 15 dB and you'll have problems.</p></div>
+    </div>
+    <div class="sec-label" style="margin-top:1.5rem">AP Names at Harvard</div>
+    <p>Harvard AP names follow a predictable convention. When you need to tell the networking team which AP a user is near, read the label on the device:</p>
+    <div class="ap-name-demo">
+      <div class="ap-name-parts">
+        <span class="ap-part loc">paine-library</span>
+        <span class="ap-dash">-</span>
+        <span class="ap-part num">ap1</span>
+      </div>
+      <div class="ap-name-explainer">
+        <div><span class="ap-part-lbl loc">Location</span>Building or area name</div>
+        <div><span class="ap-part-lbl num">Number</span>AP number in that space (ap1, ap2, ap3...)</div>
+      </div>
+    </div>
+    <p style="font-size:.83rem;color:var(--t2)">The AP name and serial number are printed on the label on the back of the device. You'll need this when opening a networking ticket — the team can pull up that exact AP in their management console.</p>
+  </div>
+</div>
+
+<!-- ══ MODULE 10: ARUBA 650 AP ══ -->
+<div class="mod vis" id="mod10" data-i="10">
+  <div class="mod-hd" onclick="toggleMod('mod10')">
+    <div class="mod-num">10</div>
+    <div class="mod-title">Aruba 650 Series — Access Point Reference</div>
+    <div class="mod-badge">Hardware</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">What You're Looking At</div>
+    <p>Harvard's wireless network runs on <strong>HPE Aruba 650 Series Campus Access Points</strong>. These are the white circular devices mounted on ceilings and walls across campus. They broadcast Harvard Secure, eduroam, and Harvard University simultaneously across three radio bands.</p>
+    <div class="ap-3d-section">
+      <div class="ap-3d-wrap" id="ap3dWrap">
+        <div class="ap-3d-scene">
+          <div class="ap-3d-device" id="ap3d">
+            <!-- Outer shell -->
+            <div class="ap-shell">
+              <div class="ap-logo">aruba</div>
+              <div class="ap-label-tag">
+                <div class="ap-label-name">paine-library-ap1</div>
+                <div class="ap-label-bar">▮▮▮▮▮▮▮▮▮▮▮▮</div>
+                <div class="ap-label-serial">30591</div>
+              </div>
+              <div class="ap-led-row">
+                <div class="ap-led-group">
+                  <div class="ap-led" id="led-sys" data-led="sys" title="System LED"></div>
+                  <div class="ap-led" id="led-24" data-led="24" title="2.4GHz Radio"></div>
+                  <div class="ap-led" id="led-5" data-led="5" title="5GHz Radio"></div>
+                  <div class="ap-led" id="led-6" data-led="6" title="6GHz Radio"></div>
+                </div>
+                <div class="ap-led-labels">
+                  <span>Sys</span><span>2GHz</span><span>5GHz</span><span>6GHz</span>
+                </div>
+              </div>
+              <div class="ap-mount-arm"></div>
+            </div>
+          </div>
+        </div>
+        <div class="ap-3d-controls">
+          <button class="ap-ctrl-btn" onclick="setAPState('booting')">Booting</button>
+          <button class="ap-ctrl-btn on" onclick="setAPState('normal')">Normal</button>
+          <button class="ap-ctrl-btn" onclick="setAPState('warn')">Warning</button>
+          <button class="ap-ctrl-btn" onclick="setAPState('error')">Error</button>
+          <button class="ap-ctrl-btn" onclick="setAPState('off')">No Power</button>
+        </div>
+        <div class="ap-state-label" id="apStateLabel">● Normal Operation — All radios active</div>
+      </div>
+      <div class="ap-led-guide">
+        <div class="sec-label">LED Positions (Callout 1–4)</div>
+        <div class="led-callout-grid">
+          <div class="led-callout"><div class="led-callout-num">1</div><div><strong>System LED</strong><br><span style="color:var(--t3);font-size:.78rem">Overall AP health and boot status</span></div></div>
+          <div class="led-callout"><div class="led-callout-num">2</div><div><strong>Radio LED — 2.4 GHz</strong><br><span style="color:var(--t3);font-size:.78rem">Older devices, IoT, wider range</span></div></div>
+          <div class="led-callout"><div class="led-callout-num">3</div><div><strong>Radio LED — 5 GHz</strong><br><span style="color:var(--t3);font-size:.78rem">Main band, high throughput</span></div></div>
+          <div class="led-callout"><div class="led-callout-num">4</div><div><strong>Radio LED — 6 GHz</strong><br><span style="color:var(--t3);font-size:.78rem">Wi-Fi 6E, newest devices only</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec-label" style="margin-top:1.75rem">LED Color Reference</div>
+    <table class="led-table">
+      <thead><tr><th>LED</th><th>Color / State</th><th>Meaning</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tled" style="background:#60a5fa"></span>System</td><td>Blue — solid</td><td>Normal operation, all good</td><td>None needed</td></tr>
+        <tr class="alt"><td><span class="tled blink-green"></span>System</td><td>Green — blinking</td><td>Booting / firmware update in progress</td><td>Wait 2–3 min</td></tr>
+        <tr><td><span class="tled" style="background:#f59e0b"></span>System</td><td>Amber — solid</td><td>Ready, restricted PoE or IPM applied — no network restrictions</td><td>Monitor</td></tr>
+        <tr class="alt"><td><span class="tled blink-amber"></span>System</td><td>Amber — flashing off</td><td>Ready, restricted PoE, uplink &lt;1 Gbps (sub-optimal)</td><td>Check uplink</td></tr>
+        <tr><td><span class="tled" style="background:#f87171"></span>System</td><td>Red — solid</td><td>System error — insufficient PoE (802.3af). Immediate attention required</td><td><strong>Escalate now</strong></td></tr>
+        <tr class="alt"><td><span class="tled" style="background:#374151"></span>System</td><td>Off</td><td>No power — PoE not reaching the AP</td><td>Check switch port, cable</td></tr>
+        <tr><td><span class="tled" style="background:#60a5fa"></span>Radio (any)</td><td>Blue — solid</td><td>Radio active, clients connected</td><td>None needed</td></tr>
+        <tr class="alt"><td><span class="tled blink-blue"></span>Radio (any)</td><td>Blue — blinking</td><td>Radio active, no clients on this band</td><td>Normal — no users on that band</td></tr>
+        <tr><td><span class="tled" style="background:#374151"></span>Radio (any)</td><td>Off</td><td>Radio disabled or AP has no power</td><td>Check AP configuration or power</td></tr>
+      </tbody>
+    </table>
+    <div class="box warn" style="margin-top:1rem"><div class="box-lbl">⚠ Red System LED = Escalate Immediately</div><p>A red System LED means the AP is running on insufficient power (802.3af standard instead of the required 802.3at or 802.3bt). The AP will be in a degraded state. Don't try to fix it yourself — open a networking ticket with the port label and AP name.</p></div>
+  </div>
+</div>
+
+<!-- ══ MODULE 11: WALL JACKS ══ -->
+<div class="mod vis" id="mod11" data-i="11">
+  <div class="mod-hd" onclick="toggleMod('mod11')">
+    <div class="mod-num">11</div>
+    <div class="mod-title">Wall Jacks & Ethernet Ports</div>
+    <div class="mod-badge">Infrastructure</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">Reading a Wall Jack Label</div>
+    <p>Every Ethernet wall jack in Harvard buildings has a label that tells you exactly which switch port it connects to. You'll need to read this when a user has a wired connectivity issue — the networking team needs this information to locate and troubleshoot the specific port.</p>
+    <div class="jack-diagram">
+      <div class="jack-plate">
+        <div class="jack-port-label">D1-04-A</div>
+        <div class="jack-hole"></div>
+      </div>
+      <div class="jack-explainer">
+        <div class="jack-part-row">
+          <div class="jack-part-badge d-type">D1</div>
+          <div class="jack-part-text"><strong>Jack Type</strong> — D1 = Data port 1, D2 = Data port 2 on the same plate. D1 is typically the primary data jack. Voice (V) or Aux (A) may appear on other ports.</div>
+        </div>
+        <div class="jack-part-row">
+          <div class="jack-part-badge p-num">04</div>
+          <div class="jack-part-text"><strong>Port Number</strong> — The specific port on the patch panel in the telecommunications closet (IDF/MDF). This maps to a physical switch port.</div>
+        </div>
+        <div class="jack-part-row">
+          <div class="jack-part-badge p-panel">A</div>
+          <div class="jack-part-text"><strong>Panel / Zone</strong> — Identifies which patch panel or zone in the closet. Letters increment as more panels are added: A, B, C...</div>
+        </div>
+      </div>
+    </div>
+    <div class="box info" style="margin-top:1.25rem"><div class="box-lbl">📋 What to Capture for a Ticket</div><p>Read the full label off the wall plate — something like <strong>D1-04-A</strong> or <strong>D2-12-B</strong>. Write it down exactly as it appears. Include the room number. This is what the networking team needs to locate the exact switch port and check its status.</p></div>
+    <div class="sec-label" style="margin-top:1.5rem">D1 vs D2 — Which to Use</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">🔵</div><div class="ccard-title">D1 — Primary Data</div><div class="ccard-desc">The main data jack on the plate. Always try D1 first. Should be registered in ClearPass and active for standard workstation use.</div></div>
+      <div class="ccard"><div class="ccard-icon">🟡</div><div class="ccard-title">D2 — Secondary Data</div><div class="ccard-desc">Second data jack on the same plate. May be on a different switch port or VLAN. Useful as a fallback or for connecting a second device.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 12: NETALLY LINKRUNNER ══ -->
+<div class="mod vis" id="mod12" data-i="12">
+  <div class="mod-hd" onclick="toggleMod('mod12')">
+    <div class="mod-num">12</div>
+    <div class="mod-title">NetAlly LinkRunner AT 200</div>
+    <div class="mod-badge">Tools</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">What Is The LinkRunner AT 200?</div>
+    <p>The <strong>NetAlly LinkRunner AT 200</strong> is a handheld network tester used to verify cable integrity and identify which switch port a jack connects to — instantly. When a user reports "the wired port isn't working," this tool tells you in seconds whether it's the cable, the switch port, or the registration.</p>
+    <div class="tabs">
+      <button class="tab on" onclick="switchTab(this,'t-lr-switch')">🔌 Switch Detection</button>
+      <button class="tab" onclick="switchTab(this,'t-lr-cable')">🔧 Cable Test</button>
+    </div>
+    <div class="tpanel on" id="t-lr-switch">
+      <div class="sec-label">Switch Detection — What You'll See</div>
+      <p>Plug the LinkRunner into the wall jack. Within seconds it discovers the connected switch using <strong>LLDP</strong> or <strong>CDP</strong> and displays the switch name, port, VLAN, and PoE information. This tells you exactly where in the network that jack lands.</p>
+      <div class="lr-device-wrap">
+        <div class="lr-device">
+          <div class="lr-screen" id="lrSwitchScreen">
+            <div class="lr-screen-title">SWITCH DISCOVERY</div>
+            <div class="lr-result-row"><span class="lr-key">Protocol</span><span class="lr-val green" id="lrProto">LLDP</span></div>
+            <div class="lr-result-row"><span class="lr-key">Switch</span><span class="lr-val" id="lrSwitch">IDF-LAM-3-SW1</span></div>
+            <div class="lr-result-row"><span class="lr-key">Port</span><span class="lr-val gold" id="lrPort">GigE 0/12</span></div>
+            <div class="lr-result-row"><span class="lr-key">VLAN</span><span class="lr-val" id="lrVlan">VLAN 243</span></div>
+            <div class="lr-result-row"><span class="lr-key">Speed</span><span class="lr-val green" id="lrSpeed">1000 Mbps</span></div>
+            <div class="lr-result-row"><span class="lr-key">PoE</span><span class="lr-val" id="lrPoe">802.3at / 30W</span></div>
+            <div class="lr-progress-bar"><div class="lr-progress-fill" id="lrProgress"></div></div>
+          </div>
+          <div class="lr-body">
+            <div class="lr-port-label">RJ45</div>
+            <div class="lr-led-row">
+              <div class="lr-led green pulsing" id="lrLed1"></div>
+              <div class="lr-led green" id="lrLed2"></div>
+              <div class="lr-led off" id="lrLed3"></div>
+            </div>
+            <div class="lr-brand">NetAlly<br><span>LinkRunner AT 200</span></div>
+          </div>
+        </div>
+        <div class="lr-key-facts">
+          <div class="lrf-item"><strong>Switch name</strong> tells you which switch serves this area. <code>IDF-LAM-3-SW1</code> = IDF closet, Lamont floor 3, switch 1.</div>
+          <div class="lrf-item"><strong>Port number</strong> is what you give the networking team — they use it to find and configure the exact port remotely.</div>
+          <div class="lrf-item"><strong>VLAN</strong> shows which network segment the port is assigned to. Wrong VLAN = wrong network access even if the port is active.</div>
+          <div class="lrf-item"><strong>Speed 1000 Mbps</strong> = gigabit link. If you see 100 Mbps or lower, check for a bad cable or old adapter.</div>
+        </div>
+      </div>
+    </div>
+    <div class="tpanel" id="t-lr-cable">
+      <div class="sec-label">Cable Test — Wire Map</div>
+      <p>The LinkRunner tests each of the 8 wires in an Ethernet cable independently and shows a <strong>wire map</strong> — whether each pair is connected correctly, crossed, shorted, or open (broken). This is how you know if the cable itself is the problem.</p>
+      <div class="wiremap-wrap">
+        <div class="wiremap-device">
+          <div class="wiremap-screen">
+            <div class="lr-screen-title">CABLE TEST</div>
+            <div class="wiremap-grid" id="wiremapGrid">
+              <!-- Pairs rendered by JS -->
+            </div>
+            <div class="wiremap-length">Length: <span class="wiremap-len-val" id="wiremapLen">47m</span></div>
+            <div class="wiremap-result" id="wiremapResult"><span style="color:var(--green)">✓ PASS</span></div>
+          </div>
+          <div class="lr-body" style="height:80px">
+            <div class="lr-port-label">RJ45</div>
+            <div class="lr-brand">Cable Test Mode</div>
+          </div>
+        </div>
+        <div class="wiremap-legend">
+          <div class="wml-item"><span class="wm-pin ok"></span><strong>OK</strong> — Wire connected and correct</div>
+          <div class="wml-item"><span class="wm-pin open"></span><strong>Open</strong> — Wire broken / not connected</div>
+          <div class="wml-item"><span class="wm-pin short"></span><strong>Short</strong> — Two wires touching each other</div>
+          <div class="wml-item"><span class="wm-pin split"></span><strong>Split Pair</strong> — Wrong pair wiring, causes crosstalk</div>
+          <div class="wml-item"><span class="wm-pin cross"></span><strong>Crossed</strong> — Crossover cable detected</div>
+        </div>
+      </div>
+      <div class="wiremap-scenarios">
+        <div class="sec-label" style="margin-top:1.25rem">Common Failure Scenarios</div>
+        <div class="cgrid">
+          <div class="ccard"><div class="ccard-icon">❌</div><div class="ccard-title">Open on pairs 3,6</div><div class="ccard-desc">Orange pair broken. Cable won't link at all. Replace the cable or re-terminate the connector.</div></div>
+          <div class="ccard"><div class="ccard-icon">⚡</div><div class="ccard-title">Short detected</div><div class="ccard-desc">Two wires are touching inside the cable or connector. Usually caused by a damaged cable or bad crimp. Replace the cable.</div></div>
+          <div class="ccard"><div class="ccard-icon">🔀</div><div class="ccard-title">Split pair</div><div class="ccard-desc">Wires wired to wrong pins. Connection appears to work at low speed but has high noise/errors. Re-terminate correctly.</div></div>
+          <div class="ccard"><div class="ccard-icon">✅</div><div class="ccard-title">All pairs OK</div><div class="ccard-desc">Cable is good. If still no link, the problem is on the switch side — check ClearPass registration or switch port config.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 13: HUIT TICKET ══ -->
+<div class="mod vis" id="mod13" data-i="13">
+  <div class="mod-hd" onclick="toggleMod('mod13')">
+    <div class="mod-num">13</div>
+    <div class="mod-title">Opening a HUIT Networking Ticket</div>
+    <div class="mod-badge">Process</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">Collect This Before You Open Any Ticket</div>
+    <p>Before reaching out to the HUIT networking team, you need to gather specific information. Incomplete tickets get bounced back, which delays resolution for the user. Spend 60 seconds collecting this first.</p>
+    <div class="ticket-checklist" id="ticketChecklist">
+      <div class="ticket-item" onclick="toggleTicket(this)">
+        <div class="ticket-check"></div>
+        <div class="ticket-content">
+          <div class="ticket-label">MAC Address of the affected device</div>
+          <div class="ticket-detail">Run <code>ipconfig /all</code> (Windows) or <code>ifconfig en0 | grep ether</code> (Mac). Copy the Physical Address — Wi-Fi MAC for wireless issues, Ethernet MAC for wired issues.</div>
+        </div>
+      </div>
+      <div class="ticket-item" onclick="toggleTicket(this)">
+        <div class="ticket-check"></div>
+        <div class="ticket-content">
+          <div class="ticket-label">Issue description — what is the user experiencing?</div>
+          <div class="ticket-detail">Be specific: "No connectivity", "169.254 APIPA address", "Connected but can't reach Harvard resources", "Intermittent drops every 20 minutes", "Slow speed — 2 Mbps on speedtest". Vague tickets like "can't connect" get deprioritized.</div>
+        </div>
+      </div>
+      <div class="ticket-item" onclick="toggleTicket(this)">
+        <div class="ticket-check"></div>
+        <div class="ticket-content">
+          <div class="ticket-label">Wired or wireless?</div>
+          <div class="ticket-detail">This determines the entire troubleshooting path. For wired: include the wall jack label. For wireless: include the AP name and RSSI if available.</div>
+        </div>
+      </div>
+      <div class="ticket-item" onclick="toggleTicket(this)">
+        <div class="ticket-check"></div>
+        <div class="ticket-content">
+          <div class="ticket-label">Nearest AP name (wireless issues)</div>
+          <div class="ticket-detail">Read the label on the closest Aruba AP — format is like <code>paine-library-ap1</code>. The networking team can pull up that AP in their management console and see its status, client list, and error logs immediately.</div>
+        </div>
+      </div>
+      <div class="ticket-item" onclick="toggleTicket(this)">
+        <div class="ticket-check"></div>
+        <div class="ticket-content">
+          <div class="ticket-label">Wall jack label (wired issues)</div>
+          <div class="ticket-detail">The full label from the wall plate — e.g., <code>D1-04-A</code>. Include the room number and building. The team uses this to locate the exact switch port.</div>
+        </div>
+      </div>
+      <div class="ticket-item" onclick="toggleTicket(this)">
+        <div class="ticket-check"></div>
+        <div class="ticket-content">
+          <div class="ticket-label">Building, floor, and room number</div>
+          <div class="ticket-detail">Physical location. This helps the networking team dispatch someone if a site visit is needed and identifies which network equipment serves that area.</div>
+        </div>
+      </div>
+      <div class="ticket-item" onclick="toggleTicket(this)">
+        <div class="ticket-check"></div>
+        <div class="ticket-content">
+          <div class="ticket-label">When did it start? Was anything recently changed?</div>
+          <div class="ticket-detail">New device? Moved desks? Just ran Windows update? These details narrow down the cause dramatically. "It stopped working Monday morning" is far more useful than "it hasn't worked in a while."</div>
+        </div>
+      </div>
+      <div class="ticket-item" onclick="toggleTicket(this)">
+        <div class="ticket-check"></div>
+        <div class="ticket-content">
+          <div class="ticket-label">What have you already tried?</div>
+          <div class="ticket-detail">ipconfig /release /renew? Forgot and re-joined the network? Tested with a different cable? List what you've done so the networking team doesn't repeat your steps.</div>
+        </div>
+      </div>
+    </div>
+    <div class="ticket-progress-wrap">
+      <div class="ticket-prog-bar"><div class="ticket-prog-fill" id="ticketProgFill"></div></div>
+      <div class="ticket-prog-label" id="ticketProgLabel">0 / 8 collected</div>
+    </div>
+    <div class="sec-label" style="margin-top:1.75rem">Ticket Template</div>
+    <div class="ticket-template">
+      <div class="tt-label">Copy and fill this in before submitting to ServiceNow:</div>
+      <div class="tt-body">
+<strong>User:</strong> [Name, HarvardKey]<br>
+<strong>Device MAC:</strong> [AA:BB:CC:DD:EE:FF]<br>
+<strong>Connection type:</strong> [Wireless / Wired]<br>
+<strong>Issue:</strong> [Specific description]<br>
+<strong>Location:</strong> [Building, Floor, Room]<br>
+<br>
+<strong>If wireless:</strong><br>
+  — Nearest AP: [e.g. paine-library-ap1]<br>
+  — SSID they're connected to: [Harvard Secure / eduroam / Harvard University]<br>
+  — Signal strength: [e.g. 72% / -67 dBm]<br>
+<br>
+<strong>If wired:</strong><br>
+  — Wall jack label: [e.g. D1-04-A]<br>
+  — LinkRunner result (if tested): [Pass / Cable fault / Switch detection]<br>
+<br>
+<strong>When started:</strong> [Date/time or "unknown"]<br>
+<strong>Recent changes:</strong> [New device, moved, update, etc.]<br>
+<strong>Already tried:</strong> [ipconfig /renew, cable swap, etc.]
+      </div>
+    </div>
+    <div class="box info" style="margin-top:1rem"><div class="box-lbl">📬 Where to Submit</div><p>HUIT tickets go through <strong>ServiceNow</strong>. Navigate to the HUIT help portal and select "Network / Connectivity" as the category. The more detail you include upfront, the faster the networking team can resolve it — often without needing a site visit.</p></div>
+  </div>
+</div>
+
+
+<!-- ══ MODULE 14 — QUIZ ══ -->
 <div class="mod vis" id="mod6" data-i="6">
   <div class="mod-hd" onclick="toggleMod('mod6')">
     <div class="mod-num">06</div>
@@ -1032,6 +1805,91 @@ const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
 },{threshold:.05});
 document.querySelectorAll('.mod').forEach(m=>obs.observe(m));
+
+
+// ══ NEW MODULES JS ══
+// ── AP 3D LED STATES ──
+const apStates = {
+  off:     {sys:'off',r24:'off',r5:'off',r6:'off',label:'● No Power — All LEDs dark',btnClass:'off'},
+  booting: {sys:'blink-green',r24:'off',r5:'off',r6:'off',label:'⟳ Booting — System LED blinking green',btnClass:'warn'},
+  normal:  {sys:'blue-solid',r24:'blink-blue',r5:'blue-solid',r6:'blink-blue',label:'● Normal Operation — All radios active',btnClass:'on'},
+  warn:    {sys:'amber-solid',r24:'blue-solid',r5:'blue-solid',r6:'off',label:'⚠ Warning — Restricted PoE / sub-optimal uplink',btnClass:'warn'},
+  error:   {sys:'red-solid',r24:'off',r5:'off',r6:'off',label:'✕ Error — Insufficient PoE, immediate action required',btnClass:'error'}
+};
+function setAPState(state) {
+  const s = apStates[state];
+  if (!s) return;
+  const ids = {sys:'led-sys','24':'led-24','5':'led-5','6':'led-6'};
+  const classes = ['off','green-solid','blue-solid','amber-solid','red-solid','blink-green','blink-blue','blink-amber'];
+  Object.entries({sys:s.sys,'24':s.r24,'5':s.r5,'6':s.r6}).forEach(([k,v])=>{
+    const el = document.getElementById(ids[k]);
+    if (!el) return;
+    classes.forEach(c => el.classList.remove(c));
+    if (v !== 'off') el.classList.add(v);
+  });
+  document.getElementById('apStateLabel').textContent = s.label;
+  document.querySelectorAll('.ap-ctrl-btn').forEach(b => b.classList.remove('on'));
+  const activeBtn = [...document.querySelectorAll('.ap-ctrl-btn')].find(b => b.textContent.toLowerCase().includes(state.toLowerCase()));
+  if (activeBtn) activeBtn.classList.add('on');
+}
+// init AP on page load
+setTimeout(() => setAPState('normal'), 500);
+
+// ── WIREMAP ANIMATION ──
+function initWiremap() {
+  const grid = document.getElementById('wiremapGrid');
+  if (!grid) return;
+  const pairs = [
+    {label:'Pr 1-2', status:'ok'},{label:'Pr 3-6', status:'ok'},
+    {label:'Pr 4-5', status:'ok'},{label:'Pr 7-8', status:'ok'}
+  ];
+  grid.innerHTML = pairs.map(p => `<div class="wm-pair ${p.status}" data-status="${p.status}">${p.label}<br><span style="font-size:.7em">${p.status.toUpperCase()}</span></div>`).join('');
+  // animate scan
+  const cells = grid.querySelectorAll('.wm-pair');
+  cells.forEach((c, i) => {
+    c.style.opacity = '0';
+    setTimeout(() => { c.style.transition='all 0.3s ease'; c.style.opacity='1'; }, i * 200 + 300);
+  });
+  setTimeout(() => { document.getElementById('wiremapResult').innerHTML = '<span style="color:var(--green)">✓ PASS</span>'; }, 1200);
+}
+// demo: cycle between pass/fail states for the cable test
+function demoWiremapFail() {
+  const grid = document.getElementById('wiremapGrid');
+  if (!grid) return;
+  const pairs = [
+    {label:'Pr 1-2', status:'ok'},{label:'Pr 3-6', status:'fail'},
+    {label:'Pr 4-5', status:'ok'},{label:'Pr 7-8', status:'ok'}
+  ];
+  grid.innerHTML = pairs.map(p => `<div class="wm-pair ${p.status}">${p.label}<br><span style="font-size:.7em">${p.status==='ok'?'OK':'OPEN'}</span></div>`).join('');
+  document.getElementById('wiremapResult').innerHTML = '<span style="color:var(--cr)">✗ FAIL — Open on Pr 3-6</span>';
+}
+setTimeout(initWiremap, 800);
+
+// ── TICKET CHECKLIST ──
+function toggleTicket(item) {
+  item.classList.toggle('checked');
+  if (item.classList.contains('checked')) {
+    item.querySelector('.ticket-check').textContent = '✓';
+  } else {
+    item.querySelector('.ticket-check').textContent = '';
+  }
+  const total = document.querySelectorAll('.ticket-item').length;
+  const done = document.querySelectorAll('.ticket-item.checked').length;
+  const pct = Math.round(done/total*100);
+  document.getElementById('ticketProgFill').style.width = pct + '%';
+  document.getElementById('ticketProgLabel').textContent = done + ' / ' + total + ' collected';
+}
+
+// ── UPDATE TOTAL MODULE COUNT ──
+// Override updateProgress to use new total
+function updateProgress(){
+  const done = document.querySelectorAll('.mod-badge.done').length;
+  const total = 14;
+  const pct = Math.round(done/total*100);
+  document.getElementById('navFill').style.width = pct + '%';
+  document.getElementById('navProg').textContent = done + ' / ' + total;
+}
+
 </script>
 </body>
 </html>
