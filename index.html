@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUIT Co-op Onboarding Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cr:#C8273D;--cr-d:rgba(200,39,61,0.12);--cr-glow:rgba(200,39,61,0.3);
+  --gold:#F0C040;--gold-d:rgba(240,192,64,0.1);
+  --green:#22c55e;--green-d:rgba(34,197,94,0.1);
+  --blue:#60a5fa;--blue-d:rgba(96,165,250,0.1);
+  --purple:#a78bfa;--purple-d:rgba(167,139,250,0.1);
+  --orange:#fb923c;--orange-d:rgba(251,146,60,0.1);
+  --bg:#080a0d;--s1:#0e1117;--s2:#131820;--s3:#1a2030;
+  --bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.12);
+  --t1:#f1f5f9;--t2:#94a3b8;--t3:#475569;--t4:#1e293b;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;
+  --r:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+
+body::before{content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 70% 40% at 15% 0%,rgba(200,39,61,0.13) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 30% at 85% 100%,rgba(96,165,250,0.07) 0%,transparent 60%);
+  pointer-events:none;z-index:0}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:200;height:56px;
+  background:rgba(8,10,13,0.9);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between;padding:0 2rem}
+.nav-logo{font-family:var(--mono);font-size:0.72rem;color:var(--cr);letter-spacing:.12em}
+.nav-logo span{color:var(--t3)}
+.nav-right{display:flex;align-items:center;gap:1.25rem}
+.nav-tag{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;
+  padding:.25rem .7rem;border-radius:99px;border:1px solid var(--bd2);color:var(--t3)}
+.nav-tag.live{border-color:rgba(34,197,94,.3);color:var(--green);background:rgba(34,197,94,.07)}
+
+/* ── SHELL ── */
+.shell{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:0 1.5rem 8rem}
+
+/* ── HERO ── */
+.hero{padding:5rem 0 3.5rem;position:relative}
+.hero-eyebrow{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--cr);
+  text-transform:uppercase;margin-bottom:1.4rem;display:flex;align-items:center;gap:.75rem}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--cr)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.8rem);font-weight:800;letter-spacing:-.03em;
+  line-height:1;color:#fff;margin-bottom:1.25rem}
+.hero h1 .cr{color:var(--cr)}
+.hero-sub{font-size:1rem;color:var(--t2);max-width:560px;line-height:1.75;margin-bottom:2.5rem}
+.hero-stats{display:flex;flex-wrap:wrap;gap:2.5rem;margin-bottom:3rem}
+.stat{display:flex;flex-direction:column;gap:.2rem}
+.stat-num{font-size:2rem;font-weight:800;color:#fff;line-height:1}
+.stat-num .cr{color:var(--cr)}
+.stat-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--t3)}
+.hero-divider{height:1px;background:linear-gradient(90deg,var(--cr) 0%,rgba(200,39,61,.2) 40%,transparent 80%)}
+
+/* ── SEARCH / FILTER ── */
+.controls{display:flex;gap:.75rem;margin:2.5rem 0 2rem;flex-wrap:wrap;align-items:center}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:320px}
+.search-ico{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);
+  color:var(--t3);font-size:.85rem;pointer-events:none}
+.search{background:var(--s2);border:1px solid var(--bd2);color:var(--t1);
+  font-family:var(--sans);font-size:.85rem;padding:.6rem .85rem .6rem 2.25rem;
+  border-radius:8px;outline:none;width:100%;transition:border-color .2s}
+.search:focus{border-color:var(--cr)}
+.search::placeholder{color:var(--t3)}
+.filter-pills{display:flex;flex-wrap:wrap;gap:.4rem}
+.pill{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.3rem .8rem;border-radius:99px;border:1px solid var(--bd2);color:var(--t3);
+  cursor:pointer;transition:all .15s;background:none}
+.pill:hover{border-color:var(--t2);color:var(--t1)}
+.pill.on{border-color:var(--cr);color:var(--cr);background:rgba(200,39,61,.08)}
+
+/* ── SECTION LABEL ── */
+.section-header{display:flex;align-items:center;gap:.75rem;margin:2.5rem 0 1.25rem}
+.section-title{font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--t3)}
+.section-line{flex:1;height:1px;background:var(--bd)}
+.section-count{font-family:var(--mono);font-size:.6rem;color:var(--t4)}
+
+/* ── MODULE GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+
+/* ── MODULE CARD ── */
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);
+  overflow:hidden;cursor:pointer;position:relative;
+  display:flex;flex-direction:column;
+  transition:border-color .25s,box-shadow .25s,transform .2s;
+  opacity:0;transform:translateY(16px);
+  text-decoration:none;color:inherit}
+.card.vis{opacity:1;transform:none}
+.card:hover{border-color:var(--bd2);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.card.done:hover{border-color:rgba(200,39,61,.5);box-shadow:0 12px 40px var(--cr-glow)}
+.card.coming{cursor:default;opacity:0.55}
+.card.coming:hover{transform:none;box-shadow:none;border-color:var(--bd)}
+
+/* card color bar */
+.card-bar{height:3px;width:100%}
+
+/* card body */
+.card-body{padding:1.4rem;flex:1;display:flex;flex-direction:column;gap:.75rem}
+.card-meta{display:flex;align-items:center;justify-content:space-between}
+.card-cat{font-family:var(--mono);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.2rem .6rem;border-radius:99px;border:1px solid currentColor;opacity:.7}
+.card-status{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.2rem .6rem;border-radius:99px;display:flex;align-items:center;gap:.35rem}
+.card-status.live{color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25)}
+.card-status.soon{color:var(--t3);background:var(--s3);border:1px solid var(--bd)}
+.card-status .dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.card-status.live .dot{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.card-num{font-family:var(--mono);font-size:.65rem;color:var(--t4)}
+.card-title{font-weight:700;font-size:1.05rem;color:var(--t1);line-height:1.25}
+.card-desc{font-size:.82rem;color:var(--t3);line-height:1.6;flex:1}
+
+.card-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.card-tag{font-family:var(--mono);font-size:.57rem;letter-spacing:.06em;text-transform:uppercase;
+  padding:.18rem .55rem;border-radius:4px;background:var(--s3);color:var(--t4);border:1px solid var(--bd)}
+
+.card-footer{padding:.9rem 1.4rem;border-top:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between;background:var(--s2)}
+.card-time{font-family:var(--mono);font-size:.6rem;color:var(--t4);display:flex;align-items:center;gap:.35rem}
+.card-action{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
+  display:flex;align-items:center;gap:.35rem;transition:gap .2s}
+.card.done .card-action{color:var(--cr)}
+.card.done:hover .card-action{gap:.6rem}
+.card.coming .card-action{color:var(--t4)}
+
+/* ── PROGRESS BLOCK ── */
+.progress-block{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);
+  padding:1.75rem 2rem;margin-bottom:2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+.progress-ring-wrap{position:relative;flex-shrink:0}
+.progress-ring{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--s3);stroke-width:6}
+.ring-fill{fill:none;stroke:url(#ringGrad);stroke-width:6;stroke-linecap:round;
+  stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-size:1.3rem;font-weight:800;color:#fff;line-height:1}
+.ring-lbl{font-family:var(--mono);font-size:.5rem;color:var(--t3);text-transform:uppercase;letter-spacing:.1em}
+.progress-info{flex:1}
+.progress-info h3{font-size:1rem;font-weight:700;color:#fff;margin-bottom:.35rem}
+.progress-info p{font-size:.83rem;color:var(--t2);line-height:1.6}
+.progress-modules{display:flex;gap:.4rem;margin-top:.85rem;flex-wrap:wrap}
+.pmod{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;
+  padding:.25rem .65rem;border-radius:99px;border:1px solid var(--bd);color:var(--t4)}
+.pmod.done{border-color:rgba(34,197,94,.3);color:var(--green);background:rgba(34,197,94,.07)}
+.pmod.active{border-color:rgba(200,39,61,.35);color:var(--cr);background:rgba(200,39,61,.07)}
+
+/* ── QUICK START ── */
+.quickstart{background:linear-gradient(135deg,rgba(200,39,61,.06),rgba(240,192,64,.04));
+  border:1px solid rgba(200,39,61,.2);border-radius:var(--r);padding:1.75rem 2rem;
+  margin-bottom:2.5rem;position:relative;overflow:hidden}
+.quickstart::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--cr),var(--gold))}
+.qs-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.65rem}
+.qs-title{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:.35rem}
+.qs-sub{font-size:.85rem;color:var(--t2);margin-bottom:1.25rem;line-height:1.6}
+.qs-btn{display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.7rem 1.5rem;border-radius:7px;background:var(--cr);color:#fff;
+  text-decoration:none;border:none;cursor:pointer;
+  box-shadow:0 4px 16px rgba(200,39,61,.3);transition:all .2s}
+.qs-btn:hover{background:#d9314a;box-shadow:0 6px 24px rgba(200,39,61,.45);transform:translateY(-1px)}
+
+/* ── ANNOUNCEMENT BANNER ── */
+.announce{background:var(--s2);border:1px solid var(--bd);border-radius:8px;
+  padding:.85rem 1.25rem;margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:.85rem;font-size:.83rem;color:var(--t2)}
+.announce-icon{font-size:1rem;flex-shrink:0}
+.announce strong{color:var(--t1)}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:4rem 1rem;display:none}
+.empty.on{display:block}
+.empty-icon{font-size:2.5rem;margin-bottom:.75rem}
+.empty-text{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--t4)}
+
+/* ── FOOTER ── */
+.footer{border-top:1px solid var(--bd);padding:2rem;text-align:center;
+  font-family:var(--mono);font-size:.62rem;color:var(--t4);letter-spacing:.06em}
+.footer a{color:var(--t3);text-decoration:none}
+.footer a:hover{color:var(--t1)}
+
+@media(max-width:640px){
+  .nav{padding:0 1rem}
+  .shell{padding:0 1rem 6rem}
+  .hero{padding:3rem 0 2.5rem}
+  .hero-stats{gap:1.5rem}
+  .progress-block{flex-direction:column;align-items:flex-start;gap:1.25rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">HUIT <span>/ Co-op /</span> Onboarding Hub</div>
+  <div class="nav-right">
+    <div class="nav-tag">Wentworth · 2025</div>
+    <div class="nav-tag live"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 2s infinite"></span> Live</div>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-eyebrow">Harvard University IT · Co-op Training Platform</div>
+    <h1>Your<br><span class="cr">Day One</span><br>Starts Here.</h1>
+    <p class="hero-sub">Everything you need to support users at Harvard — broken into focused, interactive modules with real scenarios, hands-on practice, and scored quizzes. Work through them in order before joining your team.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num"><span id="doneCount">1</span><span class="cr" style="font-size:1.2rem"> done</span></div><div class="stat-label">Modules Complete</div></div>
+      <div class="stat"><div class="stat-num" id="totalCount">8</div><div class="stat-label">Total Modules</div></div>
+      <div class="stat"><div class="stat-num">~<span id="totalTime">2.5</span><span style="font-size:1.2rem;color:var(--t3)">hrs</span></div><div class="stat-label">Estimated Total</div></div>
+      <div class="stat"><div class="stat-num" style="color:var(--gold)">30</div><div class="stat-label">Co-ops This Cohort</div></div>
+    </div>
+    <div class="hero-divider"></div>
+  </header>
+
+  <!-- QUICK START -->
+  <div class="quickstart">
+    <div class="qs-label">⚡ Start Here — Module 1 is Ready Now</div>
+    <div class="qs-title">Networking 101 — Get Your Device on Harvard's Wi-Fi</div>
+    <div class="qs-sub">Learn MAC addresses, ClearPass, and how to register any device on Harvard Secure. Includes an interactive form walkthrough and a 3-round practice game. You'll need this before anything else works.</div>
+    <a class="qs-btn" href="networking-101.html">Begin Networking 101 →</a>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-block">
+    <div class="progress-ring-wrap">
+      <svg class="progress-ring" width="80" height="80" viewBox="0 0 80 80">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#C8273D"/>
+            <stop offset="100%" stop-color="#F0C040"/>
+          </linearGradient>
+        </defs>
+        <circle class="ring-bg" cx="40" cy="40" r="35"/>
+        <circle class="ring-fill" id="ringFill" cx="40" cy="40" r="35"/>
+      </svg>
+      <div class="ring-text">
+        <div class="ring-pct" id="ringPct">13%</div>
+        <div class="ring-lbl">Done</div>
+      </div>
+    </div>
+    <div class="progress-info">
+      <h3>Track Your Progress</h3>
+      <p>Complete modules in order — each one builds on the last. Check them off as you go. Your supervisor may ask which modules you've completed on Day 1.</p>
+      <div class="progress-modules">
+        <div class="pmod done">Networking 101</div>
+        <div class="pmod active">Windows Basics</div>
+        <div class="pmod">Microsoft 365</div>
+        <div class="pmod">Harvard Systems</div>
+        <div class="pmod">ServiceNow</div>
+        <div class="pmod">Security & Compliance</div>
+        <div class="pmod">End User Support</div>
+        <div class="pmod">Escalation Paths</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANNOUNCE -->
+  <div class="announce">
+    <div class="announce-icon">📣</div>
+    <div><strong>Windows Basics and Microsoft 365 modules coming soon.</strong> Check this page again after your first week — new content is added each cohort cycle.</div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div class="search-wrap">
+      <div class="search-ico">🔍</div>
+      <input class="search" id="searchInput" placeholder="Search modules…" oninput="filterCards()">
+    </div>
+    <div class="filter-pills">
+      <button class="pill on" onclick="setFilter('all',this)">All</button>
+      <button class="pill" onclick="setFilter('live',this)">Available Now</button>
+      <button class="pill" onclick="setFilter('networking',this)">Networking</button>
+      <button class="pill" onclick="setFilter('windows',this)">Windows</button>
+      <button class="pill" onclick="setFilter('microsoft',this)">Microsoft 365</button>
+      <button class="pill" onclick="setFilter('harvard',this)">Harvard Systems</button>
+    </div>
+  </div>
+
+  <!-- AVAILABLE NOW -->
+  <div class="section-header">
+    <div class="section-title">Available Now</div>
+    <div class="section-line"></div>
+    <div class="section-count" id="liveCount">1 module</div>
+  </div>
+
+  <div class="grid" id="liveGrid">
+
+    <a class="card done" href="networking-101.html" data-cat="networking" data-status="live" data-search="networking mac address clearpass aruba wifi harvard secure device registration getonline certificate vlan">
+      <div class="card-bar" style="background:linear-gradient(90deg,var(--cr),var(--gold))"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-cat" style="color:var(--cr);border-color:rgba(200,39,61,.35)">Networking</span>
+          <span class="card-status live"><span class="dot"></span>Live</span>
+        </div>
+        <div class="card-num">Module 01</div>
+        <div class="card-title">Networking 101</div>
+        <div class="card-desc">IP vs MAC addresses, DNS, DHCP, Harvard's Wi-Fi networks, Aruba ClearPass device registration, getonline.harvard.edu certificate flow, and real troubleshooting scenarios from Art Museum, Divinity, and Lamont.</div>
+        <div class="card-tags">
+          <span class="card-tag">ClearPass</span>
+          <span class="card-tag">MAC Address</span>
+          <span class="card-tag">getonline</span>
+          <span class="card-tag">Practice Game</span>
+          <span class="card-tag">8-Q Quiz</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-time">🕐 ~30 min · 6 sections</div>
+        <div class="card-action">Start Module →</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- COMING SOON -->
+  <div class="section-header" style="margin-top:2.5rem">
+    <div class="section-title">Coming Soon</div>
+    <div class="section-line"></div>
+    <div class="section-count" id="soonCount">7 modules</div>
+  </div>
+
+  <div class="grid" id="soonGrid">
+
+    <div class="card coming" data-cat="windows" data-status="soon" data-search="windows dell setup domain join bitlocker local admin settings file explorer task manager">
+      <div class="card-bar" style="background:var(--blue-d);background:linear-gradient(90deg,rgba(96,165,250,.5),rgba(96,165,250,.1))"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-cat" style="color:var(--blue);border-color:rgba(96,165,250,.3)">Windows</span>
+          <span class="card-status soon"><span class="dot"></span>Coming Soon</span>
+        </div>
+        <div class="card-num">Module 02</div>
+        <div class="card-title">Windows Basics</div>
+        <div class="card-desc">Windows 11 fundamentals, navigating the OS, common settings, File Explorer, Task Manager, Dell hardware essentials, and domain join walkthrough.</div>
+        <div class="card-tags">
+          <span class="card-tag">Windows 11</span>
+          <span class="card-tag">Dell</span>
+          <span class="card-tag">Domain Join</span>
+          <span class="card-tag">BitLocker</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-time">🕐 ~30 min</div>
+        <div class="card-action" style="color:var(--t4)">In Development</div>
+      </div>
+    </div>
+
+    <div class="card coming" data-cat="microsoft" data-status="soon" data-search="microsoft 365 office teams outlook sharepoint onedrive email calendar word excel powerpoint">
+      <div class="card-bar" style="background:linear-gradient(90deg,rgba(167,139,250,.5),rgba(167,139,250,.1))"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-cat" style="color:var(--purple);border-color:rgba(167,139,250,.3)">Microsoft 365</span>
+          <span class="card-status soon"><span class="dot"></span>Coming Soon</span>
+        </div>
+        <div class="card-num">Module 03</div>
+        <div class="card-title">Microsoft 365 Basics</div>
+        <div class="card-desc">Teams, Outlook, SharePoint, and OneDrive from an IT support perspective. Harvard licensing tiers, common user issues, and how M365 fits into Harvard's ecosystem.</div>
+        <div class="card-tags">
+          <span class="card-tag">Teams</span>
+          <span class="card-tag">Outlook</span>
+          <span class="card-tag">SharePoint</span>
+          <span class="card-tag">OneDrive</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-time">🕐 ~30 min</div>
+        <div class="card-action" style="color:var(--t4)">In Development</div>
+      </div>
+    </div>
+
+    <div class="card coming" data-cat="harvard" data-status="soon" data-search="harvard systems harvardkey huid vpn globalprotect servicenow printing pin directory">
+      <div class="card-bar" style="background:linear-gradient(90deg,rgba(240,192,64,.5),rgba(240,192,64,.1))"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-cat" style="color:var(--gold);border-color:rgba(240,192,64,.3)">Harvard Systems</span>
+          <span class="card-status soon"><span class="dot"></span>Coming Soon</span>
+        </div>
+        <div class="card-num">Module 04</div>
+        <div class="card-title">Harvard Systems Overview</div>
+        <div class="card-desc">HarvardKey, HUID, the Harvard directory, VPN (GlobalProtect), print queues, and the tools you'll touch every single day as a co-op in HUIT.</div>
+        <div class="card-tags">
+          <span class="card-tag">HarvardKey</span>
+          <span class="card-tag">VPN</span>
+          <span class="card-tag">Printing</span>
+          <span class="card-tag">Directory</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-time">🕐 ~25 min</div>
+        <div class="card-action" style="color:var(--t4)">In Development</div>
+      </div>
+    </div>
+
+    <div class="card coming" data-cat="harvard" data-status="soon" data-search="servicenow snow tickets incidents requests categories priority sla queue assignment">
+      <div class="card-bar" style="background:linear-gradient(90deg,rgba(251,146,60,.5),rgba(251,146,60,.1))"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-cat" style="color:var(--orange);border-color:rgba(251,146,60,.3)">Harvard Systems</span>
+          <span class="card-status soon"><span class="dot"></span>Coming Soon</span>
+        </div>
+        <div class="card-num">Module 05</div>
+        <div class="card-title">ServiceNow Ticketing</div>
+        <div class="card-desc">How to create, update, assign, and close tickets in ServiceNow. Incident vs request vs problem. SLA basics, priority levels, and the queue structure for Art Museum, Divinity, and Lamont.</div>
+        <div class="card-tags">
+          <span class="card-tag">ServiceNow</span>
+          <span class="card-tag">Incidents</span>
+          <span class="card-tag">SLA</span>
+          <span class="card-tag">Queues</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-time">🕐 ~25 min</div>
+        <div class="card-action" style="color:var(--t4)">In Development</div>
+      </div>
+    </div>
+
+    <div class="card coming" data-cat="harvard" data-status="soon" data-search="security compliance data handling mfa multifactor phishing social engineering sensitive data hipaa ferpa">
+      <div class="card-bar" style="background:linear-gradient(90deg,rgba(34,197,94,.5),rgba(34,197,94,.1))"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-cat" style="color:var(--green);border-color:rgba(34,197,94,.3)">Security</span>
+          <span class="card-status soon"><span class="dot"></span>Coming Soon</span>
+        </div>
+        <div class="card-num">Module 06</div>
+        <div class="card-title">Security & Compliance</div>
+        <div class="card-desc">Data handling at Harvard, MFA requirements, phishing awareness, what counts as sensitive data, FERPA basics, and how to respond when you suspect a security incident.</div>
+        <div class="card-tags">
+          <span class="card-tag">MFA</span>
+          <span class="card-tag">Phishing</span>
+          <span class="card-tag">FERPA</span>
+          <span class="card-tag">Data Handling</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-time">🕐 ~20 min</div>
+        <div class="card-action" style="color:var(--t4)">In Development</div>
+      </div>
+    </div>
+
+    <div class="card coming" data-cat="harvard" data-status="soon" data-search="end user support communication soft skills phone email difficult users documentation notes how to help">
+      <div class="card-bar" style="background:linear-gradient(90deg,rgba(248,113,113,.5),rgba(248,113,113,.1))"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-cat" style="color:#f87171;border-color:rgba(248,113,113,.3)">Support Skills</span>
+          <span class="card-status soon"><span class="dot"></span>Coming Soon</span>
+        </div>
+        <div class="card-num">Module 07</div>
+        <div class="card-title">End User Support 101</div>
+        <div class="card-desc">How to communicate with users, manage expectations, document issues clearly, handle frustrated callers, and know when to escalate vs. solve it yourself.</div>
+        <div class="card-tags">
+          <span class="card-tag">Communication</span>
+          <span class="card-tag">Documentation</span>
+          <span class="card-tag">Escalation</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-time">🕐 ~20 min</div>
+        <div class="card-action" style="color:var(--t4)">In Development</div>
+      </div>
+    </div>
+
+    <div class="card coming" data-cat="harvard" data-status="soon" data-search="macOS mac apple macos ventura sonoma system preferences finder terminal basics">
+      <div class="card-bar" style="background:linear-gradient(90deg,rgba(96,165,250,.5),rgba(96,165,250,.1))"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-cat" style="color:var(--blue);border-color:rgba(96,165,250,.3)">macOS</span>
+          <span class="card-status soon"><span class="dot"></span>Coming Soon</span>
+        </div>
+        <div class="card-num">Module 08</div>
+        <div class="card-title">macOS Basics</div>
+        <div class="card-desc">Supporting Mac users at Harvard — System Settings, Finder, Terminal basics, software installation, Keychain, and the things that trip up Windows-first co-ops when they sit down at a Mac.</div>
+        <div class="card-tags">
+          <span class="card-tag">macOS</span>
+          <span class="card-tag">Finder</span>
+          <span class="card-tag">Terminal</span>
+          <span class="card-tag">Keychain</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-time">🕐 ~25 min</div>
+        <div class="card-action" style="color:var(--t4)">In Development</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty" id="emptyState">
+    <div class="empty-icon">🔍</div>
+    <div class="empty-text">No modules match your search</div>
+  </div>
+
+</div><!-- /shell -->
+
+<footer class="footer">
+  HUIT Co-op Onboarding Platform · Built by <a href="mailto:Jose_Coss@harvard.edu">Jose Coss (joc5799)</a> · Harvard University IT · 2025
+</footer>
+
+<script>
+// ── FILTER + SEARCH ──
+let activeFilter = 'all';
+
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
+  btn.classList.add('on');
+  filterCards();
+}
+
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const allCards = document.querySelectorAll('.card');
+  let liveCount = 0, soonCount = 0, anyVisible = false;
+
+  allCards.forEach(card => {
+    const cat = card.dataset.cat || '';
+    const status = card.dataset.status || '';
+    const searchText = (card.dataset.search || '') + ' ' + (card.querySelector('.card-title')?.textContent || '') + ' ' + (card.querySelector('.card-desc')?.textContent || '');
+
+    const catMatch = activeFilter === 'all' || activeFilter === status || activeFilter === cat;
+    const searchMatch = !q || searchText.toLowerCase().includes(q);
+    const visible = catMatch && searchMatch;
+
+    card.style.display = visible ? '' : 'none';
+    if (visible) {
+      anyVisible = true;
+      if (status === 'live') liveCount++;
+      else soonCount++;
+    }
+  });
+
+  document.getElementById('liveCount').textContent = liveCount + ' module' + (liveCount !== 1 ? 's' : '');
+  document.getElementById('soonCount').textContent = soonCount + ' module' + (soonCount !== 1 ? 's' : '');
+  document.getElementById('emptyState').classList.toggle('on', !anyVisible);
+
+  // hide section headers if no cards visible in that section
+  const liveGrid = document.getElementById('liveGrid');
+  const soonGrid = document.getElementById('soonGrid');
+  const liveHeader = liveGrid.previousElementSibling;
+  const soonHeader = soonGrid.previousElementSibling;
+  liveHeader.style.display = liveCount ? '' : 'none';
+  soonHeader.style.display = soonCount ? '' : 'none';
+}
+
+// ── PROGRESS RING ──
+function setRing(pct) {
+  const circumference = 2 * Math.PI * 35; // 219.9
+  const offset = circumference - (pct / 100) * circumference;
+  document.getElementById('ringFill').style.strokeDasharray = circumference;
+  document.getElementById('ringFill').style.strokeDashoffset = circumference;
+  setTimeout(() => {
+    document.getElementById('ringFill').style.strokeDashoffset = offset;
+    document.getElementById('ringPct').textContent = Math.round(pct) + '%';
+  }, 300);
+}
+setRing(12.5); // 1 of 8 done
+
+// ── CARD FADE IN ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('vis'), i * 60);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.05 });
+
+document.querySelectorAll('.card').forEach(c => obs.observe(c));
+</script>
+</body>
+</html>

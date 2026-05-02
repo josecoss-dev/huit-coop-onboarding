@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUIT Co-op Onboarding — Networking 101</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cr: #C8273D; --cr-d: rgba(200,39,61,0.15); --cr-glow: rgba(200,39,61,0.35);
+  --gold: #F0C040; --gold-d: rgba(240,192,64,0.12);
+  --green: #22c55e; --green-d: rgba(34,197,94,0.12);
+  --blue: #60a5fa; --blue-d: rgba(96,165,250,0.1);
+  --bg: #080a0d; --s1: #0e1117; --s2: #131820; --s3: #1a2030;
+  --bd: rgba(255,255,255,0.07); --bd2: rgba(255,255,255,0.12);
+  --t1: #f1f5f9; --t2: #94a3b8; --t3: #475569; --t4: #1e293b;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Inter', sans-serif;
+  --r: 10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:var(--sans);min-height:100vh;overflow-x:hidden;line-height:1.6}
+
+/* ── NOISE + GRADIENT BG ── */
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(200,39,61,0.12) 0%,transparent 70%);
+  pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h60v60H0z' fill='none'/%3E%3Ccircle cx='0' cy='0' r='0.5' fill='%23ffffff' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.4}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:200;height:56px;
+  background:rgba(8,10,13,0.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;padding:0 1.5rem;gap:1.25rem}
+.nav-logo{font-family:var(--mono);font-size:0.7rem;color:var(--cr);letter-spacing:.12em;white-space:nowrap}
+.nav-logo span{color:var(--t3)}
+.nav-bar{flex:1;height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.nav-fill{height:100%;background:linear-gradient(90deg,var(--cr),var(--gold));width:0%;transition:width .6s cubic-bezier(.4,0,.2,1);border-radius:2px}
+.nav-prog{font-family:var(--mono);font-size:0.65rem;color:var(--t3);white-space:nowrap}
+
+/* ── SHELL ── */
+.shell{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 1.25rem 8rem}
+
+/* ── HERO ── */
+.hero{padding:5rem 0 4rem;position:relative}
+.hero-glow{position:absolute;top:2rem;left:-4rem;width:400px;height:300px;
+  background:radial-gradient(ellipse,rgba(200,39,61,0.18) 0%,transparent 70%);
+  pointer-events:none;filter:blur(40px)}
+.hero-tag{font-family:var(--mono);font-size:0.65rem;letter-spacing:.2em;color:var(--cr);
+  text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem}
+.hero-tag::before{content:'';width:28px;height:1px;background:var(--cr);flex-shrink:0}
+.hero h1{font-size:clamp(2.8rem,7vw,5rem);font-weight:800;letter-spacing:-.03em;
+  line-height:1;color:#fff;margin-bottom:1.5rem}
+.hero h1 em{color:var(--cr);font-style:normal;position:relative}
+.hero h1 em::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--cr),transparent)}
+.hero-sub{font-size:1.05rem;color:var(--t2);max-width:520px;line-height:1.7;margin-bottom:2.5rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.3rem .8rem;border-radius:99px;border:1px solid var(--bd2);color:var(--t3)}
+.chip.hot{border-color:rgba(200,39,61,.4);color:var(--cr);background:rgba(200,39,61,.06)}
+.hero-divider{height:1px;background:linear-gradient(90deg,var(--cr) 0%,transparent 60%);margin:3rem 0}
+
+/* ── MODULE CARD ── */
+.mod{position:relative;margin-bottom:.75rem;border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--bd);background:var(--s1);
+  opacity:0;transform:translateY(20px);
+  transition:opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .25s}
+.mod.vis{opacity:1;transform:none}
+.mod:hover{border-color:var(--bd2)}
+.mod.open{border-color:rgba(200,39,61,.35);box-shadow:0 0 0 1px rgba(200,39,61,.1),0 8px 32px rgba(0,0,0,.4)}
+
+.mod-hd{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;cursor:pointer;
+  transition:background .2s;user-select:none}
+.mod-hd:hover{background:var(--s2)}
+.mod.open .mod-hd{border-bottom:1px solid var(--bd)}
+
+.mod-num{font-family:var(--mono);font-size:.6rem;color:var(--cr);
+  width:28px;height:28px;border-radius:50%;border:1px solid rgba(200,39,61,.3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(200,39,61,.06)}
+.mod-title{font-weight:600;font-size:.95rem;flex:1;color:var(--t1)}
+.mod-badge{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.25rem .65rem;border-radius:99px;background:var(--s3);color:var(--t3);border:1px solid var(--bd);flex-shrink:0}
+.mod-badge.done{background:rgba(34,197,94,.1);color:var(--green);border-color:rgba(34,197,94,.25)}
+.mod-badge.active{background:rgba(200,39,61,.1);color:var(--cr);border-color:rgba(200,39,61,.3)}
+.mod-chevron{width:16px;height:16px;color:var(--t3);transition:transform .3s;flex-shrink:0}
+.mod.open .mod-chevron{transform:rotate(180deg);color:var(--cr)}
+
+.mod-body{display:none;padding:1.75rem 1.5rem}
+.mod.open .mod-body{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── CONTENT ── */
+.sec-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cr);margin:0 0 .85rem;display:flex;align-items:center;gap:.6rem}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(200,39,61,.3),transparent)}
+p{font-size:.925rem;color:var(--t2);line-height:1.75;margin-bottom:.875rem}
+p:last-child{margin-bottom:0}
+strong{color:var(--t1);font-weight:600}
+em{color:var(--blue);font-style:normal}
+
+/* concept grid */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.75rem;margin:1.25rem 0}
+.ccard{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1.1rem;
+  transition:border-color .2s,transform .2s,box-shadow .2s;cursor:default}
+.ccard:hover{border-color:var(--bd2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.ccard-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;margin-bottom:.75rem;background:var(--s3)}
+.ccard-title{font-weight:700;font-size:.88rem;color:var(--t1);margin-bottom:.35rem}
+.ccard-desc{font-size:.78rem;color:var(--t3);line-height:1.55}
+.ccard-code{font-family:var(--mono);font-size:.68rem;color:var(--gold);margin-top:.5rem;
+  padding:.25rem .5rem;background:rgba(0,0,0,.35);border-radius:4px;display:inline-block;border:1px solid rgba(240,192,64,.15)}
+
+/* callout boxes */
+.box{border-radius:8px;padding:1rem 1.15rem;margin:1.15rem 0}
+.box-lbl{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem;font-weight:600}
+.box p{font-size:.85rem;margin:0;color:var(--t2)}
+.box.info{background:var(--blue-d);border:1px solid rgba(96,165,250,.2);border-left:3px solid var(--blue)}
+.box.info .box-lbl{color:var(--blue)}
+.box.warn{background:var(--cr-d);border:1px solid rgba(200,39,61,.25);border-left:3px solid var(--cr)}
+.box.warn .box-lbl{color:var(--cr)}
+.box.ok{background:var(--green-d);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green)}
+.box.ok .box-lbl{color:var(--green)}
+.box.gold{background:var(--gold-d);border:1px solid rgba(240,192,64,.2);border-left:3px solid var(--gold)}
+.box.gold .box-lbl{color:var(--gold)}
+
+/* steps */
+.steps{list-style:none;counter-reset:s;margin:1rem 0}
+.steps li{counter-increment:s;display:flex;gap:.9rem;align-items:flex-start;
+  padding:.8rem 0;border-bottom:1px solid var(--bd);font-size:.885rem;line-height:1.65;color:var(--t2)}
+.steps li:last-child{border:none}
+.steps li::before{content:counter(s);font-family:var(--mono);font-size:.6rem;font-weight:600;
+  min-width:24px;height:24px;border-radius:50%;background:var(--cr-d);color:var(--cr);
+  border:1px solid rgba(200,39,61,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+code{font-family:var(--mono);font-size:.78rem;background:rgba(0,0,0,.5);
+  color:var(--gold);padding:.1rem .45rem;border-radius:4px;border:1px solid rgba(240,192,64,.15)}
+
+/* flow diagram */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;
+  padding:1.25rem;background:var(--s2);border:1px solid var(--bd);border-radius:8px;margin:1.15rem 0;
+  font-family:var(--mono);font-size:.68rem}
+.fnode{background:var(--s3);border:1px solid var(--bd2);padding:.5rem .85rem;border-radius:6px;
+  color:var(--t2);text-align:center;line-height:1.4}
+.fnode.cr{border-color:rgba(200,39,61,.4);color:var(--cr);background:rgba(200,39,61,.07)}
+.fnode.gd{border-color:rgba(240,192,64,.35);color:var(--gold);background:rgba(240,192,64,.07)}
+.farr{color:var(--t4);font-size:.8rem}
+
+/* tabs */
+.tabs{display:flex;border-bottom:1px solid var(--bd);margin-bottom:0;gap:0}
+.tab{font-family:var(--mono);font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.65rem 1.1rem;cursor:pointer;background:none;border:none;color:var(--t3);
+  border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;white-space:nowrap}
+.tab.on{color:var(--t1);border-bottom-color:var(--cr)}
+.tab:hover:not(.on){color:var(--t2)}
+.tpanel{display:none;padding-top:1.5rem}
+.tpanel.on{display:block;animation:fadeUp .2s ease}
+
+/* btns */
+.btn{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.7rem 1.6rem;border-radius:6px;cursor:pointer;border:none;
+  transition:all .2s;display:inline-flex;align-items:center;gap:.5rem}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:none}
+.btn-cr{background:var(--cr);color:#fff;box-shadow:0 4px 12px rgba(200,39,61,.3)}
+.btn-cr:hover{background:#d9314a;box-shadow:0 6px 20px rgba(200,39,61,.4)}
+.btn-ghost{background:var(--s2);color:var(--t2);border:1px solid var(--bd2)}
+.btn-ghost:hover{border-color:var(--t3);color:var(--t1)}
+
+/* ══════════════════════════════
+   FORM WALKTHROUGH
+══════════════════════════════ */
+.fw-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:1rem;align-items:start;margin-top:1.25rem}
+@media(max-width:680px){.fw-wrap{grid-template-columns:1fr}}
+
+/* left: ClearPass form */
+.fw-form{background:#f4f6f8;border-radius:10px;padding:1.5rem;color:#1a1a2e;
+  font-family:var(--sans);font-size:.83rem;border:1px solid #dde1e7;
+  box-shadow:0 4px 24px rgba(0,0,0,.25)}
+.fw-title{font-size:1.2rem;font-weight:700;color:#111;margin-bottom:1.1rem;
+  padding-bottom:.7rem;border-bottom:2px solid #dde1e7}
+.fw-field{padding:.5rem .6rem;border-radius:6px;cursor:pointer;border:2px solid transparent;
+  transition:all .2s;margin-bottom:.35rem;outline:none}
+.fw-field:hover{background:#eef2ff}
+.fw-field.on{border-color:#C8273D;background:#fff0f2;box-shadow:0 0 0 4px rgba(200,39,61,.1)}
+.fw-field label{display:block;font-weight:600;font-size:.73rem;color:#374151;
+  margin-bottom:.25rem;pointer-events:none}
+.fw-req{color:#c00}
+.fw-opt{color:#9ca3af;font-weight:400;font-size:.67rem}
+.fw-inp{background:#fff;border:1px solid #d1d5db;border-radius:5px;padding:.35rem .6rem;
+  font-size:.78rem;color:#374151;pointer-events:none}
+.fw-inp.ph{color:#9ca3af}
+.fw-sec{background:#dbeafe;padding:.4rem .6rem;font-weight:700;font-size:.73rem;
+  color:#1e40af;margin:.5rem -.6rem;border-radius:0}
+.fw-sub{background:#e0e7ff;padding:.3rem .6rem;font-weight:600;font-size:.7rem;
+  color:#4338ca;margin:.3rem -.6rem}
+
+/* step dots */
+.fw-dots{display:flex;gap:.4rem;margin-bottom:.75rem;flex-wrap:wrap}
+.fw-dot{width:8px;height:8px;border-radius:50%;background:var(--s3);border:1px solid var(--bd2);
+  cursor:pointer;transition:all .2s}
+.fw-dot.on{background:var(--cr);border-color:var(--cr);box-shadow:0 0 6px var(--cr)}
+.fw-dot.done{background:var(--green);border-color:var(--green)}
+
+/* right: explanation panel */
+.fw-panel{background:var(--s2);border:1px solid var(--bd);border-radius:10px;
+  min-height:380px;display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.3);position:sticky;top:70px}
+.fw-panel-top{padding:1.25rem 1.4rem;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between}
+.fw-panel-top-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--t3)}
+.fw-panel-nav{display:flex;gap:.4rem}
+.fw-nav-btn{width:28px;height:28px;border-radius:6px;background:var(--s3);border:1px solid var(--bd2);
+  color:var(--t3);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;transition:all .15s}
+.fw-nav-btn:hover{border-color:var(--t3);color:var(--t1)}
+.fw-idle{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.5rem;color:var(--t4);padding:2rem}
+.fw-idle-icon{font-size:2rem}
+.fw-idle-text{font-family:var(--mono);font-size:.65rem;text-transform:uppercase;
+  letter-spacing:.12em;text-align:center}
+.fw-content{flex:1;padding:1.4rem;display:none;animation:fadeUp .25s ease;flex-direction:column;gap:.75rem}
+.fw-content.on{display:flex}
+.fw-field-type{font-family:var(--mono);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:.2rem .55rem;border-radius:99px;display:inline-flex;align-items:center;gap:.35rem;width:fit-content}
+.fw-field-type.req{background:rgba(200,39,61,.12);color:var(--cr);border:1px solid rgba(200,39,61,.25)}
+.fw-field-type.opt{background:var(--gold-d);color:var(--gold);border:1px solid rgba(240,192,64,.25)}
+.fw-field-type.vlan{background:var(--blue-d);color:var(--blue);border:1px solid rgba(96,165,250,.25)}
+.fw-heading{font-size:1.15rem;font-weight:700;color:var(--t1);line-height:1.2}
+.fw-body{font-size:.83rem;color:var(--t2);line-height:1.7;flex:1}
+.fw-body strong{color:var(--t1)}
+.fw-example{background:var(--s3);border:1px solid var(--bd);border-radius:6px;
+  padding:.75rem 1rem;font-family:var(--mono);font-size:.7rem;color:var(--gold);
+  line-height:1.65;white-space:pre-line;border-left:3px solid var(--gold)}
+
+/* ══════════════════════════════
+   PRACTICE GAME
+══════════════════════════════ */
+.game-wrap{margin-top:2.5rem}
+.game-scenario{border-radius:10px;padding:1.4rem 1.6rem;margin-bottom:1.25rem;
+  background:linear-gradient(135deg,rgba(240,192,64,.07) 0%,rgba(200,39,61,.07) 100%);
+  border:1px solid rgba(240,192,64,.2);position:relative;overflow:hidden}
+.game-scenario::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--cr))}
+.g-round-lbl{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.6rem;display:flex;align-items:center;gap:.6rem}
+.g-scenario-text{font-size:1rem;font-weight:700;color:var(--t1);margin-bottom:.4rem;line-height:1.4}
+.g-scenario-sub{font-size:.83rem;color:var(--t2);line-height:1.6}
+.g-mac{font-family:var(--mono);font-size:.68rem;margin-top:.75rem;
+  color:var(--t3);display:flex;align-items:center;gap:.5rem}
+.g-mac span{color:var(--gold)}
+
+.game-form{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:1.5rem;
+  display:flex;flex-direction:column;gap:1.25rem}
+.gf-group{display:flex;flex-direction:column;gap:.5rem}
+.gf-label{font-weight:600;font-size:.85rem;color:var(--t1);display:flex;align-items:baseline;gap:.5rem}
+.gf-hint{font-size:.73rem;color:var(--t3);font-weight:400}
+.g-input{background:var(--s3);border:1px solid var(--bd2);color:var(--t1);
+  font-family:var(--sans);font-size:.88rem;padding:.65rem .9rem;border-radius:7px;outline:none;
+  transition:border-color .2s,box-shadow .2s;width:100%}
+.g-input:focus{border-color:var(--cr);box-shadow:0 0 0 3px rgba(200,39,61,.12)}
+.g-input.ok{border-color:var(--green);background:rgba(34,197,94,.06)}
+.g-input.bad{border-color:#f87171;background:rgba(248,113,113,.06)}
+
+.g-opts{display:flex;flex-wrap:wrap;gap:.5rem}
+.g-opt{font-family:var(--mono);font-size:.67rem;letter-spacing:.06em;text-transform:uppercase;
+  padding:.45rem 1rem;border-radius:99px;border:1px solid var(--bd2);background:var(--s3);
+  color:var(--t3);cursor:pointer;transition:all .18s}
+.g-opt:hover{border-color:var(--t2);color:var(--t1)}
+.g-opt.sel{border-color:var(--cr);color:var(--cr);background:rgba(200,39,61,.1);
+  box-shadow:0 0 0 1px rgba(200,39,61,.2)}
+.g-opt.ok{border-color:var(--green)!important;color:var(--green)!important;background:rgba(34,197,94,.1)!important}
+.g-opt.bad{border-color:#f87171!important;color:#f87171!important;background:rgba(248,113,113,.08)!important}
+.g-opt.rev{border-color:var(--green);color:var(--green);background:rgba(34,197,94,.06)}
+.g-opt.dis{pointer-events:none;opacity:.4}
+
+.g-actions{display:flex;align-items:center;gap:1rem;margin-top:.25rem}
+.g-prog{font-family:var(--mono);font-size:.65rem;color:var(--t4);text-transform:uppercase;letter-spacing:.1em}
+
+.g-feedback{border-radius:10px;padding:1.25rem 1.5rem;margin-top:1.1rem;animation:fadeUp .3s ease}
+.g-feedback.win{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2)}
+.g-feedback.partial{background:rgba(240,192,64,.07);border:1px solid rgba(240,192,64,.2)}
+.g-feedback.lose{background:rgba(200,39,61,.07);border:1px solid rgba(200,39,61,.2)}
+.g-fb-title{font-weight:700;font-size:.95rem;margin-bottom:.5rem}
+.g-fb-lines{font-size:.83rem;color:var(--t2);line-height:1.8}
+
+.g-final{display:none;text-align:center;padding:3rem 1.5rem;background:var(--s2);
+  border:1px solid var(--bd);border-radius:12px;margin-top:1.25rem;animation:fadeUp .4s ease}
+.g-final-num{font-size:4.5rem;font-weight:800;color:var(--gold);line-height:1;
+  background:linear-gradient(135deg,var(--gold),var(--cr));-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text}
+.g-final-sub{font-family:var(--mono);font-size:.62rem;color:var(--t3);text-transform:uppercase;
+  letter-spacing:.15em;margin-bottom:.75rem}
+.g-final-msg{font-size:.92rem;color:var(--t2);max-width:360px;margin:0 auto 1.75rem;line-height:1.7}
+.g-badge{display:inline-block;font-family:var(--mono);font-size:.65rem;text-transform:uppercase;
+  letter-spacing:.12em;padding:.5rem 1.25rem;border-radius:99px;
+  background:rgba(200,39,61,.1);border:1px solid rgba(200,39,61,.3);color:var(--cr)}
+
+/* ══════════════════════════════
+   QUIZ (module 6)
+══════════════════════════════ */
+.qq{margin-bottom:1.75rem;padding:1.25rem;background:var(--s2);border:1px solid var(--bd);border-radius:8px}
+.qq-num{font-family:var(--mono);font-size:.58rem;color:var(--t4);text-transform:uppercase;
+  letter-spacing:.12em;margin-bottom:.5rem}
+.qq-text{font-weight:600;font-size:.92rem;color:var(--t1);margin-bottom:.85rem;line-height:1.45}
+.qq-opts{display:flex;flex-direction:column;gap:.45rem}
+.qq-opt{display:flex;align-items:center;gap:.75rem;padding:.7rem 1rem;border:1px solid var(--bd2);
+  border-radius:7px;cursor:pointer;background:var(--s3);transition:all .15s;font-size:.85rem;color:var(--t2)}
+.qq-opt:hover{border-color:var(--bd2);background:var(--s2);color:var(--t1)}
+.qq-opt input{accent-color:var(--cr);flex-shrink:0}
+.qq-opt.ok{border-color:rgba(34,197,94,.4)!important;background:rgba(34,197,94,.08)!important;color:var(--green)!important}
+.qq-opt.bad{border-color:rgba(200,39,61,.4)!important;background:rgba(200,39,61,.08)!important;color:#f87171!important}
+.qq-opt.rev{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.04);color:var(--green)}
+.qq-fb{font-family:var(--mono);font-size:.72rem;margin-top:.6rem;padding:.5rem .75rem;
+  border-radius:5px;display:none;line-height:1.5}
+.qq-fb.ok{display:block;color:var(--green);background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2)}
+.qq-fb.bad{display:block;color:#f87171;background:rgba(200,39,61,.07);border:1px solid rgba(200,39,61,.2)}
+
+.score-wrap{display:none;text-align:center;padding:2.5rem 1rem;animation:fadeUp .4s ease}
+.score-wrap.on{display:block}
+.score-num{font-size:4rem;font-weight:800;color:var(--gold);line-height:1}
+.score-lbl{font-family:var(--mono);font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.15em;margin-bottom:1rem}
+.score-msg{font-size:.92rem;color:var(--t2);max-width:360px;margin:0 auto 1.5rem;line-height:1.7}
+
+/* ── COMPLETION ── */
+.done-banner{display:none;margin-top:3rem;padding:2.5rem;border-radius:12px;text-align:center;
+  background:linear-gradient(135deg,rgba(200,39,61,.06),rgba(240,192,64,.06));
+  border:1px solid var(--bd)}
+.done-banner.on{display:block;animation:fadeUp .5s ease}
+.done-banner h2{font-size:1.5rem;font-weight:800;color:var(--t1);margin-bottom:.5rem}
+.done-banner p{color:var(--t2);font-size:.9rem}
+.done-next{display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--t4)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">HUIT <span>/ Co-op 2025 /</span> Networking</div>
+  <div class="nav-bar"><div class="nav-fill" id="navFill"></div></div>
+  <div class="nav-prog" id="navProg">0 / 6</div>
+</nav>
+
+<div class="shell">
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">Harvard University IT · Day 1 · Mission Briefing</div>
+  <h1>Networking <em>101</em></h1>
+  <p class="hero-sub">Before you can support anyone here, you need to understand how the network works — and get your device on it. This module covers the fundamentals, the Harvard-specific tools, and puts you to work with a practice game.</p>
+  <div class="chips">
+    <span class="chip hot">Aruba ClearPass</span>
+    <span class="chip hot">getonline.harvard.edu</span>
+    <span class="chip">Mac + Dell</span>
+    <span class="chip">~30 min</span>
+    <span class="chip">6 modules</span>
+  </div>
+  <div class="hero-divider"></div>
+</header>
+
+<!-- ══ MODULE 1 ══ -->
+<div class="mod open vis" id="mod1" data-i="1">
+  <div class="mod-hd" onclick="toggleMod('mod1')">
+    <div class="mod-num">01</div>
+    <div class="mod-title">What Is a Network, Actually?</div>
+    <div class="mod-badge active">Foundation</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">The Big Picture</div>
+    <p>A network is any group of devices that can communicate. Your laptop, a printer down the hall, Harvard's servers — all nodes. The internet is just a massive network of networks tied together by agreed-upon rules called protocols.</p>
+    <div class="box info"><div class="box-lbl">🏙️ City Analogy</div><p>Buildings = devices. Streets = cables and Wi-Fi. Addresses = IP addresses. The post office = DNS. Traffic rules = protocols. Simple as that.</p></div>
+
+    <div class="sec-label" style="margin-top:1.5rem">The 6 Concepts You Must Know</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">📍</div><div class="ccard-title">IP Address</div><div class="ccard-desc">Logical address used to route data across a network. Assigned dynamically — can change.</div><div class="ccard-code">10.0.2.55</div></div>
+      <div class="ccard"><div class="ccard-icon">🪪</div><div class="ccard-title">MAC Address</div><div class="ccard-desc">Physical ID burned into the network card at the factory. Permanent. Unique to that hardware.</div><div class="ccard-code">A4:83:E7:2C:11:F0</div></div>
+      <div class="ccard"><div class="ccard-icon">📖</div><div class="ccard-title">DNS</div><div class="ccard-desc">Translates domain names to IP addresses. You type google.com, DNS finds the number.</div><div class="ccard-code">8.8.8.8</div></div>
+      <div class="ccard"><div class="ccard-icon">🏷️</div><div class="ccard-title">DHCP</div><div class="ccard-desc">Server that hands out IP addresses automatically when a device connects. Nothing to configure.</div><div class="ccard-code">Auto-assign</div></div>
+      <div class="ccard"><div class="ccard-icon">🚪</div><div class="ccard-title">Gateway</div><div class="ccard-desc">The router connecting your local network to the rest of the internet. All outbound traffic flows through it.</div><div class="ccard-code">10.0.0.1 (typical)</div></div>
+      <div class="ccard"><div class="ccard-icon">🔒</div><div class="ccard-title">Subnet</div><div class="ccard-desc">A segmented slice of a larger network. Harvard separates departments into their own subnets.</div><div class="ccard-code">/24 = 254 hosts</div></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.5rem">IP vs MAC — Lock This In</div>
+    <div class="flow">
+      <div class="fnode cr">Your Laptop<br><span style="color:var(--t3);font-size:.6rem">MAC: A4:83:E7:2C</span></div>
+      <div class="farr">→ gets IP from →</div>
+      <div class="fnode gd">DHCP Server<br><span style="color:var(--t3);font-size:.6rem">assigns 10.0.2.55</span></div>
+      <div class="farr">→ routes via →</div>
+      <div class="fnode">Router / Gateway<br><span style="color:var(--t3);font-size:.6rem">forwards by IP</span></div>
+      <div class="farr">→</div>
+      <div class="fnode">Internet</div>
+    </div>
+    <p style="font-size:.82rem;color:var(--t3)">MAC addresses only work on your <em>local</em> segment. IP addresses work everywhere. ClearPass identifies your hardware by MAC — that's why every device needs its own registration.</p>
+    <div class="box ok" style="margin-top:1rem"><div class="box-lbl">✓ Key Takeaway</div><p>IP = logical, can change. MAC = physical, permanent. ClearPass authenticates devices by MAC address, not IP.</p></div>
+  </div>
+</div>
+
+<!-- ══ MODULE 2 ══ -->
+<div class="mod vis" id="mod2" data-i="2">
+  <div class="mod-hd" onclick="toggleMod('mod2')">
+    <div class="mod-num">02</div>
+    <div class="mod-title">Harvard's Network Environment</div>
+    <div class="mod-badge">HUIT Context</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">The Wi-Fi Networks You'll See</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">🔐</div><div class="ccard-title">Harvard Secure</div><div class="ccard-desc">Main authenticated network for staff and faculty. Certificate-based auth. Where everyone needs to be for work.</div></div>
+      <div class="ccard"><div class="ccard-icon">🌐</div><div class="ccard-title">eduroam</div><div class="ccard-desc">Works at universities worldwide — MIT, Wentworth, and most research institutions. Use your Harvard email to log in anywhere.</div></div>
+      <div class="ccard"><div class="ccard-icon">📡</div><div class="ccard-title">Harvard University</div><div class="ccard-desc">Open guest network. Internet-only. Connect here <strong>first</strong> as a stepping stone to reach the registration portal at getonline.harvard.edu.</div></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.5rem">What is Aruba ClearPass?</div>
+    <p>ClearPass is Harvard's <strong>Network Access Control (NAC)</strong> system. Every device trying to connect to Harvard Secure passes through it. ClearPass checks: Is this device registered? Is this user authorized? It then assigns the right VLAN for your role and department.</p>
+    <div class="flow">
+      <div class="fnode cr">Your Device<br><span style="color:var(--t3);font-size:.6rem">tries to connect</span></div>
+      <div class="farr">→</div>
+      <div class="fnode">Aruba AP<br><span style="color:var(--t3);font-size:.6rem">access point</span></div>
+      <div class="farr">→ checks →</div>
+      <div class="fnode gd">ClearPass<br><span style="color:var(--t3);font-size:.6rem">NAC policy engine</span></div>
+      <div class="farr">→</div>
+      <div class="fnode">Allow / Deny<br><span style="color:var(--t3);font-size:.6rem">+ assign VLAN</span></div>
+    </div>
+    <div class="box warn"><div class="box-lbl">⚠ Your #1 Support Call</div><p>User says "I can't connect to Wi-Fi." First question every time: "Is your device registered in ClearPass?" That's 80% of day-1 connectivity failures.</p></div>
+  </div>
+</div>
+
+<!-- ══ MODULE 3 ══ -->
+<div class="mod vis" id="mod3" data-i="3">
+  <div class="mod-hd" onclick="toggleMod('mod3')">
+    <div class="mod-num">03</div>
+    <div class="mod-title">Finding Your MAC Address</div>
+    <div class="mod-badge">Hands-On</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <p>You need the device's Wi-Fi MAC address before you can register it. Here's how to find it on everything you'll touch at Harvard.</p>
+    <div class="tabs">
+      <button class="tab on" onclick="switchTab(this,'t-mac')">🍎 macOS</button>
+      <button class="tab" onclick="switchTab(this,'t-win')">🪟 Windows / Dell</button>
+      <button class="tab" onclick="switchTab(this,'t-ios')">📱 iPhone / iPad</button>
+    </div>
+    <div class="tpanel on" id="t-mac">
+      <div class="sec-label">Method A — System Settings</div>
+      <ol class="steps">
+        <li>Click the Apple menu → <code>System Settings</code></li>
+        <li>Click <code>Wi-Fi</code> in the sidebar</li>
+        <li>Click <code>Details…</code> next to your connected network</li>
+        <li>Look for <code>Wi-Fi Address</code> — format: <code>A4:83:E7:2C:11:F0</code></li>
+      </ol>
+      <div class="sec-label" style="margin-top:1.25rem">Method B — Terminal (Faster)</div>
+      <ol class="steps">
+        <li>Spotlight → type <code>terminal</code> → open it</li>
+        <li>Run: <code>ifconfig en0 | grep ether</code></li>
+        <li>The <code>ether</code> line is your Wi-Fi MAC address</li>
+      </ol>
+      <div class="box ok" style="margin-top:1rem"><div class="box-lbl">💡 Pro Tip</div><p><code>en0</code> is almost always Wi-Fi on Macs. Ethernet adapters are usually <code>en1</code> or higher. When in doubt, confirm in System Settings first.</p></div>
+    </div>
+    <div class="tpanel" id="t-win">
+      <div class="sec-label">Method A — Settings</div>
+      <ol class="steps">
+        <li>Press <code>Win + I</code> to open Settings</li>
+        <li>Go to <code>Network & Internet</code> → <code>Wi-Fi</code></li>
+        <li>Click your connected network name</li>
+        <li>Scroll to find <code>Physical address (MAC)</code></li>
+      </ol>
+      <div class="sec-label" style="margin-top:1.25rem">Method B — Command Prompt (Faster)</div>
+      <ol class="steps">
+        <li>Press <code>Win + R</code> → type <code>cmd</code> → Enter</li>
+        <li>Run: <code>ipconfig /all</code></li>
+        <li>Find <code>Wireless LAN adapter Wi-Fi</code> section</li>
+        <li>Look for <code>Physical Address</code> — that's your MAC</li>
+      </ol>
+      <div class="box ok" style="margin-top:1rem"><div class="box-lbl">💡 Dell Shortcut</div><p>Many Dell laptops have a sticker on the bottom labeled "WLAN MAC" — useful when the device won't boot or is locked out of the network entirely.</p></div>
+    </div>
+    <div class="tpanel" id="t-ios">
+      <ol class="steps">
+        <li>Go to <code>Settings</code> → <code>General</code> → <code>About</code></li>
+        <li>Scroll to find <code>Wi-Fi Address</code></li>
+        <li>That's your MAC — copy it before going to the portal</li>
+      </ol>
+      <div class="box warn" style="margin-top:1rem"><div class="box-lbl">⚠ Critical — Private Wi-Fi Address</div><p>iOS rotates the MAC address per network by default. This BREAKS ClearPass. Before registering an iPhone: <code>Settings → Wi-Fi → ⓘ next to Harvard Secure → toggle Private Wi-Fi Address OFF</code>. Without this step, the device will keep losing access.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 4 ══ -->
+<div class="mod vis" id="mod4" data-i="4">
+  <div class="mod-hd" onclick="toggleMod('mod4')">
+    <div class="mod-num">04</div>
+    <div class="mod-title">Registering Your Device + The Form</div>
+    <div class="mod-badge">Hands-On + Game</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <p>Harvard has two registration paths — one for Wi-Fi, one for Ethernet. Know both. Then we'll break down every field in the form so you can fill it out correctly every time.</p>
+    <div class="box gold"><div class="box-lbl">📋 Before You Start</div><p>Have HarvardKey credentials ready. If iPhone/iPad: Private Wi-Fi Address must be OFF. Know your path: Wi-Fi or Ethernet?</p></div>
+
+    <div class="tabs" style="margin-top:1.5rem">
+      <button class="tab on" onclick="switchTab(this,'t-wifi')">📶 Wi-Fi</button>
+      <button class="tab" onclick="switchTab(this,'t-eth')">🔌 Ethernet</button>
+      <button class="tab" onclick="switchTab(this,'t-admin')">🛠 Admin</button>
+    </div>
+
+    <div class="tpanel on" id="t-wifi">
+      <div class="sec-label">getonline.harvard.edu</div>
+      <div class="flow">
+        <div class="fnode cr">Connect to<br><span style="font-size:.6rem;color:var(--t3)">Harvard University</span></div>
+        <div class="farr">→</div>
+        <div class="fnode gd">getonline<br><span style="font-size:.6rem;color:var(--t3)">.harvard.edu</span></div>
+        <div class="farr">→</div>
+        <div class="fnode">Download<br><span style="font-size:.6rem;color:var(--t3)">certificate</span></div>
+        <div class="farr">→</div>
+        <div class="fnode">Install cert<br><span style="font-size:.6rem;color:var(--t3)">+ login again</span></div>
+        <div class="farr">→</div>
+        <div class="fnode">Harvard Secure<br><span style="font-size:.6rem;color:var(--t3)">✓ connected</span></div>
+      </div>
+      <ol class="steps">
+        <li>Connect to <code>Harvard University</code> — the open guest network, no password. This gives you internet to reach the portal.</li>
+        <li>Open a browser and go to <code>getonline.harvard.edu</code></li>
+        <li>Sign in with your <strong>HarvardKey</strong> credentials</li>
+        <li>Download the certificate when prompted — this cert is what authenticates the device on Harvard Secure</li>
+        <li>You'll be asked to <strong>sign in a second time</strong> — this is expected and part of the cert installation flow</li>
+        <li>Install the certificate:<br>
+          <span style="display:block;margin-top:.4rem;font-size:.82rem;color:var(--t3)"><strong style="color:var(--t2)">Mac:</strong> Opens Keychain Access → click Add → then right-click cert → Get Info → Trust → Always Trust</span>
+          <span style="display:block;font-size:.82rem;color:var(--t3)"><strong style="color:var(--t2)">Dell/Windows:</strong> Double-click the file → Certificate Import Wizard → follow prompts</span></li>
+        <li>Disconnect from <code>Harvard University</code>, connect to <code>Harvard Secure</code> — authenticates automatically via cert</li>
+      </ol>
+      <div class="box warn"><div class="box-lbl">⚠ Mac — Trust the Certificate</div><p>Even after install, macOS won't trust it by default. Open <code>Keychain Access</code> → find the Harvard cert → double-click → Trust → set to <code>Always Trust</code>. Without this step, Wi-Fi still fails.</p></div>
+      <div class="box ok" style="margin-top:.75rem"><div class="box-lbl">✓ Pre-imaged Dell?</div><p>If the machine already has the certificate (HUIT-imaged devices), skip to step 7. Just connect to Harvard Secure — cert handles the rest.</p></div>
+    </div>
+
+    <div class="tpanel" id="t-eth">
+      <div class="sec-label">tools.noc.harvard.edu</div>
+      <div class="flow">
+        <div class="fnode cr">Plug into<br><span style="font-size:.6rem;color:var(--t3)">Ethernet port</span></div>
+        <div class="farr">→</div>
+        <div class="fnode gd">tools.noc<br><span style="font-size:.6rem;color:var(--t3)">.harvard.edu</span></div>
+        <div class="farr">→</div>
+        <div class="fnode">Register<br><span style="font-size:.6rem;color:var(--t3)">Ethernet MAC</span></div>
+        <div class="farr">→</div>
+        <div class="fnode">Port active<br><span style="font-size:.6rem;color:var(--t3)">~2 minutes</span></div>
+      </div>
+      <ol class="steps">
+        <li>Plug Ethernet cable into device and wall port. Use USB-C adapter if the Mac has no port.</li>
+        <li>Open a browser → go to <code>https://tools.noc.harvard.edu/</code></li>
+        <li>Sign in with HarvardKey credentials</li>
+        <li>Fill in the registration form — see the field-by-field breakdown below</li>
+        <li>Submit. Port becomes active within a few minutes.</li>
+      </ol>
+      <div class="box warn"><div class="box-lbl">⚠ Use Ethernet MAC — Not Wi-Fi MAC</div><p>Every device has separate MACs for Wi-Fi and Ethernet. For wired registration, you need the Ethernet MAC. Mac: System Settings → Network → Ethernet → Details → Hardware. Windows: <code>ipconfig /all</code> → look under "Ethernet adapter" section.</p></div>
+    </div>
+
+    <div class="tpanel" id="t-admin">
+      <div class="sec-label">ClearPass Admin Portal</div>
+      <ol class="steps">
+        <li>Log into ClearPass admin portal with your HUIT tech credentials</li>
+        <li>Navigate to device registration → <code>Create Device</code></li>
+        <li>Enter the MAC address manually: format <code>01:23:45:AB:CD:EF</code></li>
+        <li>Set <strong>Owner</strong> to user's HarvardKey email or HUID</li>
+        <li>Set <strong>Role</strong> under Mobility — controls VLAN assignment. Most users: <strong>Mobility Admin</strong></li>
+        <li>Set <strong>MAC Filter</strong> — Registered for most locations, HCL for Library</li>
+        <li>Set <strong>Expiration</strong> — co-op end date, or 1 year for permanent staff</li>
+        <li>Save. Device active in 1–2 minutes.</li>
+      </ol>
+      <div class="box warn"><div class="box-lbl">⚠ Access Note</div><p>You may not have admin portal access on day 1. If locked out, escalate to your supervisor. Register your own device via getonline.harvard.edu first.</p></div>
+    </div>
+
+    <!-- FORM WALKTHROUGH -->
+    <div class="sec-label" style="margin-top:2rem">The Registration Form — Field by Field</div>
+    <p style="font-size:.83rem;color:var(--t3);margin-bottom:.25rem">Click any field on the form to see a full explanation on the right. Use the arrows to step through all 7.</p>
+
+    <div class="fw-wrap">
+      <!-- Left: form -->
+      <div>
+        <div class="fw-dots" id="fwDots"></div>
+        <div class="fw-form" id="fwForm">
+          <div class="fw-title">Register</div>
+          <div class="fw-field" id="fwf-mac" onclick="fwSel('mac')" tabindex="0">
+            <label>MAC Address <span class="fw-req">*</span></label>
+            <div class="fw-inp">01:23:45:AB:CD:EF</div>
+          </div>
+          <div class="fw-field" id="fwf-owner" onclick="fwSel('owner')" tabindex="0">
+            <label>Owner <span class="fw-req">*</span></label>
+            <div class="fw-inp ph">Harvard Key or HUID</div>
+          </div>
+          <div class="fw-field" id="fwf-desc" onclick="fwSel('desc')" tabindex="0">
+            <label>Description</label>
+            <div class="fw-inp ph">e.g. Tommy's End User Primary</div>
+          </div>
+          <div class="fw-sec">Registrations</div>
+          <div class="fw-sub">Mobility</div>
+          <div class="fw-field" id="fwf-role" onclick="fwSel('role')" tabindex="0">
+            <label>Role</label>
+            <div class="fw-inp ph">Type to search…</div>
+          </div>
+          <div class="fw-sub">Traditional</div>
+          <div class="fw-field" id="fwf-filter" onclick="fwSel('filter')" tabindex="0">
+            <label>MAC Filter</label>
+            <div class="fw-inp">----------</div>
+          </div>
+          <div class="fw-field" id="fwf-rg" onclick="fwSel('rg')" tabindex="0">
+            <label>Resource group</label>
+            <div class="fw-inp ph">Type to search…</div>
+          </div>
+          <div class="fw-field" id="fwf-exp" onclick="fwSel('exp')" tabindex="0">
+            <label>Traditional client expiration time <span class="fw-opt">(optional)</span></label>
+            <div class="fw-inp ph">mm/dd/yyyy</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: panel -->
+      <div class="fw-panel">
+        <div class="fw-panel-top">
+          <div class="fw-panel-top-label" id="fwLabel">Select a field</div>
+          <div class="fw-panel-nav">
+            <button class="fw-nav-btn" onclick="fwPrev()">‹</button>
+            <button class="fw-nav-btn" onclick="fwNext()">›</button>
+          </div>
+        </div>
+        <div class="fw-idle" id="fwIdle">
+          <div class="fw-idle-icon">👈</div>
+          <div class="fw-idle-text">Click any field<br>to learn what goes there</div>
+        </div>
+        <div class="fw-content" id="fwContent">
+          <div class="fw-field-type" id="fwType"></div>
+          <div class="fw-heading" id="fwHead"></div>
+          <div class="fw-body" id="fwBody"></div>
+          <div class="fw-example" id="fwEx"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRACTICE GAME -->
+    <div class="game-wrap">
+      <div class="sec-label">Practice Round — Register This Device</div>
+      <p style="font-size:.83rem;color:var(--t3);margin-bottom:1.25rem">3 scenarios. Fill in the form correctly. You'll be scored on Description, Role, MAC Filter, and Resource Group.</p>
+      <div id="gameScenario" class="game-scenario"></div>
+      <div class="game-form" id="gameForm">
+        <div class="gf-group">
+          <label class="gf-label">Description <span class="gf-hint">— what is this device? Be specific.</span></label>
+          <input class="g-input" id="gDesc" type="text" placeholder="e.g. Tommy's End User Primary" autocomplete="off">
+        </div>
+        <div class="gf-group">
+          <label class="gf-label">Role <span class="gf-hint">— controls VLAN assignment</span></label>
+          <div class="g-opts" id="gRole"></div>
+        </div>
+        <div class="gf-group">
+          <label class="gf-label">MAC Filter</label>
+          <div class="g-opts" id="gFilter"></div>
+        </div>
+        <div class="gf-group">
+          <label class="gf-label">Resource Group</label>
+          <div class="g-opts" id="gRG"></div>
+        </div>
+        <div class="g-actions">
+          <button class="btn btn-cr" id="gSubmit" onclick="gameSubmit()">Submit Round</button>
+          <div class="g-prog" id="gProg"></div>
+        </div>
+      </div>
+      <div id="gFeedback" style="display:none"></div>
+      <div class="g-final" id="gFinal"></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:2.5rem">Common Errors</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">🚫</div><div class="ccard-title">"Device already registered"</div><div class="ccard-desc">MAC already in the system — prior semester or old employee. Admin can reassign or delete the old entry.</div></div>
+      <div class="ccard"><div class="ccard-icon">🔄</div><div class="ccard-title">"Invalid MAC address"</div><div class="ccard-desc">Mistyped, or iOS Private Address is rotating. Verify format — colons or dashes both work.</div></div>
+      <div class="ccard"><div class="ccard-icon">⏳</div><div class="ccard-title">Registered but still blocked</div><div class="ccard-desc">Propagation delay. Forget network, wait 2 min, reconnect. Still failing after 5 min → escalate.</div></div>
+      <div class="ccard"><div class="ccard-icon">🔑</div><div class="ccard-title">HarvardKey error on portal</div><div class="ccard-desc">Account not provisioned or password mismatch. Verify HarvardKey activation email was completed.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 5 ══ -->
+<div class="mod vis" id="mod5" data-i="5">
+  <div class="mod-hd" onclick="toggleMod('mod5')">
+    <div class="mod-num">05</div>
+    <div class="mod-title">Real-World Troubleshooting Scenarios</div>
+    <div class="mod-badge">Applied</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <p>Four scenarios straight from your three areas. Read each one, think through the answer, then reveal it.</p>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+
+      <div class="ccard" style="background:var(--s2)">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
+          <div class="ccard-icon" style="background:var(--cr-d)">📞</div>
+          <div><div class="ccard-title">Scenario 1 — The New Hire</div><div style="font-family:var(--mono);font-size:.58rem;color:var(--t4);text-transform:uppercase;letter-spacing:.08em">Lamont Library</div></div>
+        </div>
+        <p style="font-size:.85rem;color:var(--t2);margin-bottom:.65rem">"A new staff member just got their laptop today. They can see Harvard Secure in the Wi-Fi list but authentication keeps failing."</p>
+        <p style="font-size:.83rem;color:var(--t1)"><strong>Your move:</strong> Device has no certificate. Connect to <strong>Harvard University</strong>, go to <code>getonline.harvard.edu</code>, complete the certificate flow, then reconnect to Harvard Secure. Confirm HarvardKey is activated first.</p>
+      </div>
+
+      <div class="ccard" style="background:var(--s2)">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
+          <div class="ccard-icon" style="background:var(--cr-d)">📞</div>
+          <div><div class="ccard-title">Scenario 2 — Works on Phone, Not Laptop</div><div style="font-family:var(--mono);font-size:.58rem;color:var(--t4);text-transform:uppercase;letter-spacing:.08em">Art Museum</div></div>
+        </div>
+        <p style="font-size:.85rem;color:var(--t2);margin-bottom:.65rem">"A curator's iPhone works fine on Harvard Secure. Their new MacBook won't connect at all."</p>
+        <p style="font-size:.83rem;color:var(--t1)"><strong>Your move:</strong> Different device = different MAC. The phone has a certificate; the Mac doesn't. Connect Mac to <strong>Harvard University</strong>, run through <code>getonline.harvard.edu</code>, install the certificate. Each device needs its own cert.</p>
+      </div>
+
+      <div class="ccard" style="background:var(--s2)">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
+          <div class="ccard-icon" style="background:var(--cr-d)">📞</div>
+          <div><div class="ccard-title">Scenario 3 — Was Working, Now Isn't</div><div style="font-family:var(--mono);font-size:.58rem;color:var(--t4);text-transform:uppercase;letter-spacing:.08em">Divinity School</div></div>
+        </div>
+        <p style="font-size:.85rem;color:var(--t2);margin-bottom:.65rem">"A professor's laptop worked fine for a year. They went on sabbatical, came back, and now can't connect. Nothing changed."</p>
+        <p style="font-size:.83rem;color:var(--t1)"><strong>Your move:</strong> Device registration expired — most run 1 year. Check ClearPass for the device and renew. Extremely common after summer or extended leave. Also verify the cert hasn't expired.</p>
+      </div>
+
+      <div class="ccard" style="background:var(--s2)">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
+          <div class="ccard-icon" style="background:var(--cr-d)">📞</div>
+          <div><div class="ccard-title">Scenario 4 — Random iPhone Disconnects</div><div style="font-family:var(--mono);font-size:.58rem;color:var(--t4);text-transform:uppercase;letter-spacing:.08em">Any Location</div></div>
+        </div>
+        <p style="font-size:.85rem;color:var(--t2);margin-bottom:.65rem">"A student registered their iPhone last week. Now it randomly drops Harvard Secure every day."</p>
+        <p style="font-size:.83rem;color:var(--t1)"><strong>Your move:</strong> iOS Private Wi-Fi Address is rotating the MAC. ClearPass sees a different address and blocks it. Fix: <code>Settings → Wi-Fi → ⓘ → Private Wi-Fi Address → OFF</code> for Harvard Secure. Then re-register with the real MAC.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 6 — QUIZ ══ -->
+<div class="mod vis" id="mod6" data-i="6">
+  <div class="mod-hd" onclick="toggleMod('mod6')">
+    <div class="mod-num">06</div>
+    <div class="mod-title">Knowledge Check</div>
+    <div class="mod-badge" id="qBadge">8 Questions</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div id="quizForm">
+      <p style="font-size:.83rem;color:var(--t3);margin-bottom:1.5rem">Answers lock on selection. Submit when you've answered all 8.</p>
+
+      <div class="qq"><div class="qq-num">Question 1 of 8</div><div class="qq-text">A user's laptop connects to "Harvard University" Wi-Fi fine, but won't connect to Harvard Secure. Most likely cause?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q1" value="a"> Their password is wrong</label><label class="qq-opt"><input type="radio" name="q1" value="b"> No certificate installed — device not registered via getonline.harvard.edu</label><label class="qq-opt"><input type="radio" name="q1" value="c"> Harvard Secure is down</label><label class="qq-opt"><input type="radio" name="q1" value="d"> Laptop Wi-Fi card is broken</label></div><div class="qq-fb" id="q1fb"></div></div>
+
+      <div class="qq"><div class="qq-num">Question 2 of 8</div><div class="qq-text">What does ClearPass use to uniquely identify a specific device?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q2" value="a"> IP address</label><label class="qq-opt"><input type="radio" name="q2" value="b"> HarvardKey username</label><label class="qq-opt"><input type="radio" name="q2" value="c"> MAC address</label><label class="qq-opt"><input type="radio" name="q2" value="d"> Serial number</label></div><div class="qq-fb" id="q2fb"></div></div>
+
+      <div class="qq"><div class="qq-num">Question 3 of 8</div><div class="qq-text">A professor's laptop worked for a year, stopped after summer sabbatical. Check first?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q3" value="a"> Replace the Wi-Fi card</label><label class="qq-opt"><input type="radio" name="q3" value="b"> Check if device registration or certificate expired</label><label class="qq-opt"><input type="radio" name="q3" value="c"> Reset the router</label><label class="qq-opt"><input type="radio" name="q3" value="d"> Reinstall macOS</label></div><div class="qq-fb" id="q3fb"></div></div>
+
+      <div class="qq"><div class="qq-num">Question 4 of 8</div><div class="qq-text">On a Mac, which Terminal command shows the Wi-Fi MAC address?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q4" value="a"> <code>ipconfig /all</code></label><label class="qq-opt"><input type="radio" name="q4" value="b"> <code>ifconfig en0 | grep ether</code></label><label class="qq-opt"><input type="radio" name="q4" value="c"> <code>networksetup -listmac</code></label><label class="qq-opt"><input type="radio" name="q4" value="d"> <code>ping -mac en0</code></label></div><div class="qq-fb" id="q4fb"></div></div>
+
+      <div class="qq"><div class="qq-num">Question 5 of 8</div><div class="qq-text">iPhone registered on Harvard Secure but randomly disconnects every few days. Most likely cause?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q5" value="a"> iPhone battery is low</label><label class="qq-opt"><input type="radio" name="q5" value="b"> Harvard Secure has per-device time limits</label><label class="qq-opt"><input type="radio" name="q5" value="c"> iOS Private Wi-Fi Address is rotating the MAC</label><label class="qq-opt"><input type="radio" name="q5" value="d"> Phone needs a software update</label></div><div class="qq-fb" id="q5fb"></div></div>
+
+      <div class="qq"><div class="qq-num">Question 6 of 8</div><div class="qq-text">Which is a valid MAC address format?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q6" value="a"> 192.168.1.45</label><label class="qq-opt"><input type="radio" name="q6" value="b"> A4:83:E7:2C:11:F0</label><label class="qq-opt"><input type="radio" name="q6" value="c"> https://network.harvard.edu</label><label class="qq-opt"><input type="radio" name="q6" value="d"> wlan0</label></div><div class="qq-fb" id="q6fb"></div></div>
+
+      <div class="qq"><div class="qq-num">Question 7 of 8</div><div class="qq-text">Which network should staff and faculty use for work?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q7" value="a"> Harvard University (open guest)</label><label class="qq-opt"><input type="radio" name="q7" value="b"> Harvard Secure</label><label class="qq-opt"><input type="radio" name="q7" value="c"> Any open network nearby</label><label class="qq-opt"><input type="radio" name="q7" value="d"> Phone hotspot</label></div><div class="qq-fb" id="q7fb"></div></div>
+
+      <div class="qq"><div class="qq-num">Question 8 of 8</div><div class="qq-text">Staff member has iPhone and old laptop on Harvard Secure. They get a new Dell. What do they need?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q8" value="a"> Nothing — account already registered</label><label class="qq-opt"><input type="radio" name="q8" value="b"> Call HUIT Help Desk and wait</label><label class="qq-opt"><input type="radio" name="q8" value="c"> Register the new Dell via getonline.harvard.edu — different MAC</label><label class="qq-opt"><input type="radio" name="q8" value="d"> Connect to eduroam instead</label></div><div class="qq-fb" id="q8fb"></div></div>
+
+      <div style="display:flex;gap:.75rem;margin-top:1.5rem">
+        <button class="btn btn-cr" onclick="submitQuiz()">Submit Answers</button>
+        <button class="btn btn-ghost" onclick="resetQuiz()">Reset</button>
+      </div>
+    </div>
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-num" id="scoreNum">—</div>
+      <div class="score-lbl">out of 8 correct</div>
+      <p class="score-msg" id="scoreMsg"></p>
+      <div class="g-badge" id="scoreBadge"></div>
+      <div style="margin-top:1.5rem"><button class="btn btn-ghost" onclick="resetQuiz()">Retake</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPLETION -->
+<div class="done-banner" id="doneBanner">
+  <div style="font-size:2.5rem;margin-bottom:.75rem">🎓</div>
+  <h2>Networking 101 Complete</h2>
+  <p>You can now register devices on Harvard's network, explain ClearPass to a user, and troubleshoot the most common day-1 connectivity issues.</p>
+  <div class="done-next">
+    <span style="font-family:var(--mono);font-size:.62rem;color:var(--t4);text-transform:uppercase;letter-spacing:.1em">Next up:</span>
+    <span class="chip hot">Windows Basics →</span>
+    <span class="chip">Microsoft 365 →</span>
+    <span class="chip">Harvard Systems →</span>
+  </div>
+</div>
+
+</div><!-- /shell -->
+
+<script>
+// ── MODULE TOGGLE ──
+function toggleMod(id){
+  const m=document.getElementById(id);
+  m.classList.toggle('open');
+}
+
+// ── TABS ──
+function switchTab(btn,panelId){
+  const body=btn.closest('.mod-body')||btn.parentElement.parentElement;
+  body.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  body.querySelectorAll('.tpanel').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById(panelId).classList.add('on');
+}
+
+// ── FORM WALKTHROUGH ──
+const fwKeys=['mac','owner','desc','role','filter','rg','exp'];
+const fwData={
+  mac:{type:'req',typeLabel:'Required',heading:'MAC Address',body:'The hardware fingerprint of the network card. ClearPass uses this to recognize the <strong>physical device</strong> — not just the user. Every device has a unique MAC. Wi-Fi and Ethernet ports each have their own separate MAC.',ex:'Wi-Fi registration → use Wi-Fi MAC\nEthernet registration → use Ethernet MAC\nFormat: 01:23:45:AB:CD:EF\nBoth colons and dashes are accepted'},
+  owner:{type:'req',typeLabel:'Required',heading:'Owner',body:'Who does this device belong to? Enter the person\'s <strong>HarvardKey email</strong> (e.g. jsmith@g.harvard.edu) or their <strong>8-digit HUID</strong> from their Harvard ID card. This ties the device to an account so you can track it and revoke access later.',ex:'HarvardKey: jsmith@g.harvard.edu\nHUID: 10123456\n\nIf you don\'t have either, check with your supervisor or the directory'},
+  desc:{type:'opt',typeLabel:'Optional — But Always Fill It',heading:'Description',body:'What is this device? Be specific — you\'ll thank yourself when you\'re searching through 200 registered devices six months from now. Vague descriptions like "laptop" are useless. Use name + device type + purpose.',ex:'✓ Tommy\'s End User Primary\n✓ Art Museum iMac Front Desk\n✓ Lamont Circ Desk Dell 3\n✗ laptop\n✗ macbook'},
+  role:{type:'vlan',typeLabel:'Mobility → Controls VLAN',heading:'Role',body:'This is the most critical field. <strong>Role maps directly to the VLAN</strong> the device lands on — which determines what network resources it can reach. The vast majority of users you register will be set to <strong>Mobility Admin</strong>. Wrong role = wrong VLAN = user calls you back in 10 minutes.',ex:'Most users → Mobility Admin\n\nOther roles exist for specific cases.\nAsk your supervisor if you\'re unsure.\nWhen in doubt: Mobility Admin.'},
+  filter:{type:'opt',typeLabel:'Traditional → MAC Filter',heading:'MAC Filter',body:'Controls which filter profile applies to this device on <strong>wired (Ethernet) ports</strong>. Think of it as a ruleset for which physical ports and segments the device can access.<br><br><strong>Registered</strong> — default for the majority of devices and locations.<br><strong>HCL</strong> (Harvard College Library) — required for Library locations. If registering at Lamont: use HCL.',ex:'Majority of locations → Registered\nLibrary (Lamont, etc.) → HCL\n\nWrong filter on a library device = it\nwon\'t be able to access library resources'},
+  rg:{type:'opt',typeLabel:'Traditional → Documentation',heading:'Resource Group',body:'Mainly for <strong>clean documentation and organization</strong>. Tags the device to a department or building group. Helps HUIT know which area owns the device during audits, bulk operations, and troubleshooting. Set it to the department you\'re registering for.',ex:'Art Museum → Art Museum\nDivinity School → Divinity\nLamont Library → Lamont\n\nMatch the physical location of the device'},
+  exp:{type:'opt',typeLabel:'Traditional → Expiration',heading:'Expiration Time',body:'When should this device\'s wired access expire? Optional, but set it intentionally. Blank = never expires — fine for permanent staff workstations, but use it carefully. For co-ops and temps, match their contract end date so access locks automatically without manual cleanup.',ex:'Co-op / temp: set contract end date\nPermanent staff workstation: 1 year out\nShared lab machine: 1 year, recurring\nBlank: never expires — use carefully'}
+};
+
+let fwActive=null,fwDone=new Set();
+function buildDots(){
+  const c=document.getElementById('fwDots');
+  c.innerHTML=fwKeys.map((k,i)=>`<div class="fw-dot" id="fd${i}" onclick="fwSel('${k}')" title="${fwData[k].heading}"></div>`).join('');
+}
+buildDots();
+
+function fwSel(key){
+  fwKeys.forEach(k=>{
+    const f=document.getElementById('fwf-'+k);
+    if(f)f.classList.remove('on');
+  });
+  fwKeys.forEach((k,i)=>{
+    const d=document.getElementById('fd'+i);
+    if(d){d.classList.remove('on');if(fwDone.has(k))d.classList.add('done');}
+  });
+  document.getElementById('fwf-'+key).classList.add('on');
+  const idx=fwKeys.indexOf(key);
+  const dot=document.getElementById('fd'+idx);
+  if(dot){dot.classList.add('on');dot.classList.remove('done');}
+  fwActive=key;fwDone.add(key);
+
+  document.getElementById('fwIdle').style.display='none';
+  const ct=document.getElementById('fwContent');
+  ct.classList.remove('on');
+  requestAnimationFrame(()=>{
+    ct.classList.add('on');
+    const d=fwData[key];
+    const typeClasses={req:'req',opt:'opt',vlan:'vlan'};
+    document.getElementById('fwType').className='fw-field-type '+typeClasses[d.type];
+    document.getElementById('fwType').textContent=d.typeLabel;
+    document.getElementById('fwHead').textContent=d.heading;
+    document.getElementById('fwBody').innerHTML=d.body;
+    document.getElementById('fwEx').textContent=d.ex;
+    document.getElementById('fwLabel').textContent=(idx+1)+' of '+fwKeys.length+' fields';
+  });
+}
+function fwNext(){const i=fwActive?fwKeys.indexOf(fwActive):-1;fwSel(fwKeys[Math.min(i+1,fwKeys.length-1)]);}
+function fwPrev(){const i=fwActive?fwKeys.indexOf(fwActive):1;fwSel(fwKeys[Math.max(i-1,0)]);}
+
+// ── PRACTICE GAME ──
+const scenarios=[
+  {label:'Round 1 of 3',text:"Register Tommy Chen's MacBook Pro for the Art Museum.",sub:"Tommy is full-time staff. This is his primary laptop. He works at the front desk.",mac:'A4:83:E7:2C:11:F0',
+    answers:{desc:{kw:['tommy','end user','primary','macbook','art'],hint:"Something like \"Tommy's End User Primary\" or \"Tommy Chen MacBook Pro\""},role:{c:'Mobility Admin',hint:'Standard for most staff → Mobility Admin'},filter:{c:'Registered',hint:'Art Museum is not a Library → Registered'},rg:{c:'Art Museum',hint:'Tommy works at the Art Museum → Art Museum resource group'}}},
+  {label:'Round 2 of 3',text:"Register a Dell desktop at the Lamont Library circulation desk.",sub:"Shared workstation, not personal. Third Dell at the circ desk.",mac:'B8:27:EB:4A:CC:12',
+    answers:{desc:{kw:['lamont','circ','desk','dell','3','workstation','circulation'],hint:"Something like \"Lamont Circ Desk Dell 3\" — specific enough to find later"},role:{c:'Mobility Admin',hint:'Standard for most devices including shared workstations → Mobility Admin'},filter:{c:'HCL',hint:'Lamont IS a Library location → HCL filter, not Registered'},rg:{c:'Lamont',hint:'Device is at Lamont → Lamont resource group'}}},
+  {label:'Round 3 of 3',text:"Register a co-op student's MacBook Air at Divinity School.",sub:"She's from Wentworth. Contract ends Dec 19, 2025. Personal laptop.",mac:'C0:EE:FB:12:3D:88',
+    answers:{desc:{kw:['macbook','air','divinity','co-op','personal','coop'],hint:"Something like \"Alex Personal MacBook Air - Co-op\" or \"Divinity Co-op MacBook\""},role:{c:'Mobility Admin',hint:'Co-op staff still use Mobility Admin'},filter:{c:'Registered',hint:'Divinity is not a Library location → Registered'},rg:{c:'Divinity',hint:'Device at Divinity → Divinity resource group'}}}
+];
+let gRound=0,gTotal=0,gSel={role:null,filter:null,rg:null};
+
+function gameInit(){
+  gRound=0;gTotal=0;
+  document.getElementById('gFinal').style.display='none';
+  document.getElementById('gFeedback').style.display='none';
+  document.getElementById('gameForm').style.display='flex';
+  document.getElementById('gSubmit').style.display='inline-flex';
+  gameLoad();
+}
+
+function gameLoad(){
+  gSel={role:null,filter:null,rg:null};
+  const s=scenarios[gRound];
+  document.getElementById('gFeedback').style.display='none';
+  document.getElementById('gSubmit').disabled=false;
+  document.getElementById('gProg').textContent='Round '+(gRound+1)+' of '+scenarios.length;
+  document.getElementById('gameScenario').innerHTML=`
+    <div class="g-round-lbl">⚡ ${s.label}</div>
+    <div class="g-scenario-text">${s.text}</div>
+    <div class="g-scenario-sub">${s.sub}</div>
+    <div class="g-mac">Device MAC: <span>${s.mac}</span></div>`;
+  const di=document.getElementById('gDesc');
+  di.value='';di.className='g-input';di.disabled=false;
+  makeOpts('gRole',['Mobility Admin','Faculty','Guest','Student'],'role');
+  makeOpts('gFilter',['Registered','HCL','Faculty Filter','None'],'filter');
+  makeOpts('gRG',['Art Museum','Divinity','Lamont','General'],'rg');
+}
+
+function makeOpts(id,opts,field){
+  document.getElementById(id).innerHTML=opts.map(o=>`<button class="g-opt" onclick="gPick(this,'${field}','${o}')">${o}</button>`).join('');
+}
+function gPick(btn,field,val){
+  document.querySelectorAll('#g'+field.charAt(0).toUpperCase()+field.slice(1)+' .g-opt').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');gSel[field]=val;
+}
+
+function gameSubmit(){
+  const s=scenarios[gRound];let score=0;let lines=[];
+  // desc
+  const dv=document.getElementById('gDesc').value.toLowerCase();
+  const di=document.getElementById('gDesc');
+  const hit=s.answers.desc.kw.some(k=>dv.includes(k));
+  if(!dv.trim()){di.className='g-input bad';lines.push(`<span style="color:#f87171">✗ Description:</span> Left blank — ${s.answers.desc.hint}`);}
+  else if(hit){score++;di.className='g-input ok';lines.push(`<span style="color:var(--green)">✓ Description:</span> "${document.getElementById('gDesc').value}"`);}
+  else{di.className='g-input bad';lines.push(`<span style="color:#f87171">✗ Description:</span> Too vague — ${s.answers.desc.hint}`);}
+  di.disabled=true;
+  // selects
+  ['role','filter','rg'].forEach(field=>{
+    const lbl=field==='rg'?'Resource Group':field.charAt(0).toUpperCase()+field.slice(1);
+    const cor=s.answers[field].c;const sel=gSel[field];
+    const cId='g'+field.charAt(0).toUpperCase()+field.slice(1);
+    document.querySelectorAll('#'+cId+' .g-opt').forEach(b=>{
+      b.classList.add('dis');
+      if(b.textContent.trim()===cor)b.classList.add('rev');
+    });
+    if(sel===cor){score++;
+      document.querySelectorAll('#'+cId+' .g-opt').forEach(b=>{if(b.textContent.trim()===sel){b.classList.remove('rev');b.classList.add('ok');}});
+      lines.push(`<span style="color:var(--green)">✓ ${lbl}:</span> ${cor}`);
+    }else{
+      if(sel)document.querySelectorAll('#'+cId+' .g-opt').forEach(b=>{if(b.textContent.trim()===sel)b.classList.add('bad');});
+      lines.push(`<span style="color:#f87171">✗ ${lbl}:</span> ${sel?`Chose "${sel}" — `:'Not answered — '}${s.answers[field].hint}`);
+    }
+  });
+  gTotal+=score;document.getElementById('gSubmit').style.display='none';
+  const pct=score/4;
+  const cls=pct===1?'win':pct>=.5?'partial':'lose';
+  const ttl=pct===1?'🎯 Perfect Round':'👍 '+(pct>=.5?'Good — Review the misses':'Keep at it — Check the answers');
+  const fb=document.getElementById('gFeedback');
+  fb.className='g-feedback '+cls;fb.style.display='block';
+  fb.innerHTML=`<div class="g-fb-title" style="color:${pct===1?'var(--green)':pct>=.5?'var(--gold)':'#f87171'}">${ttl} — ${score}/4</div>
+    <div class="g-fb-lines">${lines.join('<br>')}</div>
+    <div style="margin-top:1rem">${gRound<scenarios.length-1?`<button class="btn btn-cr" onclick="gNext()">Next Round →</button>`:`<button class="btn btn-cr" onclick="gFinal()">See Final Score →</button>`}</div>`;
+}
+function gNext(){gRound++;document.getElementById('gSubmit').style.display='inline-flex';gameLoad();}
+function gFinal(){
+  document.getElementById('gameForm').style.display='none';
+  document.getElementById('gFeedback').style.display='none';
+  document.getElementById('gameScenario').innerHTML='';
+  const t=gTotal,mx=scenarios.length*4;const p=t/mx;
+  let msg=p===1?'Flawless. Every field, every scenario. Your users are in good hands.':p>=.75?'Solid. A few misses — review them before your first support call.':p>=.5?'Getting there. Revisit the field walkthrough above, then try again.':'Take another pass through Module 4 — especially Role, MAC Filter, and Description.';
+  let badge=p===1?'🏆 ClearPass Expert':p>=.75?'✓ Registration Certified':p>=.5?'📚 Keep Practicing':'🔁 Retry Recommended';
+  const f=document.getElementById('gFinal');f.style.display='block';
+  f.innerHTML=`<div class="g-final-sub">Final Score</div><div class="g-final-num">${t}<span style="font-size:2rem;opacity:.5">/${mx}</span></div><div style="font-family:var(--mono);font-size:.6rem;color:var(--t4);margin:.25rem 0 1rem;text-transform:uppercase;letter-spacing:.12em">across ${scenarios.length} rounds</div><p class="g-final-msg">${msg}</p><div class="g-badge">${badge}</div><div style="margin-top:1.75rem"><button class="btn btn-ghost" onclick="gameInit()">Play Again</button></div>`;
+}
+gameInit();
+
+// ── QUIZ ──
+const qA={q1:{c:'b',fb:{b:'✓ "Harvard University" is the open stepping-stone. Harvard Secure needs the certificate from getonline.harvard.edu — the most common day-1 miss.',_:'✗ "Harvard University" is open. Harvard Secure requires the getonline.harvard.edu certificate.'}},q2:{c:'c',fb:{c:'✓ ClearPass identifies the physical device by MAC address — the hardware fingerprint burned into the network card.',_:'✗ ClearPass uses MAC address — the hardware ID. IP changes; HarvardKey identifies the user, not the device.'}},q3:{c:'b',fb:{b:'✓ Expired registration or certificate — extremely common after sabbatical or extended leave. Check ClearPass first.',_:'✗ When something worked and stopped after time away, check registration/certificate expiry in ClearPass.'}},q4:{c:'b',fb:{b:'✓ `ifconfig en0 | grep ether` — shows the MAC for en0 (Wi-Fi on most Macs).',_:'✗ Correct command is `ifconfig en0 | grep ether`. `ipconfig /all` is Windows.'}},q5:{c:'c',fb:{c:'✓ iOS Private Wi-Fi Address rotates the MAC periodically. ClearPass sees a new address and blocks it.',_:'✗ This is the iOS Private Wi-Fi Address issue — MAC rotates, ClearPass blocks the new one. Disable it in Wi-Fi settings.'}},q6:{c:'b',fb:{b:'✓ A4:83:E7:2C:11:F0 — six hex pairs, colon-separated. ClearPass also accepts dashes.',_:'✗ A MAC address is six hex pairs with colons or dashes. 192.168.x.x is an IP address.'}},q7:{c:'b',fb:{b:'✓ Harvard Secure — certificate-based, authenticated. The right choice for all staff and faculty work.',_:'✗ Harvard Secure. "Harvard University" is just the open guest stepping-stone. Never recommend open networks for work.'}},q8:{c:'c',fb:{c:'✓ Each device has its own MAC. The new Dell has never been registered — it needs its own certificate.',_:'✗ Each device needs its own registration. The Dell\'s MAC is not in the system — run through getonline.harvard.edu.'}}};
+let qDone=false;
+
+function submitQuiz(){
+  if(qDone)return;
+  let score=0,allAnswered=true;
+  Object.keys(qA).forEach(q=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const v=sel.value,{c,fb}=qA[q];
+    document.querySelectorAll(`input[name="${q}"]`).forEach(opt=>{
+      const lbl=opt.parentElement;lbl.style.pointerEvents='none';
+      if(opt.value===c)lbl.classList.add('rev');
+      if(opt.value===v&&v!==c)lbl.classList.add('bad');
+      if(opt.value===v&&v===c){lbl.classList.remove('rev');lbl.classList.add('ok');}
+    });
+    const fbd=document.getElementById(q+'fb');
+    fbd.textContent=fb[v]||fb['_'];
+    fbd.className='qq-fb '+(v===c?'ok':'bad');
+    if(v===c)score++;
+  });
+  if(!allAnswered){alert('Answer all 8 questions first.');return;}
+  qDone=true;
+  setTimeout(()=>{
+    document.getElementById('quizForm').style.display='none';
+    const sw=document.getElementById('scoreWrap');sw.classList.add('on');
+    document.getElementById('scoreNum').textContent=score;
+    const p=score/8;
+    let msg=p===1?'Perfect. You clearly paid attention — your users are in excellent hands.':p>=.75?'Solid. Review the ones you missed before your first support call.':p>=.5?'Good start. Go back through Modules 3 and 4 — device registration is what you\'ll use every week.':'Take another pass — especially Modules 1 and 4. This is the foundation everything else builds on.';
+    let badge=p===1?'🏆 Network Expert':p>=.75?'✓ Networking Certified':p>=.5?'📚 Keep Studying':'🔁 Revisit the Material';
+    document.getElementById('scoreMsg').textContent=msg;
+    document.getElementById('scoreBadge').textContent=badge;
+    document.getElementById('qBadge').textContent=score+'/8';
+    document.getElementById('qBadge').className='mod-badge done';
+    updateProgress();
+    if(score>=6)document.getElementById('doneBanner').classList.add('on');
+  },400);
+}
+function resetQuiz(){
+  qDone=false;
+  document.querySelectorAll('.qq-opt').forEach(o=>{o.className='qq-opt';o.style.pointerEvents='';});
+  document.querySelectorAll('.qq-fb').forEach(f=>f.className='qq-fb');
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.getElementById('quizForm').style.display='block';
+  document.getElementById('scoreWrap').classList.remove('on');
+  document.getElementById('qBadge').textContent='8 Questions';
+  document.getElementById('qBadge').className='mod-badge';
+}
+
+// ── PROGRESS ──
+function updateProgress(){
+  const done=document.querySelectorAll('.mod-badge.done').length;
+  const pct=Math.round(done/6*100);
+  document.getElementById('navFill').style.width=pct+'%';
+  document.getElementById('navProg').textContent=done+' / 6';
+}
+
+// ── INTERSECTION OBSERVER ──
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
+},{threshold:.05});
+document.querySelectorAll('.mod').forEach(m=>obs.observe(m));
+</script>
+</body>
+</html>
