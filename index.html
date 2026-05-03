@@ -216,7 +216,7 @@ body::before{content:'';position:fixed;inset:0;
     <h1>Your<br><span class="cr">Day One</span><br>Starts Here.</h1>
     <p class="hero-sub">Everything you need to support users at Harvard — broken into focused, interactive modules with real scenarios, hands-on practice, and scored quizzes. Work through them in order before joining your team.</p>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num"><span id="doneCount">1</span><span class="cr" style="font-size:1.2rem"> done</span></div><div class="stat-label">Modules Complete</div></div>
+      <div class="stat"><div class="stat-num"><span id="doneCount">2</span><span class="cr" style="font-size:1.2rem"> done</span></div><div class="stat-label">Modules Complete</div></div>
       <div class="stat"><div class="stat-num" id="totalCount">8</div><div class="stat-label">Total Modules</div></div>
       <div class="stat"><div class="stat-num">~<span id="totalTime">2.5</span><span style="font-size:1.2rem;color:var(--t3)">hrs</span></div><div class="stat-label">Estimated Total</div></div>
       <div class="stat"><div class="stat-num" style="color:var(--gold)">30</div><div class="stat-label">Co-ops This Cohort</div></div>
@@ -255,7 +255,7 @@ body::before{content:'';position:fixed;inset:0;
       <p>Complete modules in order — each one builds on the last. Check them off as you go. Your supervisor may ask which modules you've completed on Day 1.</p>
       <div class="progress-modules">
         <div class="pmod done">Networking 101</div>
-        <div class="pmod active">Windows Basics</div>
+        <div class="pmod done">Windows Basics</div>
         <div class="pmod">Microsoft 365</div>
         <div class="pmod">Harvard Systems</div>
         <div class="pmod">ServiceNow</div>
@@ -269,7 +269,7 @@ body::before{content:'';position:fixed;inset:0;
   <!-- ANNOUNCE -->
   <div class="announce">
     <div class="announce-icon">📣</div>
-    <div><strong>Windows Basics and Microsoft 365 modules coming soon.</strong> Check this page again after your first week — new content is added each cohort cycle.</div>
+    <div><strong>Microsoft 365 and Harvard Systems modules coming soon.</strong> Check this page again after your first week — new content is added each cohort cycle.</div>
   </div>
 
   <!-- CONTROLS -->
@@ -316,7 +316,31 @@ body::before{content:'';position:fixed;inset:0;
         </div>
       </div>
       <div class="card-footer">
-        <div class="card-time">🕐 ~30 min · 6 sections</div>
+        <div class="card-time">🕐 ~2 hrs · 14 sections</div>
+        <div class="card-action">Start Module →</div>
+      </div>
+    </a>
+
+    <a class="card done" href="windows-basics.html" data-cat="windows" data-status="live" data-search="windows 11 dell laps huitadmin task manager indexing powershell gpo sccm dell command update event viewer uac domain">
+      <div class="card-bar" style="background:linear-gradient(90deg,#0078D4,#60a5fa)"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-cat" style="color:#60a5fa;border-color:rgba(96,165,250,.35)">Windows</span>
+          <span class="card-status live"><span class="dot"></span>Live</span>
+        </div>
+        <div class="card-num">Module 02</div>
+        <div class="card-title">Windows Basics</div>
+        <div class="card-desc">Windows 11 on a Harvard domain: interface orientation, UAC & LAPS admin flow, Task Manager, Search indexing fixes, 12 essential PowerShell commands, Group Policy, SCCM Software Center, Dell Command Update, and Event Viewer.</div>
+        <div class="card-tags">
+          <span class="card-tag">Windows 11</span>
+          <span class="card-tag">LAPS + HUITadmin</span>
+          <span class="card-tag">PowerShell</span>
+          <span class="card-tag">GPO + SCCM</span>
+          <span class="card-tag">8-Q Quiz</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-time">🕐 ~90 min · 11 sections</div>
         <div class="card-action">Start Module →</div>
       </div>
     </a>
@@ -332,28 +356,7 @@ body::before{content:'';position:fixed;inset:0;
 
   <div class="grid" id="soonGrid">
 
-    <div class="card coming" data-cat="windows" data-status="soon" data-search="windows dell setup domain join bitlocker local admin settings file explorer task manager">
-      <div class="card-bar" style="background:var(--blue-d);background:linear-gradient(90deg,rgba(96,165,250,.5),rgba(96,165,250,.1))"></div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="card-cat" style="color:var(--blue);border-color:rgba(96,165,250,.3)">Windows</span>
-          <span class="card-status soon"><span class="dot"></span>Coming Soon</span>
-        </div>
-        <div class="card-num">Module 02</div>
-        <div class="card-title">Windows Basics</div>
-        <div class="card-desc">Windows 11 fundamentals, navigating the OS, common settings, File Explorer, Task Manager, Dell hardware essentials, and domain join walkthrough.</div>
-        <div class="card-tags">
-          <span class="card-tag">Windows 11</span>
-          <span class="card-tag">Dell</span>
-          <span class="card-tag">Domain Join</span>
-          <span class="card-tag">BitLocker</span>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="card-time">🕐 ~30 min</div>
-        <div class="card-action" style="color:var(--t4)">In Development</div>
-      </div>
-    </div>
+    <!-- Windows Basics moved to liveGrid -->
 
     <div class="card coming" data-cat="microsoft" data-status="soon" data-search="microsoft 365 office teams outlook sharepoint onedrive email calendar word excel powerpoint">
       <div class="card-bar" style="background:linear-gradient(90deg,rgba(167,139,250,.5),rgba(167,139,250,.1))"></div>
@@ -563,7 +566,7 @@ function setRing(pct) {
     document.getElementById('ringPct').textContent = Math.round(pct) + '%';
   }, 300);
 }
-setRing(12.5); // 1 of 8 done
+setRing(25); // 2 of 8 done
 
 // ── CARD FADE IN ──
 const obs = new IntersectionObserver(entries => {

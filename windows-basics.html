@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUIT Co-op Onboarding — Windows Basics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cr:#C8273D;--cr-d:rgba(200,39,61,0.12);--cr-glow:rgba(200,39,61,0.3);
+  --gold:#F0C040;--gold-d:rgba(240,192,64,0.1);
+  --green:#22c55e;--green-d:rgba(34,197,94,0.1);
+  --blue:#60a5fa;--blue-d:rgba(96,165,250,0.1);
+  --purple:#a78bfa;--orange:#fb923c;
+  --win:#0078D4;--win-d:rgba(0,120,212,0.12);
+  --bg:#080a0d;--s1:#0e1117;--s2:#131820;--s3:#1a2030;
+  --bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.12);
+  --t1:#f1f5f9;--t2:#94a3b8;--t3:#475569;--t4:#1e293b;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;--r:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:var(--sans);min-height:100vh;overflow-x:hidden;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 70% 40% at 20% 0%,rgba(0,120,212,0.1) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 30% at 85% 100%,rgba(200,39,61,0.07) 0%,transparent 60%);
+  pointer-events:none;z-index:0}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:200;height:56px;background:rgba(8,10,13,0.9);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 1.5rem;gap:1.25rem}
+.nav-back{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--t3);text-decoration:none;display:flex;align-items:center;gap:.4rem;
+  padding:.3rem .7rem;border:1px solid var(--bd2);border-radius:6px;white-space:nowrap;
+  transition:all .2s;flex-shrink:0}
+.nav-back:hover{color:var(--t1);border-color:var(--win);background:rgba(0,120,212,.07)}
+.nav-back svg{width:12px;height:12px;transition:transform .2s}
+.nav-back:hover svg{transform:translateX(-2px)}
+.nav-logo{font-family:var(--mono);font-size:.7rem;color:var(--win);letter-spacing:.12em;white-space:nowrap}
+.nav-logo span{color:var(--t3)}
+.nav-bar{flex:1;height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.nav-fill{height:100%;background:linear-gradient(90deg,var(--win),var(--blue));width:0%;transition:width .6s cubic-bezier(.4,0,.2,1);border-radius:2px}
+.nav-prog{font-family:var(--mono);font-size:.65rem;color:var(--t3);white-space:nowrap}
+
+/* SHELL */
+.shell{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 1.25rem 8rem}
+
+/* HERO */
+.hero{padding:5rem 0 4rem;position:relative}
+.hero-glow{position:absolute;top:2rem;left:-4rem;width:400px;height:300px;
+  background:radial-gradient(ellipse,rgba(0,120,212,0.15) 0%,transparent 70%);
+  pointer-events:none;filter:blur(40px)}
+.hero-tag{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--win);
+  text-transform:uppercase;margin-bottom:1.4rem;display:flex;align-items:center;gap:.75rem}
+.hero-tag::before{content:'';width:28px;height:1px;background:var(--win)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.8rem);font-weight:800;letter-spacing:-.03em;line-height:1;color:#fff;margin-bottom:1.25rem}
+.hero h1 em{color:var(--win);font-style:normal;position:relative}
+.hero h1 em::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--win),transparent)}
+.hero-sub{font-size:1rem;color:var(--t2);max-width:560px;line-height:1.75;margin-bottom:2.5rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.3rem .8rem;border-radius:99px;border:1px solid var(--bd2);color:var(--t3)}
+.chip.hot{border-color:rgba(0,120,212,.4);color:var(--win);background:rgba(0,120,212,.07)}
+.hero-divider{height:1px;background:linear-gradient(90deg,var(--win) 0%,rgba(0,120,212,.2) 40%,transparent 80%);margin:3rem 0}
+
+/* MODULE */
+.mod{position:relative;margin-bottom:.75rem;border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--bd);background:var(--s1);
+  opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .25s}
+.mod.vis{opacity:1;transform:none}
+.mod:hover{border-color:var(--bd2)}
+.mod.open{border-color:rgba(0,120,212,.35);box-shadow:0 0 0 1px rgba(0,120,212,.1),0 8px 32px rgba(0,0,0,.4)}
+.mod-hd{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;cursor:pointer;transition:background .2s;user-select:none}
+.mod-hd:hover{background:var(--s2)}
+.mod.open .mod-hd{border-bottom:1px solid var(--bd)}
+.mod-num{font-family:var(--mono);font-size:.6rem;color:var(--win);
+  width:28px;height:28px;border-radius:50%;border:1px solid rgba(0,120,212,.3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(0,120,212,.06)}
+.mod-title{font-weight:600;font-size:.95rem;flex:1;color:var(--t1)}
+.mod-badge{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.25rem .65rem;border-radius:99px;background:var(--s3);color:var(--t3);border:1px solid var(--bd);flex-shrink:0}
+.mod-badge.done{background:rgba(34,197,94,.1);color:var(--green);border-color:rgba(34,197,94,.25)}
+.mod-badge.active{background:rgba(0,120,212,.1);color:var(--win);border-color:rgba(0,120,212,.3)}
+.mod-chevron{width:16px;height:16px;color:var(--t3);transition:transform .3s;flex-shrink:0}
+.mod.open .mod-chevron{transform:rotate(180deg);color:var(--win)}
+.mod-body{display:none;padding:1.75rem 1.5rem}
+.mod.open .mod-body{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* CONTENT */
+.sec-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--win);margin:0 0 .85rem;display:flex;align-items:center;gap:.6rem}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(0,120,212,.3),transparent)}
+p{font-size:.925rem;color:var(--t2);line-height:1.75;margin-bottom:.875rem}
+p:last-child{margin-bottom:0}
+strong{color:var(--t1);font-weight:600}
+em{color:var(--blue);font-style:normal}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.75rem;margin:1.25rem 0}
+.ccard{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1.1rem;
+  transition:border-color .2s,transform .2s,box-shadow .2s}
+.ccard:hover{border-color:var(--bd2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.ccard-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;margin-bottom:.75rem;background:var(--s3)}
+.ccard-title{font-weight:700;font-size:.88rem;color:var(--t1);margin-bottom:.35rem}
+.ccard-desc{font-size:.78rem;color:var(--t3);line-height:1.55}
+.ccard-code{font-family:var(--mono);font-size:.68rem;color:var(--gold);margin-top:.5rem;
+  padding:.25rem .5rem;background:rgba(0,0,0,.35);border-radius:4px;display:inline-block;border:1px solid rgba(240,192,64,.15)}
+
+.box{border-radius:8px;padding:1rem 1.15rem;margin:1.15rem 0}
+.box-lbl{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem;font-weight:600}
+.box p{font-size:.85rem;margin:0;color:var(--t2)}
+.box.info{background:var(--blue-d);border:1px solid rgba(96,165,250,.2);border-left:3px solid var(--blue)}
+.box.info .box-lbl{color:var(--blue)}
+.box.warn{background:var(--cr-d);border:1px solid rgba(200,39,61,.25);border-left:3px solid var(--cr)}
+.box.warn .box-lbl{color:var(--cr)}
+.box.ok{background:var(--green-d);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green)}
+.box.ok .box-lbl{color:var(--green)}
+.box.win{background:var(--win-d);border:1px solid rgba(0,120,212,.25);border-left:3px solid var(--win)}
+.box.win .box-lbl{color:var(--win)}
+.box.gold{background:var(--gold-d);border:1px solid rgba(240,192,64,.2);border-left:3px solid var(--gold)}
+.box.gold .box-lbl{color:var(--gold)}
+
+.steps{list-style:none;counter-reset:s;margin:1rem 0}
+.steps li{counter-increment:s;display:flex;gap:.9rem;align-items:flex-start;
+  padding:.8rem 0;border-bottom:1px solid var(--bd);font-size:.885rem;line-height:1.65;color:var(--t2)}
+.steps li:last-child{border:none}
+.steps li::before{content:counter(s);font-family:var(--mono);font-size:.6rem;font-weight:600;
+  min-width:24px;height:24px;border-radius:50%;background:var(--win-d);color:var(--win);
+  border:1px solid rgba(0,120,212,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+code{font-family:var(--mono);font-size:.78rem;background:rgba(0,0,0,.5);
+  color:var(--gold);padding:.1rem .45rem;border-radius:4px;border:1px solid rgba(240,192,64,.15)}
+
+.tabs{display:flex;border-bottom:1px solid var(--bd);margin-bottom:0;gap:0}
+.tab{font-family:var(--mono);font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.65rem 1.1rem;cursor:pointer;background:none;border:none;color:var(--t3);
+  border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;white-space:nowrap}
+.tab.on{color:var(--t1);border-bottom-color:var(--win)}
+.tab:hover:not(.on){color:var(--t2)}
+.tpanel{display:none;padding-top:1.5rem}
+.tpanel.on{display:block;animation:fadeUp .2s ease}
+
+.code-block{background:var(--s3);border:1px solid var(--bd);border-left:3px solid var(--gold);
+  border-radius:0 6px 6px 0;padding:.75rem 1rem;font-family:var(--mono);font-size:.78rem;
+  color:var(--t1);margin:.75rem 0}
+.ps-block{background:#012456;border:1px solid rgba(0,120,212,.3);border-radius:8px;
+  padding:1rem 1.1rem;font-family:var(--mono);font-size:.78rem;margin:.75rem 0;overflow-x:auto}
+.ps-prompt{color:#eee;margin-bottom:.25rem}
+.ps-cmd{color:#4fc1ff}
+.ps-out{color:#9cdcfe;margin-top:.4rem;font-size:.72rem;opacity:.9}
+.ps-comment{color:#6A9955;font-size:.72rem}
+
+.btn{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.7rem 1.6rem;border-radius:6px;cursor:pointer;border:none;
+  transition:all .2s;display:inline-flex;align-items:center;gap:.5rem}
+.btn-win{background:var(--win);color:#fff;box-shadow:0 4px 12px rgba(0,120,212,.3)}
+.btn-win:hover{background:#006CBD;box-shadow:0 6px 20px rgba(0,120,212,.4);transform:translateY(-1px)}
+.btn-ghost{background:var(--s2);color:var(--t2);border:1px solid var(--bd2)}
+.btn-ghost:hover{border-color:var(--t3);color:var(--t1)}
+
+/* ══ WIN11 INTERFACE DIAGRAM ══ */
+.win11-desktop{background:linear-gradient(135deg,#0f3460 0%,#16213e 50%,#0f3460 100%);
+  border-radius:10px;overflow:hidden;border:1px solid var(--bd2);
+  box-shadow:0 20px 60px rgba(0,0,0,.5);margin:1.25rem 0;position:relative}
+.win11-screen{padding:1rem;min-height:220px;position:relative}
+.win11-icons{display:flex;flex-wrap:wrap;gap:.6rem;padding:.5rem}
+.win11-icon{width:52px;text-align:center;cursor:default}
+.win11-icon-box{width:40px;height:40px;border-radius:8px;margin:0 auto .3rem;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.win11-icon-lbl{font-size:.5rem;color:rgba(255,255,255,.8);white-space:nowrap}
+.win11-taskbar{background:rgba(255,255,255,.08);backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,.1);padding:.4rem 1rem;
+  display:flex;align-items:center;justify-content:center;gap:.6rem}
+.win11-tb-btn{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;font-size:.9rem;cursor:pointer;transition:background .2s;color:#fff}
+.win11-tb-btn:hover{background:rgba(255,255,255,.15)}
+.win11-tb-btn.active{background:rgba(255,255,255,.2)}
+.win11-tb-right{position:absolute;right:1rem;bottom:.45rem;display:flex;align-items:center;
+  gap:.5rem;font-size:.55rem;color:rgba(255,255,255,.7);font-family:var(--mono)}
+.win11-callout{position:absolute;background:rgba(0,0,0,.85);border:1px solid var(--win);
+  border-radius:6px;padding:.4rem .65rem;font-size:.62rem;color:#fff;
+  font-family:var(--mono);pointer-events:none;white-space:nowrap;z-index:10}
+.win11-callout::before{content:'';position:absolute;width:6px;height:6px;
+  background:var(--win);border-radius:50%}
+
+/* ══ UAC / LAPS FLOW ══ */
+.laps-flow{display:flex;align-items:stretch;gap:.5rem;flex-wrap:wrap;
+  background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1.25rem;margin:1.25rem 0}
+.laps-step{flex:1;min-width:140px;background:var(--s3);border-radius:8px;padding:.9rem;
+  display:flex;flex-direction:column;gap:.4rem;border:1px solid var(--bd)}
+.laps-step-num{font-family:var(--mono);font-size:.6rem;color:var(--win);
+  display:flex;align-items:center;gap:.35rem}
+.laps-step-num::before{content:'';display:inline-block;width:16px;height:16px;border-radius:50%;
+  background:var(--win-d);border:1px solid var(--win);font-size:.6rem;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.laps-step-title{font-weight:700;font-size:.82rem;color:var(--t1)}
+.laps-step-desc{font-size:.72rem;color:var(--t3);line-height:1.5}
+.laps-arrow{display:flex;align-items:center;color:var(--t4);font-size:1.1rem;flex-shrink:0;padding-top:.5rem}
+
+/* ══ TASK MANAGER REPLICA ══ */
+.tm-wrap{background:#1f1f1f;border:1px solid #3a3a3a;border-radius:6px;overflow:hidden;
+  margin:1.25rem 0;font-family:var(--sans);font-size:.8rem}
+.tm-tabs{display:flex;background:#2b2b2b;border-bottom:1px solid #3a3a3a}
+.tm-tab{padding:.45rem .9rem;font-size:.72rem;color:#aaa;cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .15s}
+.tm-tab.on{color:#fff;border-bottom-color:#0078D4}
+.tm-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;
+  background:#252525;padding:.35rem .75rem;font-size:.65rem;color:#888;
+  font-weight:600;text-transform:uppercase;letter-spacing:.06em;gap:.5rem}
+.tm-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;
+  padding:.4rem .75rem;border-bottom:1px solid #2a2a2a;align-items:center;
+  gap:.5rem;transition:background .15s;cursor:default}
+.tm-row:hover{background:#2a2a2a}
+.tm-row.high{background:rgba(200,39,61,.08)}
+.tm-row.high:hover{background:rgba(200,39,61,.13)}
+.tm-name{font-weight:500;color:#e0e0e0;font-size:.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-name small{display:block;font-size:.62rem;color:#666;font-weight:400}
+.tm-bar-wrap{display:flex;align-items:center;gap:.4rem}
+.tm-bar{flex:1;height:4px;background:#333;border-radius:2px;overflow:hidden}
+.tm-bar-fill{height:100%;border-radius:2px;transition:width .5s ease}
+.tm-bar-fill.cpu{background:linear-gradient(90deg,#0078D4,#60a5fa)}
+.tm-bar-fill.mem{background:linear-gradient(90deg,#22c55e,#86efac)}
+.tm-bar-fill.disk{background:linear-gradient(90deg,#f59e0b,#fcd34d)}
+.tm-bar-fill.net{background:linear-gradient(90deg,#a78bfa,#c4b5fd)}
+.tm-pct{font-family:var(--mono);font-size:.65rem;color:#aaa;min-width:28px;text-align:right}
+.tm-pct.red{color:#f87171}
+
+/* ══ INDEXING DIAGRAM ══ */
+.index-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:.5rem;
+  align-items:center;padding:1.25rem;background:var(--s2);border:1px solid var(--bd);
+  border-radius:8px;margin:1.25rem 0;font-family:var(--mono);font-size:.72rem}
+.inode{background:var(--s3);border:1px solid var(--bd2);border-radius:8px;padding:.85rem;
+  text-align:center;line-height:1.5}
+.inode.active{border-color:var(--win);background:var(--win-d)}
+.inode-icon{font-size:1.3rem;margin-bottom:.35rem}
+.inode-lbl{color:var(--t2);font-size:.65rem}
+.iarr{color:var(--t4);text-align:center;font-size:1rem}
+
+/* ══ PS COMMAND CARDS ══ */
+.cmd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:.85rem;margin-top:1rem}
+.cmd-card{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1.1rem;
+  transition:border-color .2s}
+.cmd-card:hover{border-color:var(--bd2)}
+.cmd-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;gap:.5rem}
+.cmd-name{font-family:var(--mono);font-size:.75rem;color:var(--gold);
+  background:rgba(0,0,0,.4);padding:.25rem .55rem;border-radius:4px;
+  border:1px solid rgba(240,192,64,.2)}
+.cmd-tag{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;
+  padding:.2rem .55rem;border-radius:99px;background:var(--s3);color:var(--t3);border:1px solid var(--bd);flex-shrink:0}
+.cmd-tag.core{background:rgba(0,120,212,.1);color:var(--win);border-color:rgba(0,120,212,.3)}
+.cmd-tag.admin{background:rgba(200,39,61,.1);color:var(--cr);border-color:rgba(200,39,61,.3)}
+.cmd-desc{font-size:.82rem;color:var(--t2);line-height:1.6;margin-bottom:.75rem}
+.cmd-out{background:rgba(0,0,0,.5);border:1px solid var(--bd);border-radius:6px;
+  padding:.65rem .85rem;font-family:var(--mono);font-size:.68rem;color:#86efac;line-height:1.7}
+
+/* ══ FIX SCENARIOS ══ */
+.fix-card{background:var(--s2);border:1px solid var(--bd);border-radius:8px;
+  margin-bottom:.75rem;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.fix-card:hover{border-color:var(--bd2)}
+.fix-card.open{border-color:rgba(0,120,212,.3)}
+.fix-hd{display:flex;align-items:center;gap:.85rem;padding:1rem 1.1rem}
+.fix-icon{font-size:1.1rem;flex-shrink:0}
+.fix-title{font-weight:600;font-size:.9rem;color:var(--t1);flex:1}
+.fix-sev{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;
+  letter-spacing:.1em;padding:.2rem .6rem;border-radius:99px;flex-shrink:0}
+.fix-sev.high{background:rgba(200,39,61,.12);color:var(--cr);border:1px solid rgba(200,39,61,.25)}
+.fix-sev.med{background:var(--gold-d);color:var(--gold);border:1px solid rgba(240,192,64,.25)}
+.fix-sev.low{background:var(--green-d);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.fix-body{display:none;padding:0 1.1rem 1.1rem;border-top:1px solid var(--bd)}
+.fix-card.open .fix-body{display:block;animation:fadeUp .2s ease}
+.fix-chevron{width:14px;height:14px;color:var(--t4);transition:transform .25s;flex-shrink:0}
+.fix-card.open .fix-chevron{transform:rotate(180deg)}
+
+/* ══ DCU VISUAL ══ */
+.dcu-flow{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;
+  padding:1.25rem;background:var(--s2);border:1px solid var(--bd);border-radius:8px;margin:1.25rem 0;
+  font-family:var(--mono);font-size:.68rem}
+.dcu-node{background:var(--s3);border:1px solid var(--bd2);padding:.5rem .85rem;border-radius:6px;
+  color:var(--t2);text-align:center;line-height:1.4}
+.dcu-node.win{border-color:rgba(0,120,212,.4);color:var(--win);background:rgba(0,120,212,.07)}
+.dcu-node.ok{border-color:rgba(34,197,94,.35);color:var(--green);background:rgba(34,197,94,.06)}
+.dcu-arr{color:var(--t4);font-size:.8rem}
+
+/* ══ EVENT VIEWER REPLICA ══ */
+.ev-wrap{background:#f3f3f3;border-radius:6px;overflow:hidden;border:1px solid #ccc;margin:1.25rem 0}
+.ev-titlebar{background:#1e3a5f;padding:.45rem .75rem;display:flex;align-items:center;gap:.5rem}
+.ev-titlebar-text{color:#fff;font-size:.72rem;font-weight:600}
+.ev-body{display:grid;grid-template-columns:200px 1fr;height:280px}
+.ev-sidebar{background:#e8e8e8;border-right:1px solid #ccc;padding:.5rem;font-size:.68rem;overflow-y:auto}
+.ev-tree-item{padding:.3rem .5rem;border-radius:3px;cursor:pointer;display:flex;align-items:center;gap:.35rem;color:#333}
+.ev-tree-item:hover,.ev-tree-item.on{background:#cfe2ff;color:#1e3a5f}
+.ev-tree-item.on{font-weight:600}
+.ev-tree-arrow{font-size:.6rem;color:#888;transition:transform .2s}
+.ev-tree-item.open .ev-tree-arrow{transform:rotate(90deg)}
+.ev-main{display:flex;flex-direction:column}
+.ev-table-head{background:#dde6f5;display:grid;grid-template-columns:80px 80px 1fr 120px;
+  padding:.3rem .75rem;font-size:.62rem;font-weight:700;color:#333;border-bottom:1px solid #ccc;
+  text-transform:uppercase;letter-spacing:.04em;gap:.5rem}
+.ev-table-body{flex:1;overflow-y:auto}
+.ev-row{display:grid;grid-template-columns:80px 80px 1fr 120px;padding:.3rem .75rem;
+  font-size:.65rem;border-bottom:1px solid #eee;gap:.5rem;align-items:center;cursor:pointer;color:#333}
+.ev-row:hover{background:#f0f5ff}
+.ev-row.selected{background:#cfe2ff}
+.ev-sev-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:.25rem}
+.ev-detail{background:#fff;border-top:2px solid #1e3a5f;padding:.65rem .75rem;font-size:.65rem;color:#333;line-height:1.6}
+.ev-detail-lbl{font-weight:700;color:#1e3a5f;margin-bottom:.3rem;font-size:.65rem}
+
+/* ══ QUIZ ══ */
+.qq{margin-bottom:1.75rem;padding:1.25rem;background:var(--s2);border:1px solid var(--bd);border-radius:8px}
+.qq-num{font-family:var(--mono);font-size:.58rem;color:var(--t4);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.5rem}
+.qq-text{font-weight:600;font-size:.92rem;color:var(--t1);margin-bottom:.85rem;line-height:1.45}
+.qq-opts{display:flex;flex-direction:column;gap:.45rem}
+.qq-opt{display:flex;align-items:center;gap:.75rem;padding:.7rem 1rem;border:1px solid var(--bd2);
+  border-radius:7px;cursor:pointer;background:var(--s3);transition:all .15s;font-size:.85rem;color:var(--t2)}
+.qq-opt:hover{border-color:var(--bd2);background:var(--s2);color:var(--t1)}
+.qq-opt input{accent-color:var(--win);flex-shrink:0}
+.qq-opt.ok{border-color:rgba(34,197,94,.4)!important;background:rgba(34,197,94,.08)!important;color:var(--green)!important}
+.qq-opt.bad{border-color:rgba(200,39,61,.4)!important;background:rgba(200,39,61,.08)!important;color:#f87171!important}
+.qq-opt.rev{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.04);color:var(--green)}
+.qq-fb{font-family:var(--mono);font-size:.72rem;margin-top:.6rem;padding:.5rem .75rem;border-radius:5px;display:none;line-height:1.5}
+.qq-fb.ok{display:block;color:var(--green);background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2)}
+.qq-fb.bad{display:block;color:#f87171;background:rgba(200,39,61,.07);border:1px solid rgba(200,39,61,.2)}
+.score-wrap{display:none;text-align:center;padding:2.5rem 1rem;animation:fadeUp .4s ease}
+.score-wrap.on{display:block}
+.score-num{font-size:4rem;font-weight:800;color:var(--win);line-height:1}
+.score-lbl{font-family:var(--mono);font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.15em;margin-bottom:1rem}
+.score-msg{font-size:.92rem;color:var(--t2);max-width:360px;margin:0 auto 1.5rem;line-height:1.7}
+.g-badge{display:inline-block;font-family:var(--mono);font-size:.65rem;text-transform:uppercase;
+  letter-spacing:.12em;padding:.5rem 1.25rem;border-radius:99px;
+  background:rgba(0,120,212,.1);border:1px solid rgba(0,120,212,.3);color:var(--win)}
+
+/* COMPLETION */
+.done-banner{display:none;margin-top:3rem;padding:2.5rem;border-radius:12px;text-align:center;
+  background:linear-gradient(135deg,rgba(0,120,212,.06),rgba(96,165,250,.04));
+  border:1px solid var(--bd)}
+.done-banner.on{display:block;animation:fadeUp .5s ease}
+.done-banner h2{font-size:1.5rem;font-weight:800;color:var(--t1);margin-bottom:.5rem}
+.done-banner p{color:var(--t2);font-size:.9rem}
+.done-next{display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-back" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    Hub
+  </a>
+  <div class="nav-logo">HUIT <span>/ Co-op 2025 /</span> Windows Basics</div>
+  <div class="nav-bar"><div class="nav-fill" id="navFill"></div></div>
+  <div class="nav-prog" id="navProg">0 / 11</div>
+</nav>
+
+<div class="shell">
+<header class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">Harvard University IT · Windows 11 · Domain Environment</div>
+  <h1>Windows <em>Basics</em></h1>
+  <p class="hero-sub">Windows 11 on a Harvard domain is not the same as Windows 11 at home. Group Policy locks things, LAPS manages admin passwords, SCCM pushes software, and CrowdStrike watches everything. This module teaches you to work in that environment — and fix it when it breaks.</p>
+  <div class="chips">
+    <span class="chip hot">Windows 11</span>
+    <span class="chip hot">LAPS + HUITtoolkit</span>
+    <span class="chip">Domain-Joined</span>
+    <span class="chip">~90 min</span>
+    <span class="chip">11 modules</span>
+  </div>
+  <div class="hero-divider"></div>
+</header>
+
+<!-- ══ MODULE 1: WIN11 INTERFACE ══ -->
+<div class="mod open vis" id="mod1" data-i="1">
+  <div class="mod-hd" onclick="toggleMod('mod1')">
+    <div class="mod-num">01</div>
+    <div class="mod-title">The Windows 11 Interface — Orientation</div>
+    <div class="mod-badge active">Foundation</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">What Changed From Windows 10</div>
+    <p>Windows 11 moved the Start Menu to the center, redesigned the Settings app, added Snap Layouts, and replaced the Action Center. The core functionality is the same but the locations changed — which is the #1 source of confusion for users calling in.</p>
+
+    <!-- Win11 Desktop Diagram -->
+    <div class="win11-desktop">
+      <div class="win11-screen">
+        <div class="win11-icons">
+          <div class="win11-icon"><div class="win11-icon-box" style="background:#0078D4">📁</div><div class="win11-icon-lbl">File Explorer</div></div>
+          <div class="win11-icon"><div class="win11-icon-box" style="background:#217346">📊</div><div class="win11-icon-lbl">Excel</div></div>
+          <div class="win11-icon"><div class="win11-icon-box" style="background:#D83B01">📝</div><div class="win11-icon-lbl">Word</div></div>
+          <div class="win11-icon"><div class="win11-icon-box" style="background:#2B579A">🔵</div><div class="win11-icon-lbl">Teams</div></div>
+          <div class="win11-icon"><div class="win11-icon-box" style="background:#0F6CBD">🌐</div><div class="win11-icon-lbl">Edge</div></div>
+          <div class="win11-icon"><div class="win11-icon-box" style="background:#107C41">🛡️</div><div class="win11-icon-lbl">Software Ctr</div></div>
+        </div>
+        <div style="position:absolute;top:.6rem;right:.75rem;font-size:.55rem;color:rgba(255,255,255,.5);font-family:var(--mono)">Harvard Domain PC</div>
+      </div>
+      <div class="win11-taskbar">
+        <div class="win11-tb-btn" title="Start Menu">⊞</div>
+        <div class="win11-tb-btn" title="Search">🔍</div>
+        <div class="win11-tb-btn" title="Task View">⧉</div>
+        <div class="win11-tb-btn active" title="File Explorer" style="background:rgba(255,255,255,.2)">📁</div>
+        <div class="win11-tb-btn" title="Edge">🌐</div>
+        <div class="win11-tb-btn" title="Teams">💬</div>
+        <div class="win11-tb-right">📶 🔊 🔋 9:41 AM<br>5/2/2025</div>
+      </div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Key Locations — Know These Cold</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">⊞</div><div class="ccard-title">Start Menu</div><div class="ccard-desc">Center of the taskbar. Pinned apps on top, Recommended files below. Right-click for Power, Settings, Device Manager, Task Manager.</div><div class="ccard-code">Win key</div></div>
+      <div class="ccard"><div class="ccard-icon">⚙️</div><div class="ccard-title">Settings</div><div class="ccard-desc">The new Control Panel. System, Bluetooth, Network, Accounts — everything is here. Control Panel still exists but Settings is the modern path.</div><div class="ccard-code">Win + I</div></div>
+      <div class="ccard"><div class="ccard-icon">📋</div><div class="ccard-title">Action Center</div><div class="ccard-desc">Split into two: the notification bell (bottom right) and Quick Settings (Wi-Fi/sound/brightness icons). They're separate in Win11.</div><div class="ccard-code">Win + N / Win + A</div></div>
+      <div class="ccard"><div class="ccard-icon">⧉</div><div class="ccard-title">Snap Layouts</div><div class="ccard-desc">Hover over a window's maximize button to see snap options. Tile windows side by side, quarters, or thirds. Huge productivity win to teach users.</div><div class="ccard-code">Win + Z</div></div>
+      <div class="ccard"><div class="ccard-icon">🔍</div><div class="ccard-title">Search</div><div class="ccard-desc">Click the taskbar search or press Win+S. Searches apps, files, settings, and the web. Powered by Windows Search Index — if broken, search is useless.</div><div class="ccard-code">Win + S</div></div>
+      <div class="ccard"><div class="ccard-icon">🖥️</div><div class="ccard-title">Task View</div><div class="ccard-desc">See all open windows and virtual desktops. Create new desktops to separate work contexts. Underused but very useful for power users.</div><div class="ccard-code">Win + Tab</div></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Essential Keyboard Shortcuts</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem;margin-top:.75rem">
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.6rem .85rem;display:flex;justify-content:space-between;align-items:center;font-size:.82rem">
+        <span style="color:var(--t2)">Task Manager</span><code>Ctrl+Shift+Esc</code></div>
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.6rem .85rem;display:flex;justify-content:space-between;align-items:center;font-size:.82rem">
+        <span style="color:var(--t2)">Run dialog</span><code>Win + R</code></div>
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.6rem .85rem;display:flex;justify-content:space-between;align-items:center;font-size:.82rem">
+        <span style="color:var(--t2)">Lock screen</span><code>Win + L</code></div>
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.6rem .85rem;display:flex;justify-content:space-between;align-items:center;font-size:.82rem">
+        <span style="color:var(--t2)">File Explorer</span><code>Win + E</code></div>
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.6rem .85rem;display:flex;justify-content:space-between;align-items:center;font-size:.82rem">
+        <span style="color:var(--t2)">Virtual Desktop</span><code>Win + Ctrl + D</code></div>
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.6rem .85rem;display:flex;justify-content:space-between;align-items:center;font-size:.82rem">
+        <span style="color:var(--t2)">Snip &amp; Sketch</span><code>Win + Shift + S</code></div>
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.6rem .85rem;display:flex;justify-content:space-between;align-items:center;font-size:.82rem">
+        <span style="color:var(--t2)">Admin PowerShell</span><code>Win+X then A</code></div>
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.6rem .85rem;display:flex;justify-content:space-between;align-items:center;font-size:.82rem">
+        <span style="color:var(--t2)">Desktop</span><code>Win + D</code></div>
+    </div>
+    <div class="box win" style="margin-top:1.25rem"><div class="box-lbl">🏛️ Harvard Domain Note</div><p>Users won't see a local desktop at login — they authenticate against Harvard Active Directory. Their profile is domain-linked. Some settings (wallpaper, power plan, security policies) are controlled by Group Policy and cannot be changed by the user or even local admins.</p></div>
+  </div>
+</div>
+
+<!-- ══ MODULE 2: ACCOUNTS & LAPS ══ -->
+<div class="mod vis" id="mod2" data-i="2">
+  <div class="mod-hd" onclick="toggleMod('mod2')">
+    <div class="mod-num">02</div>
+    <div class="mod-title">User Accounts, UAC & LAPS — The Admin Flow</div>
+    <div class="mod-badge">Critical</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">Three Account Types You'll Deal With</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">👤</div><div class="ccard-title">Standard User</div><div class="ccard-desc">The default for most Harvard staff. Can use software but can't install, change system settings, or approve UAC prompts. Most faculty and staff are here.</div></div>
+      <div class="ccard"><div class="ccard-icon">🔑</div><div class="ccard-title">Local Admin User</div><div class="ccard-desc">Some power users and co-ops have local admin rights on their machine. They can approve their own UAC prompts. UAC still pops but they can click Yes.</div></div>
+      <div class="ccard"><div class="ccard-icon">🛡️</div><div class="ccard-title">HUITadmin Account</div><div class="ccard-desc">Shared local admin account on every Harvard machine. Password is unique per machine and rotates — managed by LAPS. Retrieved from HUITtoolkit.exe.</div></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.5rem">What Is UAC?</div>
+    <p><strong>User Account Control (UAC)</strong> is Windows' permission gate. Whenever something tries to make a system-level change — install software, modify settings, run certain commands — Windows throws a prompt. Standard users see a <em>credential prompt</em> (enter admin username + password). Admins see a <em>consent prompt</em> (just Yes/No). You will see this constantly.</p>
+
+    <div class="sec-label" style="margin-top:1.5rem">The LAPS Flow — When UAC Blocks a Standard User</div>
+    <p>This is the workflow you'll run dozens of times. A user gets a UAC prompt they can't get past. Here's exactly what to do:</p>
+
+    <div class="laps-flow">
+      <div class="laps-step">
+        <div class="laps-step-num" style="color:var(--win)">① UAC Appears</div>
+        <div class="laps-step-title">User is blocked</div>
+        <div class="laps-step-desc">Windows shows a credential prompt. The user's standard account can't proceed. They call you.</div>
+      </div>
+      <div class="laps-arrow">→</div>
+      <div class="laps-step">
+        <div class="laps-step-num" style="color:var(--gold)">② Open HUITtoolkit</div>
+        <div class="laps-step-title">Run HUITtoolkit.exe</div>
+        <div class="laps-step-desc">Launch the HUIT toolkit. Navigate to the LAPS section. Search for the machine by hostname or asset tag.</div>
+      </div>
+      <div class="laps-arrow">→</div>
+      <div class="laps-step">
+        <div class="laps-step-num" style="color:var(--green)">③ Pull LAPS Password</div>
+        <div class="laps-step-title">Copy the password</div>
+        <div class="laps-step-desc">The toolkit shows the current LAPS password for that machine. This is a randomly generated, rotating password unique to this machine.</div>
+      </div>
+      <div class="laps-arrow">→</div>
+      <div class="laps-step">
+        <div class="laps-step-num" style="color:var(--cr)">④ Enter Credentials</div>
+        <div class="laps-step-title">Username: HUITadmin</div>
+        <div class="laps-step-desc">In the UAC prompt, type <strong>HUITadmin</strong> as the username and paste the LAPS password. Action proceeds.</div>
+      </div>
+    </div>
+
+    <div class="box warn"><div class="box-lbl">⚠ Critical — LAPS Passwords Are Temporary</div><p>LAPS passwords rotate on a schedule. Don't write them down or share them after use. Pull a fresh one each time. The password displayed in HUITtoolkit is only valid until the next rotation — could be hours or days. Always pull fresh.</p></div>
+    <div class="box info"><div class="box-lbl">💡 Finding the Hostname</div><p>Need to know which machine to look up? On the machine: <code>Win + R</code> → type <code>hostname</code> → Enter. Or Settings → System → About → Device name. The hostname is also usually on a HUIT asset sticker on the machine.</p></div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Get the Hostname Fast</div>
+    <div class="ps-block">
+      <div class="ps-prompt">PS C:\&gt;</div>
+      <div class="ps-cmd">hostname</div>
+      <div class="ps-out">HUITPC-1HB3V74</div>
+      <div class="ps-comment mt-1"># Or get more detail:</div>
+      <div class="ps-cmd">$env:COMPUTERNAME</div>
+      <div class="ps-out">HUITPC-1HB3V74</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 3: FILE EXPLORER ══ -->
+<div class="mod vis" id="mod3" data-i="3">
+  <div class="mod-hd" onclick="toggleMod('mod3')">
+    <div class="mod-num">03</div>
+    <div class="mod-title">File Explorer — Navigation & Hidden Files</div>
+    <div class="mod-badge">Foundation</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">Key Locations to Know</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">🏠</div><div class="ccard-title">User Profile</div><div class="ccard-desc">C:\Users\joc5799 — each user's home. Desktop, Documents, Downloads, AppData all live here.</div><div class="ccard-code">%USERPROFILE%</div></div>
+      <div class="ccard"><div class="ccard-icon">🌡️</div><div class="ccard-title">Temp Files</div><div class="ccard-desc">Two temp locations: user temp and system temp. Clean these to recover disk space and fix app issues.</div><div class="ccard-code">%TEMP% / C:\Windows\Temp</div></div>
+      <div class="ccard"><div class="ccard-icon">📦</div><div class="ccard-title">Program Files</div><div class="ccard-desc">64-bit apps → Program Files. 32-bit apps → Program Files (x86). Don't install directly here — use SCCM or the proper installer.</div><div class="ccard-code">C:\Program Files</div></div>
+      <div class="ccard"><div class="ccard-icon">🪟</div><div class="ccard-title">Windows Folder</div><div class="ccard-desc">System files. Never delete things here. Event logs are at C:\Windows\System32\winevt\Logs.</div><div class="ccard-code">C:\Windows</div></div>
+      <div class="ccard"><div class="ccard-icon">☁️</div><div class="ccard-title">OneDrive</div><div class="ccard-desc">Harvard users sync Documents and Desktop to OneDrive for Business. Files may show cloud icons — they're not local until opened.</div><div class="ccard-code">%USERPROFILE%\OneDrive</div></div>
+      <div class="ccard"><div class="ccard-icon">🕶️</div><div class="ccard-title">AppData</div><div class="ccard-desc">Hidden folder inside user profile. Contains app settings, caches, and local data. Critical for profile troubleshooting. Has Local, Roaming, LocalLow subfolders.</div><div class="ccard-code">%APPDATA%</div></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Show Hidden Files & Extensions</div>
+    <p>By default Windows hides file extensions and hidden folders. You need to turn these on — you'll miss problems and can't see critical system files without them.</p>
+    <ol class="steps">
+      <li>Open File Explorer → Click the <strong>View</strong> menu (or three-dot menu in Win11)</li>
+      <li>Select <strong>Show</strong> → check <strong>Hidden items</strong></li>
+      <li>In the same menu, check <strong>File name extensions</strong></li>
+      <li>Now you can see AppData, .dll files, .bat files, etc.</li>
+    </ol>
+    <div class="box ok"><div class="box-lbl">💡 Quick Way</div><p>In any Explorer window: <code>Alt + V</code> then <code>H</code> toggles hidden files. Or use the View ribbon. Keep this on permanently on your work machine — there's almost never a reason to hide extensions as a tech.</p></div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Quick Environment Variable Navigation</div>
+    <p>Instead of clicking through nested folders, type these directly in the Explorer address bar or <code>Win+R</code>:</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.5rem">
+      <div class="code-block" style="margin:0;font-size:.72rem">%TEMP% → User temp folder</div>
+      <div class="code-block" style="margin:0;font-size:.72rem">%APPDATA% → Roaming AppData</div>
+      <div class="code-block" style="margin:0;font-size:.72rem">%LOCALAPPDATA% → Local AppData</div>
+      <div class="code-block" style="margin:0;font-size:.72rem">%PROGRAMDATA% → C:\ProgramData</div>
+      <div class="code-block" style="margin:0;font-size:.72rem">%WINDIR% → C:\Windows</div>
+      <div class="code-block" style="margin:0;font-size:.72rem">%SYSTEMROOT% → C:\Windows</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 4: TASK MANAGER ══ -->
+<div class="mod vis" id="mod4" data-i="4">
+  <div class="mod-hd" onclick="toggleMod('mod4')">
+    <div class="mod-num">04</div>
+    <div class="mod-title">Task Manager — Reading & Acting on It</div>
+    <div class="mod-badge">Diagnostics</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">Open It Immediately</div>
+    <p>When a user says "my computer is slow" — <code>Ctrl+Shift+Esc</code> is your first move, every time. Task Manager shows you exactly what's consuming resources so you're not guessing.</p>
+
+    <!-- Task Manager Replica -->
+    <div class="tm-wrap">
+      <div class="tm-tabs">
+        <div class="tm-tab on">Processes</div>
+        <div class="tm-tab">Performance</div>
+        <div class="tm-tab">Startup</div>
+        <div class="tm-tab">Services</div>
+        <div class="tm-tab">Details</div>
+      </div>
+      <div class="tm-header">
+        <div>Name</div><div>CPU</div><div>Memory</div><div>Disk</div><div>Network</div>
+      </div>
+      <div class="tm-row high">
+        <div class="tm-name">SearchIndexer.exe<small>Windows Search</small></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill cpu" style="width:82%"></div></div><div class="tm-pct red">82%</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill mem" style="width:35%"></div></div><div class="tm-pct">1.2 GB</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill disk" style="width:90%"></div></div><div class="tm-pct red">120 MB/s</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill net" style="width:5%"></div></div><div class="tm-pct">0.1 Mbps</div></div>
+      </div>
+      <div class="tm-row">
+        <div class="tm-name">Microsoft Teams<small>Background process</small></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill cpu" style="width:8%"></div></div><div class="tm-pct">8%</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill mem" style="width:55%"></div></div><div class="tm-pct">780 MB</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill disk" style="width:3%"></div></div><div class="tm-pct">0.5 MB/s</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill net" style="width:15%"></div></div><div class="tm-pct">2.1 Mbps</div></div>
+      </div>
+      <div class="tm-row">
+        <div class="tm-name">csrss.exe (Not Responding)<small>Client Server Runtime</small></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill cpu" style="width:4%"></div></div><div class="tm-pct">4%</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill mem" style="width:12%"></div></div><div class="tm-pct">48 MB</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill disk" style="width:0%"></div></div><div class="tm-pct">0</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill net" style="width:0%"></div></div><div class="tm-pct">0</div></div>
+      </div>
+      <div class="tm-row">
+        <div class="tm-name">OneDrive<small>Microsoft OneDrive</small></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill cpu" style="width:2%"></div></div><div class="tm-pct">2%</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill mem" style="width:18%"></div></div><div class="tm-pct">220 MB</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill disk" style="width:22%"></div></div><div class="tm-pct">8 MB/s</div></div>
+        <div class="tm-bar-wrap"><div class="tm-bar"><div class="tm-bar-fill net" style="width:40%"></div></div><div class="tm-pct">12 Mbps</div></div>
+      </div>
+      <div style="padding:.5rem .75rem;font-size:.62rem;color:#666;background:#2b2b2b;border-top:1px solid #3a3a3a">
+        CPU 18% · 12.8 GB RAM used · Disk 35% · Network 15 Mbps
+      </div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Reading Each Tab</div>
+    <div class="tabs">
+      <button class="tab on" onclick="switchTab(this,'t-proc')">Processes</button>
+      <button class="tab" onclick="switchTab(this,'t-perf')">Performance</button>
+      <button class="tab" onclick="switchTab(this,'t-start')">Startup</button>
+      <button class="tab" onclick="switchTab(this,'t-svc')">Services</button>
+    </div>
+    <div class="tpanel on" id="t-proc">
+      <p><strong>Processes</strong> shows everything running. Sort by CPU, Memory, or Disk (click column headers) to find the culprit immediately. Columns in red = that resource is critically high.</p>
+      <div class="cgrid">
+        <div class="ccard"><div class="ccard-icon">🔴</div><div class="ccard-title">High CPU</div><div class="ccard-desc">SearchIndexer.exe, antivirus scans, Windows Update, and runaway browser tabs are common culprits. If >90% sustained, investigate.</div></div>
+        <div class="ccard"><div class="ccard-icon">🟡</div><div class="ccard-title">High Memory</div><div class="ccard-desc">Teams, Chrome, and Outlook each use 500MB–2GB. If RAM is maxed, machine will use disk as swap = extreme slowness.</div></div>
+        <div class="ccard"><div class="ccard-icon">🔵</div><div class="ccard-title">High Disk</div><div class="ccard-desc">100% disk usage = a very common Win11 issue. Often SearchIndexer.exe, Windows Update, or Superfetch/SysMain. Check via Processes tab.</div></div>
+      </div>
+      <div class="box warn"><div class="box-lbl">⚠ Don't Kill These</div><p><code>csrss.exe</code>, <code>lsass.exe</code>, <code>winlogon.exe</code>, <code>svchost.exe</code>, and <code>System</code> are critical system processes. Ending them crashes Windows. If they're high CPU, something else is wrong — don't kill them directly.</p></div>
+    </div>
+    <div class="tpanel" id="t-perf">
+      <p><strong>Performance</strong> gives you real-time graphs and hardware info. The most useful: CPU speed (shows if it's throttling), RAM in use, Disk I/O, and at the bottom — how long the machine has been on since last reboot. "Open Resource Monitor" at the bottom gives even more detail.</p>
+      <div class="box ok"><div class="box-lbl">✓ First Diagnostic Question</div><p>Always check uptime. If the machine hasn't been rebooted in 15+ days, reboot it first. Many "slow computer" and "weird behavior" issues resolve immediately after a restart. Most users never turn their machines off.</p></div>
+    </div>
+    <div class="tpanel" id="t-start">
+      <p><strong>Startup</strong> lists every app that launches when Windows starts. This is a goldmine for fixing slow boot times. Each item shows its "Startup impact" — High, Medium, or Low. Disable the High-impact ones that aren't needed (right-click → Disable).</p>
+      <div class="box info"><div class="box-lbl">💡 What to Disable</div><p>Safe to disable: Spotify, Discord, Slack (if not required), OneDrive (if causing issues), Teams (it auto-starts when opened). Don't disable: CrowdStrike, security tools, Dell management agents, anything from HUIT.</p></div>
+    </div>
+    <div class="tpanel" id="t-svc">
+      <p><strong>Services</strong> shows every Windows service. Right-click → Start/Stop/Restart. This is where you restart Windows Search, Windows Update, Print Spooler, etc. without rebooting. Critical for fixing stuck services without kicking the user off.</p>
+      <p>Services to know: <code>WSearch</code> (Windows Search/Index), <code>wuauserv</code> (Windows Update), <code>Spooler</code> (Print), <code>CryptSvc</code> (Certificates), <code>BITS</code> (Background transfers).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 5: SEARCH & INDEXING ══ -->
+<div class="mod vis" id="mod5" data-i="5">
+  <div class="mod-hd" onclick="toggleMod('mod5')">
+    <div class="mod-num">05</div>
+    <div class="mod-title">Windows Search & Indexing — Why It Fails & How to Fix It</div>
+    <div class="mod-badge">Common Issue</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">How Search Indexing Works</div>
+    <p>Windows maintains a database of all your files, file contents, and metadata so that when you search, results are instant rather than scanning the whole disk. <strong>SearchIndexer.exe</strong> is the background process that builds and maintains this database continuously.</p>
+
+    <div class="index-flow">
+      <div class="inode active"><div class="inode-icon">📁</div>Your Files<div class="inode-lbl">C:\Users\...\Documents</div></div>
+      <div class="iarr">→</div>
+      <div class="inode"><div class="inode-icon">⚙️</div>SearchIndexer.exe<div class="inode-lbl">Reads & catalogs files</div></div>
+      <div class="iarr">→</div>
+      <div class="inode"><div class="inode-icon">🗄️</div>Search Index DB<div class="inode-lbl">C:\ProgramData\Microsoft\Search</div></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.25rem">When SearchIndexer.exe Eats Your CPU/Disk</div>
+    <p>This is extremely common. A machine running at 80-100% disk usage that's "brand new" is almost always the search indexer building the initial index. This is normal the first time but if it's been running for days, something is wrong.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">🆕</div><div class="ccard-title">New Machine / New Profile</div><div class="ccard-desc">Initial indexing takes 1–4 hours. Normal — let it run. CPU and disk will be high. Machine is usable, just slower.</div></div>
+      <div class="ccard"><div class="ccard-icon">💀</div><div class="ccard-title">Corrupted Index</div><div class="ccard-desc">Search returns wrong results or nothing. Indexer loops forever. Fix: rebuild the index. This takes 1–2 hours.</div></div>
+      <div class="ccard"><div class="ccard-icon">📡</div><div class="ccard-title">Network Drive Indexed</div><div class="ccard-desc">If a mapped network drive or cloud sync folder is in the indexed locations, SearchIndexer hammers the network. Remove network paths from indexed locations.</div></div>
+      <div class="ccard"><div class="ccard-icon">🔄</div><div class="ccard-title">Service Crash Loop</div><div class="ccard-desc">WSearch service keeps crashing and restarting. Check Event Viewer Application log for SearchIndexer errors. Usually fixed by rebuilding.</div></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Rebuild the Search Index</div>
+    <ol class="steps">
+      <li><code>Win + R</code> → type <code>control</code> → Enter → find <strong>Indexing Options</strong> (or search for it in Control Panel)</li>
+      <li>Click <strong>Advanced</strong> button (requires admin — use HUITadmin + LAPS if needed)</li>
+      <li>Click <strong>Rebuild</strong> — confirm the warning. This deletes and recreates the entire index</li>
+      <li>Click OK. Indexing starts fresh — takes 1–4 hours depending on number of files</li>
+      <li>Machine can be used during this time but search will be incomplete until done</li>
+    </ol>
+    <div class="box win"><div class="box-lbl">⚡ Faster Alternative — PowerShell</div><p>Stop the service, delete the database, restart it:<br>
+    <code>Stop-Service WSearch -Force</code><br>
+    <code>Remove-Item -Path "C:\ProgramData\Microsoft\Search\Data\Applications\Windows" -Recurse -Force</code><br>
+    <code>Start-Service WSearch</code><br>
+    Run as admin. Rebuild starts automatically.</p></div>
+
+    <div class="sec-label" style="margin-top:1.25rem">Check & Fix Indexed Locations</div>
+    <ol class="steps">
+      <li>Control Panel → Indexing Options → <strong>Modify</strong></li>
+      <li>Review what's listed. You should see: <code>C:\Users\[name]</code>, Offline Files, Start Menu</li>
+      <li>If you see mapped drives (\\server\share), OneDrive folders with many files, or other network paths — <strong>uncheck them</strong></li>
+      <li>Click OK. Index rebuilds from only the correct locations</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══ MODULE 6: POWERSHELL ══ -->
+<div class="mod vis" id="mod6" data-i="6">
+  <div class="mod-hd" onclick="toggleMod('mod6')">
+    <div class="mod-num">06</div>
+    <div class="mod-title">PowerShell — The Commands You'll Use Every Day</div>
+    <div class="mod-badge">Reference</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">Opening PowerShell as Admin</div>
+    <p>Most of these commands require admin rights. On domain machines with Group Policy restrictions, always open PowerShell with elevation. Three ways:</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">⊞</div><div class="ccard-title">Right-click Start</div><div class="ccard-desc">Right-click the Windows icon → "Terminal (Admin)" or "PowerShell (Admin)". Enter HUITadmin + LAPS if standard user.</div></div>
+      <div class="ccard"><div class="ccard-icon">⌨️</div><div class="ccard-title">Win + X then A</div><div class="ccard-desc">Fastest keyboard shortcut. Opens elevated PowerShell or Terminal immediately. Will UAC prompt if not admin.</div></div>
+      <div class="ccard"><div class="ccard-icon">🔍</div><div class="ccard-title">Search → Run as Admin</div><div class="ccard-desc">Search "PowerShell" → right-click the result → "Run as administrator". Clean and reliable.</div></div>
+    </div>
+
+    <div class="box win"><div class="box-lbl">📌 Execution Policy on Harvard Machines</div><p>HUIT machines typically run <strong>RemoteSigned</strong> policy via GPO — scripts you write locally will run, but downloaded scripts need to be signed. If you're getting "script cannot be loaded" errors, check with <code>Get-ExecutionPolicy</code>. Don't bypass this on domain machines without supervisor approval.</p></div>
+
+    <div class="sec-label" style="margin-top:1.5rem">The Commands — Memorize the CORE ones</div>
+    <div class="cmd-grid">
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">ipconfig /all</code><span class="cmd-tag core">Core</span></div>
+        <div class="cmd-desc">Full network config: IP, MAC, DNS, DHCP server, lease info. Your first command on any connectivity issue.</div>
+        <div class="cmd-out">Ethernet adapter Ethernet:<br>Physical Address: A4-83-E7-2C-11-F0<br>IPv4 Address: 10.243.16.42<br>Default Gateway: 10.243.16.1<br>DNS Servers: 10.0.0.2</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">Get-Process | Sort CPU -Desc | Select -First 10</code><span class="cmd-tag core">Core</span></div>
+        <div class="cmd-desc">Top 10 CPU consumers right now. Faster than Task Manager for remote support or scripts. Kill with <code>Stop-Process -Name "name"</code>.</div>
+        <div class="cmd-out">Handles  CPU(s)   Id  ProcessName<br>-------  ------  ---  -----------<br>   2847  142.31  812  SearchIndexer<br>    834   28.44 4420  Teams</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">Get-Volume</code><span class="cmd-tag core">Core</span></div>
+        <div class="cmd-desc">Disk space on all drives. Shows free space at a glance. Critical for "out of disk" troubleshooting. Add <code>| Where SizeRemaining -lt 5GB</code> to flag low drives.</div>
+        <div class="cmd-out">DriveLetter FriendlyName FileSystem SizeRemaining   Size<br>----------- ------------ ---------- ------------- --------<br>C           Local Disk   NTFS             8.2 GB 237.6 GB</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">Restart-Service WSearch</code><span class="cmd-tag admin">Admin</span></div>
+        <div class="cmd-desc">Restart the Windows Search service without rebooting. Use when search is broken or SearchIndexer is hung. Run as admin.</div>
+        <div class="cmd-out"># No output = success<br># Check status after:<br>Get-Service WSearch</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">gpupdate /force</code><span class="cmd-tag core">Core</span></div>
+        <div class="cmd-desc">Force Group Policy to pull the latest settings from the domain controller. Run this after any GPO change, or when settings seem wrong. Requires network + domain connection.</div>
+        <div class="cmd-out">Updating Computer policy...<br>Computer Policy update has completed successfully.<br>Updating User policy...<br>User Policy update has completed successfully.</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">sfc /scannow</code><span class="cmd-tag admin">Admin</span></div>
+        <div class="cmd-desc">System File Checker — scans and repairs corrupted Windows system files. Takes 10–20 min. Run this when apps crash randomly or Windows behaves strangely.</div>
+        <div class="cmd-out">Beginning system scan...<br>Verification 100% complete.<br>Windows Resource Protection found corrupt files and repaired them.</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">Get-EventLog -LogName System -Newest 20 -EntryType Error</code><span class="cmd-tag">Logs</span></div>
+        <div class="cmd-desc">Last 20 System errors in one command. Faster than opening Event Viewer. Pipe to <code>| Format-List</code> for full details on each event.</div>
+        <div class="cmd-out">Index  Time         EntryType  Source      EventID  Message<br>-----  ----         ---------  ------      -------  -------<br>12443  May 2 09:14  Error      WSearch       10028  The server...</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">net localgroup administrators</code><span class="cmd-tag">Accounts</span></div>
+        <div class="cmd-desc">Lists all local admin accounts on the machine. Useful to confirm HUITadmin is present and to see if any unexpected accounts have admin rights.</div>
+        <div class="cmd-out">Members of Administrators:<br>Administrator<br>HUITadmin<br>Domain\Domain Admins</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">DISM /Online /Cleanup-Image /RestoreHealth</code><span class="cmd-tag admin">Admin</span></div>
+        <div class="cmd-desc">Repairs the Windows component store from Windows Update. Run this BEFORE sfc /scannow if SFC fails — DISM fixes what SFC can't reach. Takes 15–30 min. Needs internet.</div>
+        <div class="cmd-out">Restoring health...<br>[====================] 100.0%<br>The restore operation completed successfully.</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">Get-HotFix | Sort InstalledOn -Desc</code><span class="cmd-tag">Updates</span></div>
+        <div class="cmd-desc">List of all Windows patches installed, newest first. Check this to confirm whether a specific update was applied or to see when the machine was last patched.</div>
+        <div class="cmd-out">HotFixID   InstalledOn   Description<br>--------   -----------   -----------<br>KB5034441  5/1/2025      Security Update<br>KB5032190  4/12/2025     Update</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">Remove-Item $env:TEMP\* -Recurse -Force</code><span class="cmd-tag">Cleanup</span></div>
+        <div class="cmd-desc">Clears user temp folder. Safe to run — Windows won't delete files still in use. Often frees gigabytes and fixes app launch issues. Errors about locked files are normal and ignorable.</div>
+        <div class="cmd-out"># Some errors expected (locked files)<br># Check space recovered:<br>Get-Volume C</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-hd"><code class="cmd-name">Test-NetConnection -ComputerName hostname -Port 3389</code><span class="cmd-tag">Network</span></div>
+        <div class="cmd-desc">Test if Remote Desktop (port 3389) is reachable on a machine. Replace hostname with machine name or IP. TcpTestSucceeded: True = RDP is open and reachable.</div>
+        <div class="cmd-out">ComputerName: HUITPC-1HB3V74<br>RemoteAddress: 10.243.16.42<br>RemotePort: 3389<br>TcpTestSucceeded: True</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 7: COMMON FIXES ══ -->
+<div class="mod vis" id="mod7" data-i="7">
+  <div class="mod-hd" onclick="toggleMod('mod7')">
+    <div class="mod-num">07</div>
+    <div class="mod-title">Common Windows Fixes — Your Troubleshooting Playbook</div>
+    <div class="mod-badge">Critical</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <p style="font-size:.83rem;color:var(--t3);margin-bottom:1.25rem">Click each scenario to expand the full fix procedure. These are the calls you'll get in your first week.</p>
+
+    <!-- FIX 1 -->
+    <div class="fix-card" id="fix1" onclick="toggleFix('fix1')">
+      <div class="fix-hd">
+        <div class="fix-icon">🐌</div>
+        <div class="fix-title">Computer Is Very Slow — User Can Barely Work</div>
+        <div class="fix-sev high">High Impact</div>
+        <svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="fix-body">
+        <ol class="steps" style="margin-top:.75rem">
+          <li><strong>Reboot first.</strong> Ask when it was last restarted — if &gt;7 days, reboot immediately. This alone fixes 30% of "slow computer" calls.</li>
+          <li>Open Task Manager (<code>Ctrl+Shift+Esc</code>) → sort by CPU, then Memory, then Disk. Find the top consumer.</li>
+          <li>If <strong>SearchIndexer.exe</strong> is top: it's indexing. If it's been running hours, rebuild the index (Module 5).</li>
+          <li>If <strong>Disk is at 100%</strong>: check if Windows Update is running. Also check <code>SysMain</code> service — disable it if it's hammering disk on an SSD.</li>
+          <li>Check Startup tab — disable high-impact non-essential apps (Spotify, Teams if not required, etc.).</li>
+          <li>Check available disk space: <code>Get-Volume</code>. Under 10% free causes severe slowness. Clean temp files, empty Recycle Bin, run Storage Sense.</li>
+          <li>If RAM is maxed: check if user has 50 browser tabs open. Also check if the machine only has 8GB RAM — may need upgrade request via ticket.</li>
+        </ol>
+        <div class="code-block">Disable-Service SysMain  # If SysMain is thrashing disk on SSD<br>Remove-Item $env:TEMP\* -Recurse -Force -EA SilentlyContinue  # Clear temp</div>
+      </div>
+    </div>
+
+    <!-- FIX 2 -->
+    <div class="fix-card" id="fix2" onclick="toggleFix('fix2')">
+      <div class="fix-hd">
+        <div class="fix-icon">🔄</div>
+        <div class="fix-title">Windows Update Stuck or Failing</div>
+        <div class="fix-sev high">High Impact</div>
+        <svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="fix-body">
+        <ol class="steps" style="margin-top:.75rem">
+          <li>Check Settings → Windows Update → View update history. Note the error code if shown (e.g. 0x80070422, 0x800f0905).</li>
+          <li>Stop the Windows Update services, clear the download cache, restart:<br>
+            <code>Stop-Service wuauserv, bits, cryptsvc -Force</code><br>
+            <code>Rename-Item C:\Windows\SoftwareDistribution SoftwareDistribution.old</code><br>
+            <code>Start-Service wuauserv, bits, cryptsvc</code></li>
+          <li>Try updating again from Settings → Windows Update → Check for updates.</li>
+          <li>If still failing: Run DISM then SFC:<br>
+            <code>DISM /Online /Cleanup-Image /RestoreHealth</code><br>
+            <code>sfc /scannow</code></li>
+          <li>Check that the machine has at least 10GB free disk (updates need staging space).</li>
+          <li>If machine is on SCCM: updates may be deployed through Software Center — check there instead of Windows Update directly.</li>
+        </ol>
+        <div class="box info"><div class="box-lbl">💡 SCCM Machines</div><p>On Harvard SCCM-managed machines, updates often come through <strong>Software Center</strong>, not direct Windows Update. Check Software Center → Updates tab first before manually touching Windows Update.</p></div>
+      </div>
+    </div>
+
+    <!-- FIX 3 -->
+    <div class="fix-card" id="fix3" onclick="toggleFix('fix3')">
+      <div class="fix-hd">
+        <div class="fix-icon">💥</div>
+        <div class="fix-title">App Won't Open / Crashes Immediately</div>
+        <div class="fix-sev med">Medium</div>
+        <svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="fix-body">
+        <ol class="steps" style="margin-top:.75rem">
+          <li>Check if the app is already running in Task Manager (processes tab) but just not showing. End task on any existing instance, then relaunch.</li>
+          <li>Check Event Viewer → Windows Logs → Application for errors with the app name at the crash time. Note the Event ID and exception code.</li>
+          <li>Clear the app's temp/cache folder: navigate to <code>%LOCALAPPDATA%\[AppName]\</code> and delete the cache subfolder.</li>
+          <li>For Office apps: try running in safe mode first — <code>winword /safe</code>, <code>excel /safe</code>. If it works, a COM add-in is the problem. Disable add-ins in Options.</li>
+          <li>For Teams: fully quit Teams from system tray → delete <code>%LOCALAPPDATA%\Packages\MSTeams*</code> → restart Teams.</li>
+          <li>If none of the above: repair or reinstall via SCCM Software Center. Don't manually download — use approved sources only.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- FIX 4 -->
+    <div class="fix-card" id="fix4" onclick="toggleFix('fix4')">
+      <div class="fix-hd">
+        <div class="fix-icon">💾</div>
+        <div class="fix-title">Running Out of Disk Space</div>
+        <div class="fix-sev med">Medium</div>
+        <svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="fix-body">
+        <ol class="steps" style="margin-top:.75rem">
+          <li>Run Storage Sense: Settings → System → Storage → "Run Storage Sense now". Cleans temp files, Downloads older than 30 days, Recycle Bin.</li>
+          <li>Manually clear temp: <code>Remove-Item $env:TEMP\* -Recurse -Force -EA SilentlyContinue</code> and <code>Remove-Item C:\Windows\Temp\* -Recurse -Force -EA SilentlyContinue</code></li>
+          <li>Check for <code>Windows.old</code> folder at C:\ — a previous Windows install that wasn't cleaned up. Can be 20–40GB. Remove via Disk Cleanup → Clean up system files → Previous Windows installations.</li>
+          <li>Check <code>C:\Windows\Installer</code> — sometimes bloats to 10+ GB. Don't delete manually. Use <code>msizap</code> or DISM to clean.</li>
+          <li>Look for massive user files: run <code>Get-ChildItem C:\Users -Recurse -File | Sort Length -Desc | Select -First 20 | Select Name, Length, FullName</code></li>
+          <li>If OneDrive shows many local files, check if Files On Demand is configured — files should stay in the cloud until needed.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- FIX 5 -->
+    <div class="fix-card" id="fix5" onclick="toggleFix('fix5')">
+      <div class="fix-hd">
+        <div class="fix-icon">👤</div>
+        <div class="fix-title">User Can't Log In / Profile Corruption</div>
+        <div class="fix-sev high">High Impact</div>
+        <svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="fix-body">
+        <ol class="steps" style="margin-top:.75rem">
+          <li>Check if they can log into another machine with the same credentials. If yes, the issue is local profile not domain account.</li>
+          <li>Log in as HUITadmin using LAPS password. Check <code>C:\Users\</code> — look for <code>joc5799.DOMAIN</code> or <code>joc5799.000</code> folders — these are corrupted temporary profiles.</li>
+          <li>In Registry: <code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList</code> — find the SID entry that points to the corrupt profile. Note the path.</li>
+          <li>Backup user data: copy Documents, Desktop, Downloads, AppData\Roaming from the old profile to a safe location or OneDrive.</li>
+          <li>Delete the corrupt profile entry in Registry and in <code>C:\Users\</code>. User logs in fresh, gets a new profile.</li>
+          <li>Restore backed-up data to the new profile location.</li>
+        </ol>
+        <div class="box warn"><div class="box-lbl">⚠ Always Back Up First</div><p>Never delete a user profile without backing up their data first. Check if they use OneDrive — if Desktop and Documents are synced to OneDrive, recovery is much simpler.</p></div>
+      </div>
+    </div>
+
+    <!-- FIX 6 -->
+    <div class="fix-card" id="fix6" onclick="toggleFix('fix6')">
+      <div class="fix-hd">
+        <div class="fix-icon">🖨️</div>
+        <div class="fix-title">Printer Not Working / Print Queue Stuck</div>
+        <div class="fix-sev low">Quick Fix</div>
+        <svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="fix-body">
+        <ol class="steps" style="margin-top:.75rem">
+          <li>Clear the print queue: <code>Stop-Service Spooler -Force</code> → <code>Remove-Item C:\Windows\System32\spool\PRINTERS\* -Force</code> → <code>Start-Service Spooler</code></li>
+          <li>If printer is offline: check it's powered on and connected. Try removing and re-adding via Settings → Bluetooth &amp; devices → Printers.</li>
+          <li>For network printers: ping the printer IP. If no response, the printer or its network connection is down.</li>
+          <li>Driver issue: Device Manager → find the printer → right-click → Update driver. Or remove and reinstall via Add Printer wizard.</li>
+        </ol>
+        <div class="code-block">Stop-Service Spooler -Force<br>Remove-Item C:\Windows\System32\spool\PRINTERS\* -Force -EA SilentlyContinue<br>Start-Service Spooler<br># Queue is now cleared</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 8: DELL COMMAND UPDATE ══ -->
+<div class="mod vis" id="mod8" data-i="8">
+  <div class="mod-hd" onclick="toggleMod('mod8')">
+    <div class="mod-num">08</div>
+    <div class="mod-title">Dell Command Update — Keeping Machines Patched</div>
+    <div class="mod-badge">Hardware</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">What Dell Command Update Does</div>
+    <p><strong>Dell Command Update (DCU)</strong> is Dell's driver and BIOS management tool. While Windows Update handles OS patches, DCU handles everything specific to the Dell hardware: BIOS firmware, chipset drivers, display drivers, network adapter drivers, docking station firmware, and more. On HUIT machines, DCU is deployed and managed. You'll use it when a machine has hardware issues or you need to ensure drivers are current.</p>
+
+    <div class="dcu-flow">
+      <div class="dcu-node win">DCU Scans<br><span style="font-size:.58rem">Checks Dell hardware</span></div>
+      <div class="dcu-arr">→</div>
+      <div class="dcu-node">Compares to<br><span style="font-size:.58rem">Dell's update servers</span></div>
+      <div class="dcu-arr">→</div>
+      <div class="dcu-node">Downloads<br><span style="font-size:.58rem">Only what's needed</span></div>
+      <div class="dcu-arr">→</div>
+      <div class="dcu-node ok">Installs &amp;<br><span style="font-size:.58rem">Prompts for reboot</span></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.25rem">When to Run DCU</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">📶</div><div class="ccard-title">Wi-Fi Issues</div><div class="ccard-desc">Intermittent drops, wrong speeds, can't see 6GHz networks. Wi-Fi adapter driver update often fixes these.</div></div>
+      <div class="ccard"><div class="ccard-icon">🖥️</div><div class="ccard-title">Display Problems</div><div class="ccard-desc">Flickering, resolution issues, external monitor not working. Update Intel/AMD/Nvidia display drivers via DCU.</div></div>
+      <div class="ccard"><div class="ccard-icon">🔋</div><div class="ccard-title">Battery/Power</div><div class="ccard-desc">Bad battery life, throttling, thermal issues. BIOS and EC firmware updates address power management.</div></div>
+      <div class="ccard"><div class="ccard-icon">⌚</div><div class="ccard-title">New Machine Prep</div><div class="ccard-desc">Every new Dell should get a DCU pass before deployment. Ships with outdated drivers that need updating.</div></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.25rem">Running DCU</div>
+    <ol class="steps">
+      <li>Search "Dell Command Update" in Start Menu or find it in Start → All Apps</li>
+      <li>Click <strong>Check for Updates</strong> — DCU scans the hardware and contacts Dell's servers</li>
+      <li>Review the list. Updates are categorized as Critical, Recommended, and Optional</li>
+      <li>Install at minimum all <strong>Critical</strong> and <strong>Recommended</strong> updates</li>
+      <li>BIOS updates will require a restart — warn the user. BIOS updates are safe but the machine is briefly unusable during flash (usually 2–3 minutes, machine restarts itself)</li>
+      <li>After restart, run DCU again to confirm no updates remain</li>
+    </ol>
+    <div class="box warn"><div class="box-lbl">⚠ BIOS Updates Require Power</div><p>If updating BIOS on a laptop, the machine must be plugged into AC power — not running on battery. DCU will refuse to install BIOS updates on battery. Make sure the charger is connected before starting.</p></div>
+    <div class="box win"><div class="box-lbl">💡 CLI Mode for Batch Runs</div><p>DCU has a command-line interface for scripting: <code>dcu-cli.exe /applyUpdates -reboot=enable</code> — useful when you need to update multiple machines or run it remotely via SCCM.</p></div>
+  </div>
+</div>
+
+<!-- ══ MODULE 9: GPO & SCCM ══ -->
+<div class="mod vis" id="mod9" data-i="9">
+  <div class="mod-hd" onclick="toggleMod('mod9')">
+    <div class="mod-num">09</div>
+    <div class="mod-title">Group Policy & SCCM — Why Things Are Locked</div>
+    <div class="mod-badge">Domain</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">Group Policy (GPO)</div>
+    <p><strong>Group Policy</strong> is how Harvard IT centrally manages every domain-joined machine. When a setting is greyed out, an option is missing, or something "reset itself" after a reboot — that's usually Group Policy enforcing a standard. You cannot override GPO as a local admin without domain admin rights. Don't try to work around it — open a ticket if something needs changing.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">🔒</div><div class="ccard-title">Locked Settings</div><div class="ccard-desc">Greyed-out options in Settings or Control Panel = GPO enforced. Common: screen timeout, wallpaper, Windows Update settings, firewall rules.</div></div>
+      <div class="ccard"><div class="ccard-icon">🔄</div><div class="ccard-title">Settings Reset After Reboot</div><div class="ccard-desc">User changes something, logs out, logs back in and it's reset. That's GPO pulling it back to the enforced state. Not a bug.</div></div>
+      <div class="ccard"><div class="ccard-icon">📦</div><div class="ccard-title">Software Restrictions</div><div class="ccard-desc">GPO can block certain executables or require all software to come from approved paths. Users can't install random software without admin rights + approved sources.</div></div>
+      <div class="ccard"><div class="ccard-icon">🕐</div><div class="ccard-title">Login Scripts</div><div class="ccard-desc">GPO runs scripts at login — mapping drives, configuring printers, pushing settings. If logins are slow, a GPO script may be timing out.</div></div>
+    </div>
+    <div class="code-block" style="margin-top:1rem"># Force GPO refresh immediately (run as admin)<br>gpupdate /force<br><br># See what GPOs are applied to this machine<br>gpresult /r<br><br># Full GPO report to HTML<br>gpresult /h C:\Temp\gpo-report.html</div>
+
+    <div class="sec-label" style="margin-top:1.5rem">SCCM / Software Center</div>
+    <p><strong>SCCM (System Center Configuration Manager)</strong> is how HUIT deploys and manages software across all machines. When a user needs software, the right path is through <strong>Software Center</strong> — not downloading from the internet.</p>
+    <ol class="steps">
+      <li>Open Software Center: Start Menu → search "Software Center" or look in All Apps</li>
+      <li>Click <strong>Applications</strong> — shows all software available for this machine/user from HUIT</li>
+      <li>Find the app → click <strong>Install</strong>. SCCM handles the download and installation silently</li>
+      <li>Check <strong>Installation Status</strong> tab if install seems stuck — shows progress and any errors</li>
+      <li>Updates tab shows pending OS and app updates that SCCM manages (separate from Windows Update)</li>
+    </ol>
+    <div class="box info"><div class="box-lbl">💡 Software Not in Software Center?</div><p>If a user needs software that isn't in Software Center, they need to request it through a ServiceNow ticket. IT reviews, procures a license if needed, and deploys via SCCM. Don't install random software from the internet — it can conflict with security tools and violates Harvard policy.</p></div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Security Tools — Know What They Are, Don't Touch Them</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">🦅</div><div class="ccard-title">CrowdStrike Falcon</div><div class="ccard-desc">Harvard's EDR (Endpoint Detection & Response). Monitors everything in real-time. If you see it in Task Manager, that's normal — don't stop it, disable it, or uninstall it. Ever.</div></div>
+      <div class="ccard"><div class="ccard-icon">📊</div><div class="ccard-title">Nexthink</div><div class="ccard-desc">Harvard's experience monitoring agent. Tracks performance metrics, app crashes, and user experience data. Also normal — leave it alone. It's how HUIT proactively identifies issues.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODULE 10: EVENT VIEWER ══ -->
+<div class="mod vis" id="mod10" data-i="10">
+  <div class="mod-hd" onclick="toggleMod('mod10')">
+    <div class="mod-num">10</div>
+    <div class="mod-title">Event Viewer — Reading Windows Logs</div>
+    <div class="mod-badge">Diagnostics</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">What Event Viewer Is For</div>
+    <p>Event Viewer is Windows' log system. Every crash, error, warning, login, and service failure gets recorded here. When a user says "my computer crashed" or "something happened and I don't know what" — Event Viewer tells you exactly what happened and when.</p>
+
+    <!-- Event Viewer Replica -->
+    <div class="ev-wrap">
+      <div class="ev-titlebar">
+        <div class="ev-titlebar-text">📋 Event Viewer (Local) — Windows Logs → System</div>
+      </div>
+      <div class="ev-body">
+        <div class="ev-sidebar">
+          <div class="ev-tree-item on">📋 Event Viewer (Local)</div>
+          <div class="ev-tree-item" style="padding-left:1.2rem">📂 Custom Views</div>
+          <div class="ev-tree-item open" style="padding-left:1.2rem"><span class="ev-tree-arrow">▶</span> Windows Logs</div>
+          <div class="ev-tree-item on" style="padding-left:2rem">📄 Application</div>
+          <div class="ev-tree-item" style="padding-left:2rem">📄 Security</div>
+          <div class="ev-tree-item" style="padding-left:2rem">📄 System</div>
+          <div class="ev-tree-item" style="padding-left:1.2rem">📂 Applications and Services Logs</div>
+        </div>
+        <div class="ev-main">
+          <div class="ev-table-head">
+            <div>Level</div><div>Date/Time</div><div>Source</div><div>Event ID</div>
+          </div>
+          <div class="ev-table-body" id="evTableBody">
+            <div class="ev-row selected" onclick="showEvDetail(0)">
+              <div><span class="ev-sev-dot" style="background:#f87171"></span>Error</div>
+              <div style="font-size:.62rem">5/2 09:14</div>
+              <div>WSearch</div>
+              <div>10028</div>
+            </div>
+            <div class="ev-row" onclick="showEvDetail(1)">
+              <div><span class="ev-sev-dot" style="background:#fbbf24"></span>Warning</div>
+              <div style="font-size:.62rem">5/2 09:10</div>
+              <div>Disk</div>
+              <div>51</div>
+            </div>
+            <div class="ev-row" onclick="showEvDetail(2)">
+              <div><span class="ev-sev-dot" style="background:#f87171"></span>Error</div>
+              <div style="font-size:.62rem">5/2 08:55</div>
+              <div>Service Control Manager</div>
+              <div>7034</div>
+            </div>
+            <div class="ev-row" onclick="showEvDetail(3)">
+              <div><span class="ev-sev-dot" style="background:#60a5fa"></span>Info</div>
+              <div style="font-size:.62rem">5/2 08:01</div>
+              <div>Winlogon</div>
+              <div>7001</div>
+            </div>
+            <div class="ev-row" onclick="showEvDetail(4)">
+              <div><span class="ev-sev-dot" style="background:#fbbf24"></span>Warning</div>
+              <div style="font-size:.62rem">5/1 17:42</div>
+              <div>NETLOGON</div>
+              <div>5783</div>
+            </div>
+          </div>
+          <div class="ev-detail" id="evDetail">
+            <div class="ev-detail-lbl">Event 10028 — WSearch (Windows Search Service)</div>
+            The Windows Search Service has been restarted in response to a crash.<br>
+            <strong>Level:</strong> Error &nbsp;|&nbsp; <strong>Date:</strong> 5/2/2025 9:14:22 AM<br><br>
+            <span style="color:#1e3a5f;font-weight:600">What this means:</span> The Windows Search indexer crashed and was automatically restarted. If this appears repeatedly, the index is corrupted — rebuild it using Indexing Options → Advanced → Rebuild.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.25rem">The Logs That Matter</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">🖥️</div><div class="ccard-title">System Log</div><div class="ccard-desc">Hardware events, driver failures, service crashes, Windows boot events. Your first stop for system-level problems.</div><div class="ccard-code">Windows Logs → System</div></div>
+      <div class="ccard"><div class="ccard-icon">📦</div><div class="ccard-title">Application Log</div><div class="ccard-desc">App crashes, .NET errors, Office errors. When an app keeps crashing, the exception type and stack trace are here.</div><div class="ccard-code">Windows Logs → Application</div></div>
+      <div class="ccard"><div class="ccard-icon">🔐</div><div class="ccard-title">Security Log</div><div class="ccard-desc">Login attempts, privilege use, account changes. Requires admin to read. Useful for "someone logged into my machine" calls.</div><div class="ccard-code">Windows Logs → Security</div></div>
+      <div class="ccard"><div class="ccard-icon">🔍</div><div class="ccard-title">Custom Views</div><div class="ccard-desc">Pre-filtered views. "Administrative Events" shows all Errors and Warnings across all logs — great starting point for a sick machine.</div><div class="ccard-code">Custom Views → Admin Events</div></div>
+    </div>
+
+    <div class="box win"><div class="box-lbl">⚡ Faster Than Clicking Through the UI</div><p>Pull recent errors in one PowerShell command:<br>
+    <code>Get-EventLog -LogName System -Newest 50 -EntryType Error | Select TimeGenerated, Source, EventID, Message | Format-Table -AutoSize</code></p></div>
+
+    <div class="sec-label" style="margin-top:1.25rem">Reading an Error — What to Look For</div>
+    <ol class="steps">
+      <li><strong>Time</strong> — did the error happen at the same time as the user's reported issue?</li>
+      <li><strong>Source</strong> — which component failed? WSearch, Service Control Manager, Disk, NETLOGON each point to different problems</li>
+      <li><strong>Event ID</strong> — Google "Event ID [number] [Source]" for exact documentation. Microsoft Docs has every event ID documented with fix steps</li>
+      <li><strong>Message</strong> — read the full text. Often tells you exactly what failed and sometimes what to do about it</li>
+      <li>Look for <em>patterns</em> — the same error repeating every few minutes = something is in a restart loop</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══ MODULE 11: QUIZ ══ -->
+<div class="mod vis" id="modQ" data-i="11">
+  <div class="mod-hd" onclick="toggleMod('modQ')">
+    <div class="mod-num">11</div>
+    <div class="mod-title">Knowledge Check</div>
+    <div class="mod-badge" id="qBadge">8 Questions</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div id="quizForm">
+      <p style="font-size:.83rem;color:var(--t3);margin-bottom:1.5rem">Answers lock on selection. Submit all 8 to get your score.</p>
+      <div class="qq"><div class="qq-num">Question 1 of 8</div><div class="qq-text">A user gets a UAC prompt but can't proceed — they're a standard user. What is the correct username to enter?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q1" value="a"> Their own HarvardKey username</label><label class="qq-opt"><input type="radio" name="q1" value="b"> HUITadmin, with the LAPS password from HUITtoolkit.exe</label><label class="qq-opt"><input type="radio" name="q1" value="c"> Administrator (blank password)</label><label class="qq-opt"><input type="radio" name="q1" value="d"> Their supervisor's credentials</label></div><div class="qq-fb" id="q1fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 2 of 8</div><div class="qq-text">A machine shows 100% disk usage and is very slow. SearchIndexer.exe is at the top of Task Manager. What's most likely happening?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q2" value="a"> The hard drive is failing — replace it immediately</label><label class="qq-opt"><input type="radio" name="q2" value="b"> Windows Search is building or rebuilding its index — normal, but can be fixed by rebuilding if stuck</label><label class="qq-opt"><input type="radio" name="q2" value="c"> CrowdStrike is scanning the machine</label><label class="qq-opt"><input type="radio" name="q2" value="d"> The machine needs more RAM</label></div><div class="qq-fb" id="q2fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 3 of 8</div><div class="qq-text">A user says a setting in Windows keeps reverting to the old value every time they log back in. What's most likely causing this?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q3" value="a"> Their profile is corrupted</label><label class="qq-opt"><input type="radio" name="q3" value="b"> Group Policy (GPO) is enforcing that setting from the domain</label><label class="qq-opt"><input type="radio" name="q3" value="c"> Windows Update is resetting it</label><label class="qq-opt"><input type="radio" name="q3" value="d"> They don't have enough permissions to save settings</label></div><div class="qq-fb" id="q3fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 4 of 8</div><div class="qq-text">What PowerShell command forces the machine to immediately pull the latest Group Policy from the domain?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q4" value="a"> <code>Get-GPO -All</code></label><label class="qq-opt"><input type="radio" name="q4" value="b"> <code>gpupdate /force</code></label><label class="qq-opt"><input type="radio" name="q4" value="c"> <code>Invoke-GPUpdate</code></label><label class="qq-opt"><input type="radio" name="q4" value="d"> <code>Sync-GPO -Domain harvard.edu</code></label></div><div class="qq-fb" id="q4fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 5 of 8</div><div class="qq-text">A user needs Zoom installed. What's the correct process on a SCCM-managed Harvard machine?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q5" value="a"> Download from zoom.us directly and install</label><label class="qq-opt"><input type="radio" name="q5" value="b"> Check Software Center for an approved Zoom deployment</label><label class="qq-opt"><input type="radio" name="q5" value="c"> Use HUITadmin + LAPS to bypass restrictions and install any version</label><label class="qq-opt"><input type="radio" name="q5" value="d"> Ask the user to install it themselves</label></div><div class="qq-fb" id="q5fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 6 of 8</div><div class="qq-text">What does Dell Command Update (DCU) update that regular Windows Update does NOT?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q6" value="a"> Microsoft Office and Teams</label><label class="qq-opt"><input type="radio" name="q6" value="b"> Dell-specific hardware drivers and BIOS firmware</label><label class="qq-opt"><input type="radio" name="q6" value="c"> Windows 11 feature updates</label><label class="qq-opt"><input type="radio" name="q6" value="d"> CrowdStrike sensor updates</label></div><div class="qq-fb" id="q6fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 7 of 8</div><div class="qq-text">A user's print queue has a stuck job that won't delete and the printer shows offline. What's the fix?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q7" value="a"> Restart the printer physically</label><label class="qq-opt"><input type="radio" name="q7" value="b"> Stop the Spooler service, delete files in spool\PRINTERS, restart Spooler</label><label class="qq-opt"><input type="radio" name="q7" value="c"> Uninstall and reinstall the printer driver</label><label class="qq-opt"><input type="radio" name="q7" value="d"> Run sfc /scannow</label></div><div class="qq-fb" id="q7fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 8 of 8</div><div class="qq-text">In Event Viewer, which log would you check first for a service that crashed?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q8" value="a"> Security log</label><label class="qq-opt"><input type="radio" name="q8" value="b"> Application log for app crashes, System log for service/driver failures</label><label class="qq-opt"><input type="radio" name="q8" value="c"> Custom Views only</label><label class="qq-opt"><input type="radio" name="q8" value="d"> There's no log for service crashes</label></div><div class="qq-fb" id="q8fb"></div></div>
+      <div style="display:flex;gap:.75rem;margin-top:1.5rem">
+        <button class="btn btn-win" onclick="submitQuiz()">Submit Answers</button>
+        <button class="btn btn-ghost" onclick="resetQuiz()">Reset</button>
+      </div>
+    </div>
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-num" id="scoreNum">—</div>
+      <div class="score-lbl">out of 8 correct</div>
+      <p class="score-msg" id="scoreMsg"></p>
+      <div class="g-badge" id="scoreBadge"></div>
+      <div style="margin-top:1.5rem"><button class="btn btn-ghost" onclick="resetQuiz()">Retake</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPLETION -->
+<div class="done-banner" id="doneBanner">
+  <div style="font-size:2.5rem;margin-bottom:.75rem">🪟</div>
+  <h2>Windows Basics Complete</h2>
+  <p>You can navigate Windows 11, pull LAPS passwords, interpret Task Manager, rebuild the search index, run the key PowerShell commands, and fix the most common issues you'll see on the floor.</p>
+  <div class="done-next">
+    <span style="font-family:var(--mono);font-size:.62rem;color:var(--t4);text-transform:uppercase;letter-spacing:.1em">Next up:</span>
+    <span class="chip hot">Microsoft 365 →</span>
+    <span class="chip">Harvard Systems →</span>
+    <span class="chip">ServiceNow →</span>
+  </div>
+</div>
+
+</div><!-- /shell -->
+
+<script>
+// MODULE TOGGLE
+function toggleMod(id){
+  const m=document.getElementById(id);
+  if(m) m.classList.toggle('open');
+}
+
+// TABS
+function switchTab(btn,panelId){
+  const body=btn.closest('.mod-body')||btn.parentElement.parentElement;
+  body.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  body.querySelectorAll('.tpanel').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  const p=document.getElementById(panelId);
+  if(p) p.classList.add('on');
+}
+
+// FIX CARDS
+function toggleFix(id){
+  const c=document.getElementById(id);
+  if(!c) return;
+  const wasOpen=c.classList.contains('open');
+  document.querySelectorAll('.fix-card').forEach(fc=>fc.classList.remove('open'));
+  if(!wasOpen) c.classList.add('open');
+}
+
+// EVENT VIEWER DEMO
+const evDetails=[
+  {lbl:'Event 10028 — WSearch',msg:'The Windows Search Service crashed and restarted. Repeated occurrences = corrupted index. Fix: Indexing Options → Advanced → Rebuild.'},
+  {lbl:'Event 51 — Disk',msg:'An error was detected on device \\Device\\Harddisk0 during a paging operation. Warning sign of disk health issues. Run: Get-PhysicalDisk | Get-StorageReliabilityCounter to check disk health.'},
+  {lbl:'Event 7034 — Service Control Manager',msg:'The Windows Search service terminated unexpectedly. It has done this X time(s). If recurring, rebuild the search index or check for corrupted system files with sfc /scannow.'},
+  {lbl:'Event 7001 — Winlogon',msg:'User logon notification for customer experience improvement program. Informational — records when a user logged in. Useful for confirming login times.'},
+  {lbl:'Event 5783 — NETLOGON',msg:'The session setup from computer [name] failed to authenticate. Usually means the machine account password is out of sync with the domain. Fix: disjoin and rejoin the domain, or use netdom resetpwd.'}
+];
+function showEvDetail(i){
+  document.querySelectorAll('.ev-row').forEach((r,idx)=>r.classList.toggle('selected',idx===i));
+  const d=document.getElementById('evDetail');
+  if(d && evDetails[i]) d.innerHTML=`<div class="ev-detail-lbl">${evDetails[i].lbl}</div>${evDetails[i].msg}`;
+}
+
+// QUIZ
+const qA={
+  q1:{c:'b',fb:{b:'✓ Correct. HUITadmin is the local admin account on every Harvard machine. The password is managed by LAPS and retrieved from HUITtoolkit.exe — unique per machine, rotates regularly.',_:'✗ For UAC on a standard user machine, use HUITadmin as the username and pull the LAPS password from HUITtoolkit.exe. Never share passwords or use your own for others.'}},
+  q2:{c:'b',fb:{b:'✓ Correct. SearchIndexer.exe building or rebuilding the index is the #1 cause of 100% disk usage on Windows 11. Normal during initial setup; fix by rebuilding if it persists.',_:'✗ SearchIndexer.exe at 100% disk means Windows Search is indexing. Normal initially, but if sustained for hours/days, rebuild the index via Indexing Options → Advanced → Rebuild.'}},
+  q3:{c:'b',fb:{b:'✓ Correct. Settings reverting after login is classic Group Policy behavior. GPO is applied at login and overrides local changes. You cannot override GPO as a local admin.',_:'✗ When settings revert at login, Group Policy (GPO) is enforcing them from the Harvard domain. This is by design — escalate through a ticket if the setting needs to change.'}},
+  q4:{c:'b',fb:{b:'✓ Correct. gpupdate /force immediately pulls the latest Group Policy from the domain controller. Run as admin for both computer and user policy to refresh.',_:'✗ The command is gpupdate /force — run in an elevated command prompt or PowerShell. This forces immediate GPO refresh from the domain controller.'}},
+  q5:{c:'b',fb:{b:'✓ Correct. On SCCM-managed Harvard machines, all software should be installed via Software Center. It ensures approved versions, proper licensing, and correct configuration.',_:'✗ On Harvard SCCM machines, use Software Center for all software installations. Downloading directly bypasses approval, licensing, and security review.'}},
+  q6:{c:'b',fb:{b:'✓ Correct. Dell Command Update handles Dell-specific hardware: BIOS firmware, chipset, display, network, and dock drivers. Windows Update handles OS and some Microsoft software only.',_:'✗ Dell Command Update (DCU) handles Dell-specific hardware drivers and BIOS firmware — things Windows Update doesn\'t touch. Critical for resolving hardware-specific issues.'}},
+  q7:{c:'b',fb:{b:'✓ Correct. Stop the Spooler service, clear the spool folder, restart Spooler. This is the standard print queue clear procedure — memorize it, you\'ll use it weekly.',_:'✗ The print queue fix: Stop-Service Spooler → delete C:\\Windows\\System32\\spool\\PRINTERS\\* → Start-Service Spooler. This clears stuck jobs that won\'t delete through the UI.'}},
+  q8:{c:'b',fb:{b:'✓ Correct. Application log for app crashes (.NET exceptions, Office errors), System log for service/driver failures and hardware events. Start with both when diagnosing a problem.',_:'✗ Check the Application log for application crashes and the System log for service and driver failures. For a service crash, System log → look for Service Control Manager errors (Event 7034/7031).'}}
+};
+let qDone=false;
+
+function submitQuiz(){
+  if(qDone) return;
+  let score=0,allAnswered=true;
+  Object.keys(qA).forEach(q=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const v=sel.value,{c,fb}=qA[q];
+    document.querySelectorAll(`input[name="${q}"]`).forEach(opt=>{
+      const lbl=opt.parentElement;lbl.style.pointerEvents='none';
+      if(opt.value===c) lbl.classList.add('rev');
+      if(opt.value===v&&v!==c) lbl.classList.add('bad');
+      if(opt.value===v&&v===c){lbl.classList.remove('rev');lbl.classList.add('ok');}
+    });
+    const fbd=document.getElementById(q+'fb');
+    fbd.textContent=fb[v]||fb['_'];
+    fbd.className='qq-fb '+(v===c?'ok':'bad');
+    if(v===c) score++;
+  });
+  if(!allAnswered){alert('Answer all 8 questions first.');return;}
+  qDone=true;
+  setTimeout(()=>{
+    document.getElementById('quizForm').style.display='none';
+    const sw=document.getElementById('scoreWrap');sw.classList.add('on');
+    document.getElementById('scoreNum').textContent=score;
+    const p=score/8;
+    let msg=p===1?'Perfect. You know the Windows environment cold — your users are in very good hands.':p>=.75?'Solid. Review the ones you missed before your first day on the floor.':p>=.5?'Getting there. Go back through Modules 2, 5, and 7 — LAPS, indexing, and common fixes are what you\'ll use daily.':'Take another pass through the material. Focus on UAC/LAPS, Group Policy, and the common fix procedures.';
+    let badge=p===1?'🏆 Windows Expert':p>=.75?'✓ Windows Certified':p>=.5?'📚 Keep Studying':'🔁 Revisit the Material';
+    document.getElementById('scoreMsg').textContent=msg;
+    document.getElementById('scoreBadge').textContent=badge;
+    document.getElementById('qBadge').textContent=score+'/8';
+    document.getElementById('qBadge').className='mod-badge done';
+    updateProgress();
+    if(score>=6) document.getElementById('doneBanner').classList.add('on');
+  },400);
+}
+
+function resetQuiz(){
+  qDone=false;
+  document.querySelectorAll('.qq-opt').forEach(o=>{o.className='qq-opt';o.style.pointerEvents='';});
+  document.querySelectorAll('.qq-fb').forEach(f=>f.className='qq-fb');
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.getElementById('quizForm').style.display='block';
+  document.getElementById('scoreWrap').classList.remove('on');
+  document.getElementById('qBadge').textContent='8 Questions';
+  document.getElementById('qBadge').className='mod-badge';
+}
+
+// PROGRESS
+function updateProgress(){
+  const done=document.querySelectorAll('.mod-badge.done').length;
+  const pct=Math.round(done/11*100);
+  document.getElementById('navFill').style.width=pct+'%';
+  document.getElementById('navProg').textContent=done+' / 11';
+}
+
+// INTERSECTION OBSERVER
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('vis');});
+},{threshold:.05});
+document.querySelectorAll('.mod').forEach(m=>obs.observe(m));
+</script>
+</body>
+</html>
