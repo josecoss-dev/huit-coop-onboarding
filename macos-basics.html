@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HUIT Co-op Onboarding -- macOS Basics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cr:#C8273D;--cr-d:rgba(200,39,61,0.12);
+  --gold:#F0C040;--gold-d:rgba(240,192,64,0.1);
+  --green:#22c55e;--green-d:rgba(34,197,94,0.1);
+  --blue:#60a5fa;--blue-d:rgba(96,165,250,0.12);--blue-g:rgba(96,165,250,0.3);
+  --purple:#a78bfa;--purple-d:rgba(167,139,250,0.1);
+  --bg:#080a0d;--s1:#0e1117;--s2:#131820;--s3:#1a2030;
+  --bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.12);
+  --t1:#f1f5f9;--t2:#94a3b8;--t3:#94a3b8;--t4:#334155;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;--r:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:var(--sans);min-height:100vh;overflow-x:hidden;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 40% at 15% 0%,rgba(96,165,250,0.1) 0%,transparent 65%),radial-gradient(ellipse 50% 30% at 85% 100%,rgba(200,39,61,0.05) 0%,transparent 60%);pointer-events:none;z-index:0}
+.nav{position:sticky;top:0;z-index:200;height:56px;background:rgba(8,10,13,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 1.5rem;gap:1.25rem}
+.nav-back{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);text-decoration:none;display:flex;align-items:center;gap:.4rem;padding:.3rem .7rem;border:1px solid var(--bd2);border-radius:6px;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.nav-back:hover{color:var(--t1);border-color:var(--blue);background:var(--blue-d)}
+.nav-back svg{width:12px;height:12px;transition:transform .2s}
+.nav-back:hover svg{transform:translateX(-2px)}
+.nav-logo{font-family:var(--mono);font-size:.7rem;color:var(--blue);letter-spacing:.12em;white-space:nowrap}
+.nav-logo span{color:var(--t3)}
+.nav-bar{flex:1;height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.nav-fill{height:100%;background:linear-gradient(90deg,var(--blue),#93c5fd);width:0%;transition:width .6s}
+.nav-prog{font-family:var(--mono);font-size:.65rem;color:var(--t3);white-space:nowrap}
+.shell{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 1.25rem 8rem}
+.hero{padding:5rem 0 4rem;position:relative}
+.hero-glow{position:absolute;top:2rem;left:-4rem;width:400px;height:300px;background:radial-gradient(ellipse,rgba(96,165,250,0.15) 0%,transparent 70%);pointer-events:none;filter:blur(40px)}
+.hero-tag{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--blue);text-transform:uppercase;margin-bottom:1.4rem;display:flex;align-items:center;gap:.75rem}
+.hero-tag::before{content:'';width:28px;height:1px;background:var(--blue)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.8rem);font-weight:800;letter-spacing:-.03em;line-height:1;color:#fff;margin-bottom:1.25rem}
+.hero h1 em{color:var(--blue);font-style:normal;position:relative}
+.hero h1 em::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),transparent)}
+.hero-sub{font-size:1rem;color:var(--t2);max-width:560px;line-height:1.75;margin-bottom:2.5rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .8rem;border-radius:99px;border:1px solid var(--bd2);color:var(--t3)}
+.chip.hot{border-color:rgba(96,165,250,.4);color:var(--blue);background:rgba(96,165,250,.07)}
+.hero-divider{height:1px;background:linear-gradient(90deg,var(--blue) 0%,rgba(96,165,250,.2) 40%,transparent 80%);margin:3rem 0}
+.mod{position:relative;margin-bottom:.75rem;border-radius:var(--r);overflow:hidden;border:1px solid var(--bd);background:var(--s1);opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .25s}
+.mod.vis{opacity:1;transform:none}
+.mod:hover{border-color:var(--bd2)}
+.mod.open{border-color:rgba(96,165,250,.35);box-shadow:0 0 0 1px rgba(96,165,250,.1),0 8px 32px rgba(0,0,0,.4)}
+.mod-hd{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;cursor:pointer;transition:background .2s;user-select:none}
+.mod-hd:hover{background:var(--s2)}
+.mod.open .mod-hd{border-bottom:1px solid var(--bd)}
+.mod-num{font-family:var(--mono);font-size:.6rem;color:var(--blue);width:28px;height:28px;border-radius:50%;border:1px solid rgba(96,165,250,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(96,165,250,.06)}
+.mod-title{font-weight:600;font-size:.95rem;flex:1;color:var(--t1)}
+.mod-badge{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .65rem;border-radius:99px;background:var(--s3);color:var(--t3);border:1px solid var(--bd);flex-shrink:0}
+.mod-badge.done{background:rgba(34,197,94,.1);color:var(--green);border-color:rgba(34,197,94,.25)}
+.mod-chevron{width:16px;height:16px;color:var(--t3);transition:transform .3s;flex-shrink:0}
+.mod.open .mod-chevron{transform:rotate(180deg);color:var(--blue)}
+.mod-body{display:none;padding:1.75rem 1.5rem}
+.mod.open .mod-body{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sec-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin:0 0 .85rem;display:flex;align-items:center;gap:.6rem}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(96,165,250,.3),transparent)}
+p{font-size:.925rem;color:var(--t2);line-height:1.75;margin-bottom:.875rem}
+p:last-child{margin-bottom:0}
+strong{color:var(--t1);font-weight:600}
+em{color:var(--blue);font-style:normal}
+code{font-family:var(--mono);font-size:.78rem;background:rgba(0,0,0,.5);color:var(--blue);padding:.1rem .45rem;border-radius:4px;border:1px solid rgba(96,165,250,.2)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.75rem;margin:1.25rem 0}
+.ccard{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1.1rem;transition:border-color .2s,transform .2s}
+.ccard:hover{border-color:rgba(96,165,250,.3);transform:translateY(-2px)}
+.ccard-icon{font-size:1.4rem;margin-bottom:.75rem}
+.ccard-title{font-weight:700;font-size:.88rem;color:var(--t1);margin-bottom:.35rem}
+.ccard-desc{font-size:.78rem;color:var(--t3);line-height:1.55}
+.ccard-code{font-family:var(--mono);font-size:.62rem;color:var(--blue);margin-top:.5rem;padding:.2rem .45rem;background:rgba(96,165,250,.07);border-radius:4px;display:inline-block;border:1px solid rgba(96,165,250,.2)}
+.box{border-radius:8px;padding:1rem 1.15rem;margin:1.15rem 0}
+.box-lbl{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem;font-weight:600}
+.box p{font-size:.85rem;margin:0;color:var(--t2)}
+.box.info{background:var(--blue-d);border:1px solid rgba(96,165,250,.2);border-left:3px solid var(--blue)}
+.box.info .box-lbl{color:var(--blue)}
+.box.warn{background:var(--cr-d);border:1px solid rgba(200,39,61,.25);border-left:3px solid var(--cr)}
+.box.warn .box-lbl{color:var(--cr)}
+.box.ok{background:var(--green-d);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green)}
+.box.ok .box-lbl{color:var(--green)}
+.box.gold{background:var(--gold-d);border:1px solid rgba(240,192,64,.2);border-left:3px solid var(--gold)}
+.box.gold .box-lbl{color:var(--gold)}
+.steps{list-style:none;counter-reset:s;margin:1rem 0}
+.steps li{counter-increment:s;display:flex;gap:.9rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--bd);font-size:.885rem;line-height:1.65;color:var(--t2)}
+.steps li:last-child{border:none}
+.steps li::before{content:counter(s);font-family:var(--mono);font-size:.6rem;font-weight:600;min-width:24px;height:24px;border-radius:50%;background:var(--blue-d);color:var(--blue);border:1px solid rgba(96,165,250,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.fix-card{background:var(--s2);border:1px solid var(--bd);border-radius:8px;margin-bottom:.75rem;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.fix-card:hover{border-color:var(--bd2)}
+.fix-card.open{border-color:rgba(96,165,250,.3)}
+.fix-hd{display:flex;align-items:center;gap:.85rem;padding:1rem 1.1rem}
+.fix-icon{font-size:1.1rem;flex-shrink:0}
+.fix-title{font-weight:600;font-size:.9rem;color:var(--t1);flex:1}
+.fix-sev{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;padding:.2rem .6rem;border-radius:99px;flex-shrink:0}
+.fix-sev.high{background:rgba(200,39,61,.12);color:var(--cr);border:1px solid rgba(200,39,61,.25)}
+.fix-sev.med{background:var(--gold-d);color:var(--gold);border:1px solid rgba(240,192,64,.25)}
+.fix-sev.low{background:var(--green-d);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.fix-body{display:none;padding:0 1.1rem 1.1rem;border-top:1px solid var(--bd)}
+.fix-card.open .fix-body{display:block;animation:fadeUp .2s ease}
+.fix-chevron{width:14px;height:14px;color:var(--t4);transition:transform .25s;flex-shrink:0}
+.fix-card.open .fix-chevron{transform:rotate(180deg)}
+.tabs{display:flex;border-bottom:1px solid var(--bd);gap:0}
+.tab{font-family:var(--mono);font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;padding:.65rem 1.1rem;cursor:pointer;background:none;border:none;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;white-space:nowrap}
+.tab.on{color:var(--t1);border-bottom-color:var(--blue)}
+.tab:hover:not(.on){color:var(--t2)}
+.tpanel{display:none;padding-top:1.5rem}
+.tpanel.on{display:block;animation:fadeUp .2s ease}
+/* Terminal mockup */
+.term{background:#0d1117;border:1px solid rgba(96,165,250,.2);border-radius:10px;overflow:hidden;margin:.75rem 0;font-family:var(--mono);font-size:.78rem}
+.term-bar{background:#161b22;padding:.5rem .85rem;display:flex;align-items:center;gap:.45rem;border-bottom:1px solid rgba(96,165,250,.1)}
+.term-dot{width:10px;height:10px;border-radius:50%}
+.term-title{font-size:.62rem;color:rgba(255,255,255,.35);margin-left:.25rem}
+.term-body{padding:.9rem 1rem;line-height:1.85}
+.term-prompt{color:#58a6ff}
+.term-cmd{color:#e6edf3}
+.term-out{color:#8b949e;font-size:.72rem}
+.term-comment{color:#3d444d}
+/* macOS desktop diagram */
+.mac-desktop{background:linear-gradient(160deg,#1e3a5f 0%,#0d2137 100%);border:1px solid rgba(96,165,250,.2);border-radius:10px;overflow:hidden;margin:1.25rem 0;box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.mac-menubar{background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);height:28px;display:flex;align-items:center;padding:0 .75rem;gap:.5rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.mac-apple{font-size:.85rem;color:#fff;margin-right:.35rem}
+.mac-menu-item{font-size:.67rem;color:rgba(255,255,255,.85);padding:0 .4rem;font-weight:500}
+.mac-menu-item.bold{font-weight:700}
+.mac-spacer{flex:1}
+.mac-status{font-size:.62rem;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:.6rem}
+.mac-desktop-area{height:200px;display:flex;align-items:flex-end;padding:.75rem;position:relative}
+.mac-dock{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:.4rem .6rem;display:flex;align-items:center;gap:.4rem;margin:0 auto;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.mac-dock-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:transform .15s;cursor:pointer;background:rgba(255,255,255,.05)}
+.mac-dock-icon:hover{transform:translateY(-6px) scale(1.15)}
+.mac-dock-sep{width:1px;height:28px;background:rgba(255,255,255,.2);margin:0 .15rem}
+.mac-label{position:absolute;top:.75rem;left:.75rem;font-size:.6rem;color:rgba(255,255,255,.5);font-family:var(--mono)}
+.mac-finder-icon{position:absolute;top:2rem;left:50%;transform:translateX(-50%);font-size:.62rem;color:rgba(255,255,255,.5);text-align:center}
+/* wifi info panel */
+.wifi-panel{background:#1c1c1e;border:1px solid rgba(96,165,250,.25);border-radius:10px;padding:1rem 1.1rem;font-size:.78rem;margin:1.25rem 0;max-width:320px}
+.wifi-panel-title{font-weight:700;color:var(--blue);font-size:.7rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.65rem}
+.wifi-row{display:flex;justify-content:space-between;align-items:center;padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.wifi-row:last-child{border:none}
+.wifi-key{color:var(--t3);font-size:.72rem}
+.wifi-val{color:var(--t1);font-family:var(--mono);font-size:.72rem}
+.wifi-val.good{color:var(--green)}
+.wifi-val.warn{color:var(--gold)}
+/* Comparison table */
+.comp-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:1.25rem 0}
+.comp-table th{padding:.6rem .85rem;font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--bd);text-align:left}
+.comp-table td{padding:.55rem .85rem;border-bottom:1px solid var(--bd);color:var(--t2);vertical-align:top}
+.comp-table tr:nth-child(even) td{background:var(--s2)}
+.comp-table .win{color:var(--blue)}
+.comp-table .mac{color:var(--green)}
+/* Quiz */
+.qq{margin-bottom:1.75rem;padding:1.25rem;background:var(--s2);border:1px solid var(--bd);border-radius:8px}
+.qq-num{font-family:var(--mono);font-size:.58rem;color:var(--t4);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.5rem}
+.qq-text{font-weight:600;font-size:.92rem;color:var(--t1);margin-bottom:.85rem;line-height:1.45}
+.qq-opts{display:flex;flex-direction:column;gap:.45rem}
+.qq-opt{display:flex;align-items:center;gap:.75rem;padding:.7rem 1rem;border:1px solid var(--bd2);border-radius:7px;cursor:pointer;background:var(--s3);transition:all .15s;font-size:.85rem;color:var(--t2)}
+.qq-opt:hover{background:var(--s2);color:var(--t1)}
+.qq-opt input{accent-color:var(--blue);flex-shrink:0}
+.qq-opt.ok{border-color:rgba(34,197,94,.4)!important;background:rgba(34,197,94,.08)!important;color:var(--green)!important}
+.qq-opt.bad{border-color:rgba(200,39,61,.4)!important;background:rgba(200,39,61,.08)!important;color:#f87171!important}
+.qq-opt.rev{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.04);color:var(--green)}
+.qq-fb{font-family:var(--mono);font-size:.72rem;margin-top:.6rem;padding:.5rem .75rem;border-radius:5px;display:none;line-height:1.5}
+.qq-fb.ok{display:block;color:var(--green);background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2)}
+.qq-fb.bad{display:block;color:#f87171;background:rgba(200,39,61,.07);border:1px solid rgba(200,39,61,.2)}
+.score-wrap{display:none;text-align:center;padding:2.5rem 1rem}
+.score-wrap.on{display:block;animation:fadeUp .4s ease}
+.score-num{font-size:4rem;font-weight:800;color:var(--blue);line-height:1}
+.score-lbl{font-family:var(--mono);font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.15em;margin-bottom:1rem}
+.score-msg{font-size:.92rem;color:var(--t2);max-width:360px;margin:0 auto 1.5rem;line-height:1.7}
+.g-badge{display:inline-block;font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;padding:.5rem 1.25rem;border-radius:99px;background:var(--blue-d);border:1px solid rgba(96,165,250,.3);color:var(--blue)}
+.btn{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.7rem 1.6rem;border-radius:6px;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:.5rem}
+.btn-blue{background:var(--blue);color:#000;font-weight:700}
+.btn-blue:hover{background:#3b82f6;transform:translateY(-1px)}
+.btn-ghost{background:var(--s2);color:var(--t2);border:1px solid var(--bd2)}
+.btn-ghost:hover{border-color:var(--t3);color:var(--t1)}
+.done-banner{display:none;margin-top:3rem;padding:2.5rem;border-radius:12px;text-align:center;background:linear-gradient(135deg,rgba(96,165,250,.06),rgba(147,197,253,.03));border:1px solid var(--bd)}
+.done-banner.on{display:block;animation:fadeUp .5s ease}
+.done-banner h2{font-size:1.5rem;font-weight:800;color:var(--t1);margin-bottom:.5rem}
+.done-banner p{color:var(--t2);font-size:.9rem}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-back" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>HUB</a>
+  <div class="nav-logo">HUIT <span>/ Co-op 2025 /</span> macOS Basics</div>
+  <div class="nav-bar"><div class="nav-fill" id="navFill"></div></div>
+  <div class="nav-prog" id="navProg">0 / 12</div>
+</nav>
+<div class="shell">
+<header class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">Harvard University IT &middot; macOS &middot; Jamf Pro &middot; Art Museum Focus</div>
+  <h1>macOS <em>Basics</em></h1>
+  <p class="hero-sub">The Art Museum runs mostly Macs. Divinity and Lamont have them too. If you think in Windows, this module rewires that. macOS has its own admin flow, MDM, software deployment, and terminal commands -- none of which match Windows.</p>
+  <div class="chips">
+    <span class="chip hot">Jamf Pro MDM</span><span class="chip hot">Terminal / zsh</span><span class="chip hot">Harvard Secure on Mac</span><span class="chip">~90 min</span><span class="chip">12 modules</span>
+  </div>
+  <div class="hero-divider"></div>
+</header>
+
+<!-- MOD 2: Interface -->
+<div class="mod vis" id="mod2" data-i="2">
+  <div class="mod-hd" onclick="toggleMod('mod2')"><div class="mod-num">02</div><div class="mod-title">The macOS Interface &mdash; Menu Bar, Dock, Finder</div><div class="mod-badge">Foundation</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">macOS Desktop Layout</div>
+    <div class="mac-desktop">
+      <div class="mac-menubar"><span class="mac-apple">&#63743;</span><span class="mac-menu-item bold">Finder</span><span class="mac-menu-item">File</span><span class="mac-menu-item">Edit</span><span class="mac-menu-item">View</span><span class="mac-menu-item">Go</span><div class="mac-spacer"></div><div class="mac-status"><span>&#127756;</span><span>&#128266;</span><span>Mon 9:02 AM</span></div></div>
+      <div class="mac-desktop-area">
+        <div class="mac-label">Menu bar lives at TOP OF SCREEN -- not inside the window</div>
+        <div class="mac-dock"><div class="mac-dock-icon">&#128193;</div><div class="mac-dock-icon">&#127758;</div><div class="mac-dock-icon">&#9993;&#65039;</div><div class="mac-dock-icon">&#128197;</div><div class="mac-dock-icon">&#9881;&#65039;</div><div class="mac-dock-sep"></div><div class="mac-dock-icon">&#128465;&#65039;</div></div>
+      </div>
+    </div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#63743;</div><div class="ccard-title">Apple Menu</div><div class="ccard-desc">Top-left, always. System Settings, Software Update, About This Mac (serial number lives here), Restart, Shut Down.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128270;</div><div class="ccard-title">Spotlight (Cmd+Space)</div><div class="ccard-desc">Universal launcher and search. Open apps, find files, run Terminal. Use it constantly -- faster than any other navigation.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128193;</div><div class="ccard-title">Finder</div><div class="ccard-desc">Always running, cannot be quit. Like File Explorer. Sidebar: Locations (drives), Favorites (Desktop, Downloads, Applications). Go menu for direct folder navigation.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128202;</div><div class="ccard-title">Activity Monitor</div><div class="ccard-desc">Equivalent of Task Manager. CPU, Memory, Disk, Network tabs. Double-click a process to force-quit it. Find via Spotlight.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128295;</div><div class="ccard-title">System Settings</div><div class="ccard-desc">Ventura (13+) renamed System Preferences to System Settings -- different layout, same content. Older Macs still say System Preferences.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128260;</div><div class="ccard-title">Mission Control (F3)</div><div class="ccard-desc">Shows all open windows across all spaces. Swipe up with 3 fingers on trackpad. Useful when user says they lost a window.</div></div>
+    </div>
+    <div class="box info"><div class="box-lbl">&#128161; Key Shortcuts</div><p><code>Cmd+Space</code> Spotlight &nbsp;|&nbsp; <code>Cmd+Tab</code> App switcher &nbsp;|&nbsp; <code>Cmd+Q</code> Quit app &nbsp;|&nbsp; <code>Cmd+W</code> Close window &nbsp;|&nbsp; <code>Cmd+,</code> App preferences &nbsp;|&nbsp; <code>Cmd+Option+Esc</code> Force quit &nbsp;|&nbsp; <code>Cmd+Shift+3</code> Screenshot</p></div>
+  </div>
+</div>
+
+<!-- MOD 3: MAC Address -->
+<div class="mod vis" id="mod3" data-i="3">
+  <div class="mod-hd" onclick="toggleMod('mod3')"><div class="mod-num">03</div><div class="mod-title">Finding the MAC Address on macOS</div><div class="mod-badge">Daily Task</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="tabs"><button class="tab on" onclick="switchTab(this,'t-gui')">GUI</button><button class="tab" onclick="switchTab(this,'t-term3')">Terminal</button><button class="tab" onclick="switchTab(this,'t-opt')">Option+Click</button></div>
+    <div class="tpanel on" id="t-gui"><ol class="steps"><li>Apple menu &#63743; &rarr; <strong>System Settings</strong></li><li>Click <strong>Network</strong> &rarr; select <strong>Wi-Fi</strong> or Ethernet &rarr; click <strong>Details...</strong></li><li><strong>Hardware</strong> tab &rarr; MAC Address is shown here</li><li>Copy and paste into ClearPass -- remember MAC Owner field = HUID (8-digit number), not HarvardKey</li></ol><div class="box warn"><div class="box-lbl">&#9888; Private Wi-Fi Address (MAC Randomization)</div><p>Macs randomize their MAC per network by default. The randomized address won't work with ClearPass. To disable: System Settings &rarr; Network &rarr; Wi-Fi &rarr; Details &rarr; turn off <strong>Private Wi-Fi Address</strong> for the Harvard Secure network. Then use the real hardware MAC.</p></div></div>
+    <div class="tpanel" id="t-term3">
+      <div class="term"><div class="term-bar"><div class="term-dot" style="background:#ff5f56"></div><div class="term-dot" style="background:#ffbd2e"></div><div class="term-dot" style="background:#27c93f"></div><div class="term-title">Terminal &mdash; zsh</div></div><div class="term-body"><div><span class="term-prompt">% </span><span class="term-cmd">ifconfig en0 | grep ether</span></div><div class="term-out">        ether a4:c3:f0:1b:2e:7d</div><div style="margin-top:.5rem"><span class="term-comment"># en0 = Wi-Fi on most Macs. en1 is sometimes Ethernet.</span></div><div style="margin-top:.4rem"><span class="term-prompt">% </span><span class="term-cmd">networksetup -listallnetworkservices</span></div><div class="term-out">Wi-Fi<br>Ethernet<br>iPhone USB</div></div></div>
+    </div>
+    <div class="tpanel" id="t-opt"><p>Hold <strong>Option</strong> and click the Wi-Fi icon in the menu bar for a live connection panel.</p><div class="wifi-panel"><div class="wifi-panel-title">Wi-Fi Details (Option+Click)</div><div class="wifi-row"><span class="wifi-key">SSID</span><span class="wifi-val">Harvard Secure</span></div><div class="wifi-row"><span class="wifi-key">BSSID (AP MAC)</span><span class="wifi-val">78:ba:f9:3c:11:20</span></div><div class="wifi-row"><span class="wifi-key">RSSI</span><span class="wifi-val good">-52 dBm</span></div><div class="wifi-row"><span class="wifi-key">Channel</span><span class="wifi-val">6 (2.4 GHz)</span></div><div class="wifi-row"><span class="wifi-key">Security</span><span class="wifi-val">WPA2 Enterprise</span></div></div><p style="font-size:.82rem;margin-top:.5rem">RSSI closer to 0 = stronger signal. -52 is excellent. -80+ is weak and will cause drops.</p></div>
+  </div>
+</div>
+
+<!-- MOD 4: Harvard Secure -->
+<div class="mod vis" id="mod4" data-i="4">
+  <div class="mod-hd" onclick="toggleMod('mod4')"><div class="mod-num">04</div><div class="mod-title">Harvard Secure Wi-Fi on macOS</div><div class="mod-badge">Common Setup</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">Certificate-Based Auth on Mac</div>
+    <p>Harvard Secure uses 802.1X certificate auth on Mac just like Windows. On macOS the certificate installs as a <strong>configuration profile</strong> via getonline.harvard.edu -- not into a certificate store.</p>
+    <ol class="steps">
+      <li>Disable Private Wi-Fi Address for Harvard Secure first: System Settings &rarr; Network &rarr; Wi-Fi &rarr; Details &rarr; toggle off <strong>Private Wi-Fi Address</strong></li>
+      <li>Open browser &rarr; go to <code>getonline.harvard.edu</code> &rarr; sign in with HarvardKey</li>
+      <li>Site detects macOS &rarr; downloads a <strong>.mobileconfig</strong> profile file</li>
+      <li>macOS shows "Profile Downloaded" &rarr; go to System Settings &rarr; Privacy &amp; Security &rarr; Profiles &rarr; install it</li>
+      <li>Enter Mac login password to authorize the install</li>
+      <li>Connect to Harvard Secure in Wi-Fi settings &rarr; authenticates automatically using the cert</li>
+    </ol>
+    <div class="fix-card" id="wf1" onclick="toggleFix('wf1')"><div class="fix-hd"><div class="fix-icon">&#127756;</div><div class="fix-title">"Certificate not trusted" or keeps asking for credentials</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fix-body"><ol class="steps"><li>Remove old profile: System Settings &rarr; Privacy &amp; Security &rarr; Profiles &rarr; select Harvard profile &rarr; minus (-) to remove</li><li>Open <strong>Keychain Access</strong> (Spotlight &rarr; Keychain Access) &rarr; search "harvard" &rarr; delete any old Harvard certs</li><li>Re-run getonline.harvard.edu &rarr; install fresh profile</li><li>Reconnect to Harvard Secure &rarr; should authenticate silently</li></ol></div></div>
+  </div>
+</div>
+
+<!-- MOD 5: MSC -->
+<div class="mod vis" id="mod5" data-i="5">
+  <div class="mod-hd" onclick="toggleMod('mod5')"><div class="mod-num">05</div><div class="mod-title">Managed Software Center &mdash; Software Deployment on Mac</div><div class="mod-badge">Critical</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">Harvard's Mac App Deployment</div>
+    <p>On Windows you use <strong>Software Center (SCCM)</strong>. On Mac you use <strong>Managed Software Center (MSC)</strong>, powered by Munki. Same concept -- Harvard-approved software only, no random internet downloads. MSC is the first place to look for any software install request.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#128230;</div><div class="ccard-title">Finding MSC</div><div class="ccard-desc">Applications folder &rarr; Managed Software Center. Or Spotlight: Cmd+Space &rarr; type "Managed". It may also be in the Dock on managed machines.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#8635;</div><div class="ccard-title">Check for Updates</div><div class="ccard-desc">MSC &rarr; Click "Check for Updates" button. Forces Munki to check the Harvard software catalog. Do this before assuming software isn't available.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128274;</div><div class="ccard-title">Admin Credentials</div><div class="ccard-desc">Some MSC installs prompt for admin credentials -- use the LAPS/local admin account for the machine, same flow as Windows UAC elevation.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#9888;&#65039;</div><div class="ccard-title">No Internet Downloads</div><div class="ccard-desc">Same rule as Windows -- no random downloads. Software must come from MSC or a ServiceNow request. CrowdStrike runs on Macs too.</div></div>
+    </div>
+    <div class="fix-card" id="mf1" onclick="toggleFix('mf1')"><div class="fix-hd"><div class="fix-icon">&#128683;</div><div class="fix-title">MSC shows error or won't check for updates</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fix-body"><ol class="steps"><li>Verify the Mac is on the Harvard network or VPN -- MSC needs to reach the Munki server</li><li>Force a Munki check via Terminal: <code>sudo /usr/local/munki/managedsoftwareupdate --checkonly</code></li><li>Kick the Munki launch daemon: <code>sudo launchctl kickstart -k system/com.googlecode.munki.managedsoftwareupdate</code></li><li>Restart MSC after running the above</li></ol></div></div>
+  </div>
+</div>
+
+<!-- MOD 6: Terminal -->
+<div class="mod vis" id="mod6" data-i="6">
+  <div class="mod-hd" onclick="toggleMod('mod6')"><div class="mod-num">06</div><div class="mod-title">Terminal &mdash; Essential Commands for Mac Support</div><div class="mod-badge">Critical</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">Opening Terminal</div>
+    <p><strong>Cmd+Space</strong> &rarr; type "Terminal" &rarr; Enter. Or: Finder &rarr; Go &rarr; Utilities &rarr; Terminal. Shell is <strong>zsh</strong> on modern Macs (bash on older ones). The prompt looks like <code>hostname % </code> not <code>C:\&gt;</code>.</p>
+    <div class="tabs"><button class="tab on" onclick="switchTab(this,'t-net')">Network</button><button class="tab" onclick="switchTab(this,'t-sys')">System Info</button><button class="tab" onclick="switchTab(this,'t-admin')">Admin</button></div>
+    <div class="tpanel on" id="t-net">
+      <div class="term"><div class="term-bar"><div class="term-dot" style="background:#ff5f56"></div><div class="term-dot" style="background:#ffbd2e"></div><div class="term-dot" style="background:#27c93f"></div><div class="term-title">Terminal &mdash; Network Commands</div></div><div class="term-body">
+        <div><span class="term-comment"># Show Wi-Fi IP, subnet, router</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">networksetup -getinfo Wi-Fi</span></div>
+        <div class="term-out">IP address: 10.243.44.132<br>Subnet mask: 255.255.252.0<br>Router: 10.243.44.1</div>
+        <div style="margin-top:.6rem"><span class="term-comment"># Get Wi-Fi MAC address</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">ifconfig en0 | grep ether</span></div>
+        <div class="term-out">        ether a4:c3:f0:1b:2e:7d</div>
+        <div style="margin-top:.6rem"><span class="term-comment"># Test connectivity (Ctrl+C to stop)</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">ping -c 4 8.8.8.8</span></div>
+        <div class="term-out">PING 8.8.8.8: 56 data bytes<br>64 bytes from 8.8.8.8: icmp_seq=0 ttl=118 time=12.4 ms<br>--- 8.8.8.8 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss</div>
+        <div style="margin-top:.6rem"><span class="term-comment"># Trace route (not tracert like Windows)</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">traceroute 8.8.8.8</span></div>
+        <div style="margin-top:.6rem"><span class="term-comment"># DNS lookup</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">nslookup harvard.edu</span></div>
+        <div class="term-out">Server: 10.243.44.1<br>Address: 10.243.44.1#53<br>Non-authoritative answer:<br>Name: harvard.edu<br>Address: 23.185.0.2</div>
+        <div style="margin-top:.6rem"><span class="term-comment"># Release and renew DHCP</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">sudo ipconfig set en0 DHCP</span></div>
+      </div></div>
+    </div>
+    <div class="tpanel" id="t-sys">
+      <div class="term"><div class="term-bar"><div class="term-dot" style="background:#ff5f56"></div><div class="term-dot" style="background:#ffbd2e"></div><div class="term-dot" style="background:#27c93f"></div><div class="term-title">Terminal &mdash; System Info</div></div><div class="term-body">
+        <div><span class="term-comment"># macOS version</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">sw_vers</span></div>
+        <div class="term-out">ProductName:    macOS<br>ProductVersion: 14.4.1<br>BuildVersion:   23E224</div>
+        <div style="margin-top:.6rem"><span class="term-comment"># Hardware info including serial number</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">system_profiler SPHardwareDataType</span></div>
+        <div class="term-out">Model Name: MacBook Pro<br>Model Identifier: MacBookPro18,1<br>Serial Number: C02G3KYWMD6M<br>Memory: 16 GB</div>
+        <div style="margin-top:.6rem"><span class="term-comment"># Machine hostname</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">hostname</span></div>
+        <div class="term-out">artmuseum-mbp-042.huit.harvard.edu</div>
+        <div style="margin-top:.6rem"><span class="term-comment"># Disk usage</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">df -h /</span></div>
+        <div class="term-out">Filesystem  Size  Used  Avail Use%<br>/dev/disk3s1 500G  220G  280G  44%</div>
+      </div></div>
+    </div>
+    <div class="tpanel" id="t-admin">
+      <div class="term"><div class="term-bar"><div class="term-dot" style="background:#ff5f56"></div><div class="term-dot" style="background:#ffbd2e"></div><div class="term-dot" style="background:#27c93f"></div><div class="term-title">Terminal &mdash; Admin Commands</div></div><div class="term-body">
+        <div><span class="term-comment"># Elevate to root shell (use sparingly)</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">sudo -s</span></div>
+        <div class="term-out">Password: [enter admin password]</div>
+        <div style="margin-top:.6rem"><span class="term-comment"># Force Jamf check-in</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">sudo jamf policy</span></div>
+        <div class="term-out">Checking for policies triggered by "recurring check-in"...<br>Executing Policy Update Inventory...</div>
+        <div style="margin-top:.6rem"><span class="term-comment"># Clear quarantine flag on a downloaded app</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">sudo xattr -cr /Applications/AppName.app</span></div>
+        <div style="margin-top:.6rem"><span class="term-comment"># List all users on the machine</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">dscl . list /Users | grep -v ^_</span></div>
+        <div class="term-out">admin<br>jose_coss<br>root</div>
+        <div style="margin-top:.6rem"><span class="term-comment"># Flush DNS cache</span></div>
+        <div><span class="term-prompt">% </span><span class="term-cmd">sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder</span></div>
+      </div></div>
+    </div>
+    <div class="box warn"><div class="box-lbl">&#9888; sudo = Admin on Mac</div><p>Commands prefixed with <code>sudo</code> run as root -- the Mac equivalent of running as administrator. Use with the local admin account credentials. Unlike Windows UAC, there's no graphical prompt -- the Terminal just asks for the password inline.</p></div>
+  </div>
+</div>
+
+<!-- MOD 7: Jamf -->
+<div class="mod vis" id="mod7" data-i="7">
+  <div class="mod-hd" onclick="toggleMod('mod7')"><div class="mod-num">07</div><div class="mod-title">Jamf Pro &mdash; macOS MDM at Harvard</div><div class="mod-badge">Reference</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">What Jamf Does</div>
+    <p><strong>Jamf Pro</strong> is Harvard's MDM for Mac fleet management -- equivalent to SCCM on Windows. Jamf deploys software, enforces security policies, manages FileVault encryption, tracks inventory, and pushes configuration profiles. It runs silently in the background on every Harvard-managed Mac.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#128260;</div><div class="ccard-title">Jamf Check-In</div><div class="ccard-desc">Macs check in with Jamf at login and periodically. Like GPO refresh on Windows. Force a check-in: <code>sudo jamf policy</code> in Terminal.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128274;</div><div class="ccard-title">FileVault</div><div class="ccard-desc">Jamf enforces full disk encryption via FileVault on all Harvard Macs. NEVER disable it. If FileVault is off, flag it immediately -- security violation.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128203;</div><div class="ccard-title">MDM Profiles</div><div class="ccard-desc">Jamf pushes configuration profiles (Wi-Fi certs, security settings, etc.). View installed profiles: System Settings &rarr; General &rarr; Device Management.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128279;</div><div class="ccard-title">Re-Enrollment</div><div class="ccard-desc">If a Mac loses MDM management: go to the Harvard Jamf enrollment URL (get from your supervisor), sign in with HarvardKey, follow the enrollment steps.</div></div>
+    </div>
+    <div class="box warn"><div class="box-lbl">&#9888; Co-ops Don't Have Jamf Console Access</div><p>The Jamf admin console is a senior IT tool. Co-ops use <code>sudo jamf policy</code> from Terminal to force a check-in, and check System Settings for profile status -- that's the extent of Jamf interaction at your level. Escalate anything beyond that.</p></div>
+    <div class="box ok"><div class="box-lbl">&#10003; How to Confirm a Mac Is Managed</div><p>System Settings &rarr; General &rarr; Device Management. You should see a management profile listed. If the Device Management section shows nothing, the Mac may not be enrolled -- escalate to a senior tech.</p></div>
+  </div>
+</div>
+
+<!-- MOD 8: Common macOS Fixes -->
+<div class="mod vis" id="mod8" data-i="8">
+  <div class="mod-hd" onclick="toggleMod('mod8')"><div class="mod-num">08</div><div class="mod-title">Common macOS Issues &mdash; Fix Playbook</div><div class="mod-badge">Playbook</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="fix-card" id="fix1" onclick="toggleFix('fix1')"><div class="fix-hd"><div class="fix-icon">&#128034;</div><div class="fix-title">Slow Mac &mdash; high CPU or spinning beachball</div><div class="fix-sev high">High</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body"><ol class="steps"><li>Open Activity Monitor (Spotlight: Cmd+Space &rarr; Activity Monitor) &rarr; CPU tab &rarr; sort by % CPU descending</li><li>Find the culprit process. <code>kernel_task</code> at high CPU = thermal throttling -- make sure the Mac is on a hard surface, vents not blocked, not on fabric</li><li>If it's a user app: double-click it &rarr; click Quit or Force Quit</li><li>Check Memory tab: Swap Used &gt; 1GB means RAM is full -- close apps or the machine may need a RAM upgrade request</li><li>Run Software Update: Apple menu &rarr; System Settings &rarr; General &rarr; Software Update -- pending updates can cause background CPU spikes</li></ol></div>
+    </div>
+    <div class="fix-card" id="fix2" onclick="toggleFix('fix2')"><div class="fix-hd"><div class="fix-icon">&#127756;</div><div class="fix-title">Wi-Fi won't connect or drops constantly</div><div class="fix-sev high">High</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body"><ol class="steps"><li>Turn Wi-Fi off then back on: click Wi-Fi icon &rarr; Turn Wi-Fi Off &rarr; wait 5 seconds &rarr; Turn Wi-Fi On</li><li>Forget and rejoin Harvard Secure: System Settings &rarr; Network &rarr; Wi-Fi &rarr; Known Networks &rarr; find Harvard Secure &rarr; Forget &rarr; reconnect</li><li>If cert error: remove Harvard Wi-Fi profile (Privacy &amp; Security &rarr; Profiles) and re-run getonline.harvard.edu</li><li>Check Private Wi-Fi Address is off for Harvard Secure -- randomized MAC = ClearPass rejection</li><li>Run Option+Click Wi-Fi icon: check RSSI. Below -75 dBm = weak signal, physical location issue</li></ol></div>
+    </div>
+    <div class="fix-card" id="fix3" onclick="toggleFix('fix3')"><div class="fix-hd"><div class="fix-icon">&#128274;</div><div class="fix-title">Keychain keeps prompting for passwords</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body"><ol class="steps"><li>Open Keychain Access (Spotlight &rarr; Keychain Access)</li><li>Search for the app or service that's prompting (e.g., "harvard", "outlook")</li><li>Find duplicate or expired entries &rarr; delete them</li><li>Re-enter credentials when prompted and check "Always Allow" or "Save in Keychain"</li><li>If the login keychain itself is locked: Keychain Access &rarr; right-click login keychain &rarr; Unlock Keychain &rarr; enter Mac login password</li></ol></div>
+    </div>
+    <div class="fix-card" id="fix4" onclick="toggleFix('fix4')"><div class="fix-hd"><div class="fix-icon">&#128683;</div><div class="fix-title">"App is damaged and can't be opened" or unverified developer</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body"><ol class="steps"><li>First: right-click the app &rarr; Open (not double-click) -- macOS lets you override Gatekeeper once this way</li><li>If still blocked: System Settings &rarr; Privacy &amp; Security &rarr; scroll down &rarr; you'll see "[App] was blocked" &rarr; click Open Anyway</li><li>For quarantine flag: Terminal &rarr; <code>sudo xattr -cr /Applications/AppName.app</code></li><li>If it's a Harvard-approved app that should be in MSC: check MSC first, avoid manual workarounds</li></ol></div>
+    </div>
+    <div class="fix-card" id="fix5" onclick="toggleFix('fix5')"><div class="fix-hd"><div class="fix-icon">&#128424;</div><div class="fix-title">Printer not working on Mac</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body"><ol class="steps"><li>System Settings &rarr; Printers &amp; Scanners &rarr; select the stuck printer &rarr; click minus (-) to remove it</li><li>Re-add the printer: click plus (+) &rarr; find the Crimson Print queue for the department (e.g., HDS-Crimson-Print for Divinity) on the network</li><li>If print job is stuck: click the printer &rarr; Open Print Queue &rarr; delete the stuck job</li><li>Crimson Print PIN release: same Harvard PIN used on Windows -- reset at pin.harvard.edu if forgotten</li></ol></div>
+    </div>
+    <div class="fix-card" id="fix6" onclick="toggleFix('fix6')"><div class="fix-hd"><div class="fix-icon">&#128100;</div><div class="fix-title">macOS profile corruption &mdash; weird behavior for one user</div><div class="fix-sev low">Less Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body"><ol class="steps"><li>Create a new test user: System Settings &rarr; Users &amp; Groups &rarr; Add Account (requires admin)</li><li>Log into the new test account -- if the issue disappears, the problem is profile-specific to the original user</li><li>For a corrupted user profile: back up the user's home folder, delete the account, recreate it, restore data</li><li>Escalate to a senior tech before deleting any accounts -- data loss risk</li></ol></div>
+    </div>
+    <div class="fix-card" id="fix7" onclick="toggleFix('fix7')"><div class="fix-hd"><div class="fix-icon">&#128190;</div><div class="fix-title">macOS update stuck or failing</div><div class="fix-sev low">Occasional</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body"><ol class="steps"><li>Check disk space: Apple menu &rarr; About This Mac &rarr; Storage -- need at least 20GB free for a major update</li><li>Restart and try again: Apple menu &rarr; Restart &rarr; run Software Update after fresh boot</li><li>"This Mac can't be updated": check the minimum macOS requirement for the update -- older hardware may not support it. File a hardware refresh request.</li><li>If update downloads but won't install: delete the update package from /Library/Updates and re-download</li></ol></div>
+    </div>
+  </div>
+</div>
+
+<!-- MOD 9: Crimson Print on Mac -->
+<div class="mod vis" id="mod9" data-i="9">
+  <div class="mod-hd" onclick="toggleMod('mod9')"><div class="mod-num">09</div><div class="mod-title">Crimson Print on macOS &mdash; Department Queues</div><div class="mod-badge">Common Setup</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">How Printing Works on Mac at Harvard</div>
+    <p>Crimson Print (PaperCut NG) works the same on Mac as Windows -- jobs are logged, charged to department codes, and released at the printer with a Harvard PIN. Each department has its own named queue. The Mac setup just requires adding the queue manually.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#128203;</div><div class="ccard-title">Department Queues</div><div class="ccard-desc">Each department has a named Crimson Print queue. Divinity School: HDS-Crimson-Print. Art Museum: check with your supervisor for the queue name used at HUAM.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128241;</div><div class="ccard-title">PrintAnywhere on Mac</div><div class="ccard-desc">Upload to print.harvard.edu in any browser. Download and install the PrintAnywhere client if a printer-specific app is needed. Release at any Harvard PrintAnywhere printer with your PIN.</div><div class="ccard-code">print.harvard.edu</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128274;</div><div class="ccard-title">Harvard PIN</div><div class="ccard-desc">Same 4-digit PIN as Windows. Reset at pin.harvard.edu. PIN is not the HarvardKey password. Users forget this constantly.</div><div class="ccard-code">pin.harvard.edu</div></div>
+    </div>
+    <div class="sec-label" style="margin-top:1.5rem">Adding a Crimson Print Queue on Mac</div>
+    <ol class="steps">
+      <li>System Settings &rarr; Printers &amp; Scanners &rarr; click <strong>+</strong> to add a printer</li>
+      <li>In the Add Printer dialog &rarr; click the <strong>IP</strong> tab at the top</li>
+      <li>Address: enter the Crimson Print server hostname (get from your supervisor or department IT liaison)</li>
+      <li>Protocol: <strong>Internet Printing Protocol - IPP</strong></li>
+      <li>Queue: enter the department queue name (e.g., <code>HDS-Crimson-Print</code>)</li>
+      <li>Name it something recognizable &rarr; click Add &rarr; test with a small print job</li>
+    </ol>
+    <div class="box gold"><div class="box-lbl">&#128161; Jamf Deploys Printers Too</div><p>On fully managed Macs, Jamf may push the correct Crimson Print queue automatically at enrollment. Check Printers &amp; Scanners before manually adding -- it might already be there from a Jamf policy.</p></div>
+  </div>
+</div>
+
+<!-- MOD 10: Mac vs PC at Harvard -->
+<div class="mod vis" id="mod10" data-i="10">
+  <div class="mod-hd" onclick="toggleMod('mod10')"><div class="mod-num">10</div><div class="mod-title">Supporting Macs vs PCs at Harvard &mdash; What's Different</div><div class="mod-badge">Context</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">User Expectations Are Different</div>
+    <p>Mac users at Harvard -- especially at the Art Museum -- often know their machines well. They're creative professionals, researchers, or faculty who have used Macs for years. Your approach needs to match that.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#127912;</div><div class="ccard-title">Art Museum</div><div class="ccard-desc">Mostly Macs. Mix of MacBook Pros and Mac Studios. Users are curators, researchers, admin -- non-technical but confident with their specific Mac workflows. Don't talk Windows at them.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128218;</div><div class="ccard-title">Divinity School</div><div class="ccard-desc">Mixed fleet. Faculty may have older Macs. Students use personal devices too. Check whether the machine is Harvard-managed before trying Jamf or MSC.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128218;</div><div class="ccard-title">Lamont Library</div><div class="ccard-desc">Mostly Windows at the circulation desk. Macs in some staff offices. Public computers are a mix -- don't install anything on public machines without supervisor approval.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128172;</div><div class="ccard-title">Language Matters</div><div class="ccard-desc">"Control Panel" doesn't exist. Say "System Settings". "Programs" are "Applications" or "apps". "C drive" is "Macintosh HD". Adjust your vocabulary or you'll lose them.</div></div>
+    </div>
+    <div class="box info"><div class="box-lbl">&#128161; Network File Shares on Mac</div><p>Macs connect to Harvard network shares via SMB, same as Windows. Finder &rarr; Go &rarr; Connect to Server &rarr; type <code>smb://server.harvard.edu/sharename</code> &rarr; enter HarvardKey credentials. The share mounts like a drive in Finder. Users can also drag it to the Dock for quick access.</p></div>
+  </div>
+</div>
+
+<!-- MOD 11: Quick Reference -->
+<div class="mod vis" id="mod11" data-i="11">
+  <div class="mod-hd" onclick="toggleMod('mod11')"><div class="mod-num">11</div><div class="mod-title">macOS Quick Reference &mdash; Commands &amp; Equivalents</div><div class="mod-badge">Reference</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">Essential Terminal Commands</div>
+    <div class="term"><div class="term-bar"><div class="term-dot" style="background:#ff5f56"></div><div class="term-dot" style="background:#ffbd2e"></div><div class="term-dot" style="background:#27c93f"></div><div class="term-title">macOS Quick Reference</div></div><div class="term-body">
+      <div><span class="term-comment"># ---- NETWORK ----</span></div>
+      <div><span class="term-cmd">ifconfig en0 | grep ether</span><span class="term-out" style="margin-left:1rem"># Wi-Fi MAC address</span></div>
+      <div><span class="term-cmd">networksetup -getinfo Wi-Fi</span><span class="term-out" style="margin-left:1rem"># IP, subnet, router</span></div>
+      <div><span class="term-cmd">ping -c 4 8.8.8.8</span><span class="term-out" style="margin-left:1rem"># connectivity test</span></div>
+      <div><span class="term-cmd">traceroute 8.8.8.8</span><span class="term-out" style="margin-left:1rem"># route trace (not tracert)</span></div>
+      <div><span class="term-cmd">nslookup harvard.edu</span><span class="term-out" style="margin-left:1rem"># DNS lookup</span></div>
+      <div><span class="term-cmd">sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder</span><span class="term-out" style="margin-left:.5rem"># flush DNS</span></div>
+      <div style="margin-top:.5rem"><span class="term-comment"># ---- SYSTEM ----</span></div>
+      <div><span class="term-cmd">sw_vers</span><span class="term-out" style="margin-left:1rem"># macOS version</span></div>
+      <div><span class="term-cmd">system_profiler SPHardwareDataType</span><span class="term-out" style="margin-left:1rem"># hardware + serial</span></div>
+      <div><span class="term-cmd">hostname</span><span class="term-out" style="margin-left:1rem"># machine name</span></div>
+      <div><span class="term-cmd">df -h /</span><span class="term-out" style="margin-left:1rem"># disk space</span></div>
+      <div style="margin-top:.5rem"><span class="term-comment"># ---- JAMF / MDM ----</span></div>
+      <div><span class="term-cmd">sudo jamf policy</span><span class="term-out" style="margin-left:1rem"># force Jamf check-in</span></div>
+      <div><span class="term-cmd">sudo xattr -cr /Applications/App.app</span><span class="term-out" style="margin-left:1rem"># clear quarantine</span></div>
+      <div style="margin-top:.5rem"><span class="term-comment"># ---- MUNKI / MSC ----</span></div>
+      <div><span class="term-cmd">sudo /usr/local/munki/managedsoftwareupdate --checkonly</span><span class="term-out" style="margin-left:.5rem"># force MSC check</span></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- MOD 12: QUIZ -->
+<div class="mod vis" id="modQ" data-i="12">
+  <div class="mod-hd" onclick="toggleMod('modQ')"><div class="mod-num">12</div><div class="mod-title">Knowledge Check</div><div class="mod-badge" id="qBadge">8 Questions</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div id="quizForm">
+      <p style="font-size:.83rem;color:var(--t3);margin-bottom:1.5rem">Answers lock on selection. Submit all 8 for your score.</p>
+      <div class="qq"><div class="qq-num">Q1 of 8</div><div class="qq-text">A user clicks the red X on a macOS app window and says the app is closed. What actually happened?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q1" value="a"> The app is fully closed and removed from memory</label><label class="qq-opt"><input type="radio" name="q1" value="b"> The window closed but the app is still running -- Cmd+Q is required to fully quit</label><label class="qq-opt"><input type="radio" name="q1" value="c"> The app minimized to the Dock</label><label class="qq-opt"><input type="radio" name="q1" value="d"> The app entered sleep mode</label></div><div class="qq-fb" id="q1fb"></div></div>
+      <div class="qq"><div class="qq-num">Q2 of 8</div><div class="qq-text">What Terminal command shows the Wi-Fi MAC address on a Mac?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q2" value="a"> ipconfig /all</label><label class="qq-opt"><input type="radio" name="q2" value="b"> getmac /v</label><label class="qq-opt"><input type="radio" name="q2" value="c"> ifconfig en0 | grep ether</label><label class="qq-opt"><input type="radio" name="q2" value="d"> networksetup -getmac Wi-Fi</label></div><div class="qq-fb" id="q2fb"></div></div>
+      <div class="qq"><div class="qq-num">Q3 of 8</div><div class="qq-text">A Mac's Harvard Secure certificate keeps failing. You removed the profile. What's next?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q3" value="a"> Reinstall macOS</label><label class="qq-opt"><input type="radio" name="q3" value="b"> Re-run getonline.harvard.edu to download and install a fresh certificate profile</label><label class="qq-opt"><input type="radio" name="q3" value="c"> Call the networking team to re-register the MAC address</label><label class="qq-opt"><input type="radio" name="q3" value="d"> Disable 802.1X in System Settings</label></div><div class="qq-fb" id="q3fb"></div></div>
+      <div class="qq"><div class="qq-num">Q4 of 8</div><div class="qq-text">What is the macOS equivalent of Windows SCCM Software Center?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q4" value="a"> The Mac App Store</label><label class="qq-opt"><input type="radio" name="q4" value="b"> Managed Software Center (MSC), powered by Munki</label><label class="qq-opt"><input type="radio" name="q4" value="c"> The Jamf Pro console</label><label class="qq-opt"><input type="radio" name="q4" value="d"> System Settings &rarr; Software Update</label></div><div class="qq-fb" id="q4fb"></div></div>
+      <div class="qq"><div class="qq-num">Q5 of 8</div><div class="qq-text">A Mac shows kernel_task at 300% CPU in Activity Monitor. What does this usually indicate?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q5" value="a"> A virus has infected the kernel</label><label class="qq-opt"><input type="radio" name="q5" value="b"> The Mac is thermally throttling -- check vents are clear and it's not on fabric</label><label class="qq-opt"><input type="radio" name="q5" value="c"> Jamf is running a policy -- leave it alone</label><label class="qq-opt"><input type="radio" name="q5" value="d"> The SSD is failing</label></div><div class="qq-fb" id="q5fb"></div></div>
+      <div class="qq"><div class="qq-num">Q6 of 8</div><div class="qq-text">How do you force a Jamf check-in on a Harvard Mac?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q6" value="a"> Open System Settings and click Check for Updates</label><label class="qq-opt"><input type="radio" name="q6" value="b"> Run sudo jamf policy in Terminal</label><label class="qq-opt"><input type="radio" name="q6" value="c"> Restart the Mac -- Jamf checks in automatically</label><label class="qq-opt"><input type="radio" name="q6" value="d"> Log into the Jamf console and push a policy</label></div><div class="qq-fb" id="q6fb"></div></div>
+      <div class="qq"><div class="qq-num">Q7 of 8</div><div class="qq-text">A Mac user at the Art Museum gets "app is damaged and can't be opened." Quickest first step?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q7" value="a"> Reinstall the app from the internet</label><label class="qq-opt"><input type="radio" name="q7" value="b"> Right-click the app and choose Open -- macOS allows a Gatekeeper override this way</label><label class="qq-opt"><input type="radio" name="q7" value="c"> Disable Gatekeeper permanently in Terminal</label><label class="qq-opt"><input type="radio" name="q7" value="d"> Submit a Jamf policy to whitelist the app</label></div><div class="qq-fb" id="q7fb"></div></div>
+      <div class="qq"><div class="qq-num">Q8 of 8</div><div class="qq-text">How do you mount a Harvard network share on a Mac?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q8" value="a"> Drag the share URL onto the desktop</label><label class="qq-opt"><input type="radio" name="q8" value="b"> Finder &rarr; Go &rarr; Connect to Server &rarr; smb://server.harvard.edu/sharename &rarr; HarvardKey credentials</label><label class="qq-opt"><input type="radio" name="q8" value="c"> Terminal: mount -t samba server.harvard.edu /share</label><label class="qq-opt"><input type="radio" name="q8" value="d"> System Settings &rarr; Network &rarr; Add Share</label></div><div class="qq-fb" id="q8fb"></div></div>
+      <div style="display:flex;gap:.75rem;margin-top:1.5rem">
+        <button class="btn btn-blue" onclick="submitQuiz()">Submit Answers</button>
+        <button class="btn btn-ghost" onclick="resetQuiz()">Reset</button>
+      </div>
+    </div>
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-num" id="scoreNum">--</div>
+      <div class="score-lbl">out of 8 correct</div>
+      <p class="score-msg" id="scoreMsg"></p>
+      <div class="g-badge" id="scoreBadge"></div>
+      <div style="margin-top:1.5rem"><button class="btn btn-ghost" onclick="resetQuiz()">Retake</button></div>
+    </div>
+  </div>
+</div>
+<div class="done-banner" id="doneBanner">
+  <div style="font-size:2.5rem;margin-bottom:.75rem">&#127822;</div>
+  <h2>macOS Basics Complete</h2>
+  <p>You can now handle Mac support at the Art Museum, Divinity, and Lamont. Terminal, Jamf, MSC, Harvard Secure, Crimson Print -- covered.</p>
+</div>
+</div>
+<script>
+const qA={
+  q1:{c:"b",fb:{b:"Correct. Red X closes the window but the app keeps running. You can see the dot under the Dock icon. Cmd+Q is the actual quit.",_:"Red X on macOS only closes the window -- the app is still running and consuming memory. Cmd+Q fully quits. This trips up Windows users every time."}},
+  q2:{c:"c",fb:{c:"Correct. ifconfig en0 | grep ether returns the hardware MAC for the Wi-Fi interface. en0 is Wi-Fi on most Macs.",_:"The correct command is ifconfig en0 | grep ether. ipconfig and getmac are Windows commands -- they don't exist on macOS."}},
+  q3:{c:"b",fb:{b:"Correct. Re-run getonline.harvard.edu to get a fresh certificate profile and reinstall it. Also clear old certs from Keychain Access first.",_:"After removing the old profile, re-run getonline.harvard.edu to download and install a fresh certificate. Also clear old Harvard entries from Keychain Access."}},
+  q4:{c:"b",fb:{b:"Correct. Managed Software Center (MSC), powered by Munki, is the Mac equivalent of SCCM Software Center. Check here before any internet download.",_:"The Mac equivalent of Software Center is Managed Software Center (MSC), powered by Munki. The Mac App Store is for personal use, not Harvard-managed software deployment."}},
+  q5:{c:"b",fb:{b:"Correct. kernel_task at very high CPU is macOS throttling the CPU to protect against overheating. Check ventilation -- the machine is probably blocked or on fabric.",_:"kernel_task high CPU = thermal throttling. The Mac is protecting itself from overheating. Check that vents are clear and the machine isn't sitting on fabric or a soft surface."}},
+  q6:{c:"b",fb:{b:"Correct. sudo jamf policy forces an immediate Jamf check-in from Terminal. This is the co-op-level Jamf interaction.",_:"The correct command is sudo jamf policy in Terminal. This forces an immediate check-in with the Harvard Jamf server and runs any pending policies."}},
+  q7:{c:"b",fb:{b:"Correct. Right-click &rarr; Open gives a one-time Gatekeeper override dialog. This is always the first step before anything more drastic.",_:"Right-click the app and choose Open (not double-click). macOS shows a dialog with an Open button to override Gatekeeper once. This is the fastest and safest first step."}},
+  q8:{c:"b",fb:{b:"Correct. Finder &rarr; Go &rarr; Connect to Server &rarr; smb://server.harvard.edu/sharename then enter HarvardKey credentials. The share mounts like a drive.",_:"To mount a Harvard network share on Mac: Finder &rarr; Go &rarr; Connect to Server &rarr; type smb://server.harvard.edu/sharename &rarr; enter HarvardKey credentials. It mounts as a drive in Finder."}}
+};
+let qDone=false;
+function toggleMod(id){const m=document.getElementById(id);if(m)m.classList.toggle("open");}
+function switchTab(btn,pid){const body=btn.closest(".mod-body");body.querySelectorAll(".tab").forEach(b=>b.classList.remove("on"));body.querySelectorAll(".tpanel").forEach(p=>p.classList.remove("on"));btn.classList.add("on");const p=document.getElementById(pid);if(p)p.classList.add("on");}
+function toggleFix(id){const c=document.getElementById(id);if(!c)return;const was=c.classList.contains("open");document.querySelectorAll(".fix-card").forEach(f=>f.classList.remove("open"));if(!was)c.classList.add("open");}
+function submitQuiz(){
+  if(qDone)return;let score=0,all=true;
+  Object.keys(qA).forEach(q=>{
+    const sel3=[...document.querySelectorAll("input[name='"+q+"']")].find(r=>r.checked);
+    if(!sel3){all=false;return;}
+    const v=sel3.value,{c,fb}=qA[q];
+    document.querySelectorAll("input[name='"+q+"']").forEach(opt=>{const lbl=opt.parentElement;lbl.style.pointerEvents="none";if(opt.value===c)lbl.classList.add("rev");if(opt.value===v&&v!==c)lbl.classList.add("bad");if(opt.value===v&&v===c){lbl.classList.remove("rev");lbl.classList.add("ok");}});
+    const fbd=document.getElementById(q+"fb");fbd.innerHTML=fb[v]||fb["_"];fbd.className="qq-fb "+(v===c?"ok":"bad");
+    if(v===c)score++;
+  });
+  if(!all){alert("Answer all 8 questions first.");return;}
+  qDone=true;
+  setTimeout(()=>{
+    document.getElementById("quizForm").style.display="none";
+    const sw=document.getElementById("scoreWrap");sw.classList.add("on");
+    document.getElementById("scoreNum").textContent=score;
+    const p=score/8;
+    document.getElementById("scoreMsg").textContent=p===1?"Perfect. You're ready to support any Mac at Harvard.":p>=.75?"Solid. Review the ones you missed.":p>=.5?"Getting there. Focus on Terminal commands, Jamf, and Gatekeeper.":"Take another pass through the Terminal and Jamf modules.";
+    document.getElementById("scoreBadge").textContent=p===1?"Mac Expert":p>=.75?"Mac Certified":p>=.5?"Keep Studying":"Revisit Material";
+    document.getElementById("qBadge").textContent=score+"/8";
+    document.getElementById("qBadge").className="mod-badge done";
+    if(score>=6)document.getElementById("doneBanner").classList.add("on");
+  },400);
+}
+function resetQuiz(){
+  qDone=false;
+  document.querySelectorAll(".qq-opt").forEach(o=>{o.className="qq-opt";o.style.pointerEvents="";});
+  document.querySelectorAll(".qq-fb").forEach(f=>f.className="qq-fb");
+  document.querySelectorAll("input[type=radio]").forEach(r=>r.checked=false);
+  document.getElementById("quizForm").style.display="block";
+  document.getElementById("scoreWrap").classList.remove("on");
+  document.getElementById("qBadge").textContent="8 Questions";
+  document.getElementById("qBadge").className="mod-badge";
+}
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("vis");});},{threshold:.05});
+document.querySelectorAll(".mod").forEach(m=>obs.observe(m));
+</script>
+</body>
+</html>
