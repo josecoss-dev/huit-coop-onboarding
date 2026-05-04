@@ -216,7 +216,7 @@ body::before{content:'';position:fixed;inset:0;
     <h1>Your<br><span class="cr">Day One</span><br>Starts Here.</h1>
     <p class="hero-sub">Everything you need to support users at Harvard — broken into focused, interactive modules with real scenarios, hands-on practice, and scored quizzes. Work through them in order before joining your team.</p>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num"><span id="doneCount">2</span><span class="cr" style="font-size:1.2rem"> done</span></div><div class="stat-label">Modules Complete</div></div>
+      <div class="stat"><div class="stat-num"><span id="doneCount">4</span><span class="cr" style="font-size:1.2rem"> done</span></div><div class="stat-label">Modules Complete</div></div>
       <div class="stat"><div class="stat-num" id="totalCount">8</div><div class="stat-label">Total Modules</div></div>
       <div class="stat"><div class="stat-num">~<span id="totalTime">2.5</span><span style="font-size:1.2rem;color:var(--t3)">hrs</span></div><div class="stat-label">Estimated Total</div></div>
       <div class="stat"><div class="stat-num" style="color:var(--gold)">30</div><div class="stat-label">Co-ops This Cohort</div></div>
@@ -297,6 +297,54 @@ body::before{content:'';position:fixed;inset:0;
 
   <div class="grid" id="liveGrid">
 
+    <a class="card done" href="harvard-systems.html" data-cat="harvard" data-status="live" data-search="harvard systems harvardkey huid vpn globalprotect servicenow printing pin directory">
+      <div class="card-bar" style="background:linear-gradient(90deg,var(--gold),rgba(240,192,64,.2))"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-cat" style="color:var(--gold);border-color:rgba(240,192,64,.3)">Harvard Systems</span>
+          <span class="card-status live"><span class="dot"></span>Live</span>
+        </div>
+        <div class="card-num">Module 04</div>
+        <div class="card-title">Harvard Systems Overview</div>
+        <div class="card-desc">HarvardKey, HUID, the Harvard directory, VPN (GlobalProtect), print queues, and the tools you'll touch every single day as a co-op in HUIT.</div>
+        <div class="card-tags">
+          <span class="card-tag">HarvardKey</span>
+          <span class="card-tag">VPN</span>
+          <span class="card-tag">Printing</span>
+          <span class="card-tag">HUIT Tools</span>
+          <span class="card-tag">8-Q Quiz</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-time">🕐 ~60 min · 10 sections</div>
+        <div class="card-action">Start Module →</div>
+      </div>
+    </a>
+
+    <a class="card done" href="m365-basics.html" data-cat="microsoft" data-status="live" data-search="microsoft 365 office teams outlook sharepoint onedrive email calendar word excel powerpoint">
+      <div class="card-bar" style="background:linear-gradient(90deg,#a78bfa,rgba(167,139,250,.2))"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-cat" style="color:var(--purple);border-color:rgba(167,139,250,.3)">Microsoft 365</span>
+          <span class="card-status live"><span class="dot"></span>Live</span>
+        </div>
+        <div class="card-num">Module 03</div>
+        <div class="card-title">Microsoft 365 Basics</div>
+        <div class="card-desc">Teams, Outlook, SharePoint, and OneDrive from an IT support perspective. Harvard licensing tiers, common user issues, and how M365 fits into Harvard's ecosystem.</div>
+        <div class="card-tags">
+          <span class="card-tag">Teams</span>
+          <span class="card-tag">Outlook</span>
+          <span class="card-tag">SharePoint</span>
+          <span class="card-tag">OneDrive</span>
+          <span class="card-tag">11-Q Quiz</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-time">🕐 ~90 min · 11 sections</div>
+        <div class="card-action">Start Module →</div>
+      </div>
+    </a>
+
     <a class="card done" href="networking-101.html" data-cat="networking" data-status="live" data-search="networking mac address clearpass aruba wifi harvard secure device registration getonline certificate vlan">
       <div class="card-bar" style="background:linear-gradient(90deg,var(--cr),var(--gold))"></div>
       <div class="card-body">
@@ -351,58 +399,16 @@ body::before{content:'';position:fixed;inset:0;
   <div class="section-header" style="margin-top:2.5rem">
     <div class="section-title">Coming Soon</div>
     <div class="section-line"></div>
-    <div class="section-count" id="soonCount">7 modules</div>
+    <div class="section-count" id="soonCount">5 modules</div>
   </div>
 
   <div class="grid" id="soonGrid">
 
     <!-- Windows Basics moved to liveGrid -->
 
-    <div class="card coming" data-cat="microsoft" data-status="soon" data-search="microsoft 365 office teams outlook sharepoint onedrive email calendar word excel powerpoint">
-      <div class="card-bar" style="background:linear-gradient(90deg,rgba(167,139,250,.5),rgba(167,139,250,.1))"></div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="card-cat" style="color:var(--purple);border-color:rgba(167,139,250,.3)">Microsoft 365</span>
-          <span class="card-status soon"><span class="dot"></span>Coming Soon</span>
-        </div>
-        <div class="card-num">Module 03</div>
-        <div class="card-title">Microsoft 365 Basics</div>
-        <div class="card-desc">Teams, Outlook, SharePoint, and OneDrive from an IT support perspective. Harvard licensing tiers, common user issues, and how M365 fits into Harvard's ecosystem.</div>
-        <div class="card-tags">
-          <span class="card-tag">Teams</span>
-          <span class="card-tag">Outlook</span>
-          <span class="card-tag">SharePoint</span>
-          <span class="card-tag">OneDrive</span>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="card-time">🕐 ~30 min</div>
-        <div class="card-action" style="color:var(--t4)">In Development</div>
-      </div>
-    </div>
+    
 
-    <div class="card coming" data-cat="harvard" data-status="soon" data-search="harvard systems harvardkey huid vpn globalprotect servicenow printing pin directory">
-      <div class="card-bar" style="background:linear-gradient(90deg,rgba(240,192,64,.5),rgba(240,192,64,.1))"></div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="card-cat" style="color:var(--gold);border-color:rgba(240,192,64,.3)">Harvard Systems</span>
-          <span class="card-status soon"><span class="dot"></span>Coming Soon</span>
-        </div>
-        <div class="card-num">Module 04</div>
-        <div class="card-title">Harvard Systems Overview</div>
-        <div class="card-desc">HarvardKey, HUID, the Harvard directory, VPN (GlobalProtect), print queues, and the tools you'll touch every single day as a co-op in HUIT.</div>
-        <div class="card-tags">
-          <span class="card-tag">HarvardKey</span>
-          <span class="card-tag">VPN</span>
-          <span class="card-tag">Printing</span>
-          <span class="card-tag">Directory</span>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="card-time">🕐 ~25 min</div>
-        <div class="card-action" style="color:var(--t4)">In Development</div>
-      </div>
-    </div>
+    
 
     <div class="card coming" data-cat="harvard" data-status="soon" data-search="servicenow snow tickets incidents requests categories priority sla queue assignment">
       <div class="card-bar" style="background:linear-gradient(90deg,rgba(251,146,60,.5),rgba(251,146,60,.1))"></div>
@@ -566,7 +572,7 @@ function setRing(pct) {
     document.getElementById('ringPct').textContent = Math.round(pct) + '%';
   }, 300);
 }
-setRing(25); // 2 of 8 done
+setRing(50); // 2 of 8 done
 
 // ── CARD FADE IN ──
 const obs = new IntersectionObserver(entries => {

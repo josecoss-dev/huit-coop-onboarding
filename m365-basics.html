@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUIT Co-op Onboarding — Microsoft 365</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cr:#C8273D;--cr-d:rgba(200,39,61,0.12);
+  --gold:#F0C040;--gold-d:rgba(240,192,64,0.1);
+  --green:#22c55e;--green-d:rgba(34,197,94,0.1);
+  --blue:#60a5fa;--blue-d:rgba(96,165,250,0.1);
+  --purple:#a78bfa;--purple-d:rgba(167,139,250,0.12);--purple-g:rgba(167,139,250,0.3);
+  --orange:#fb923c;
+  --bg:#080a0d;--s1:#0e1117;--s2:#131820;--s3:#1a2030;
+  --bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.12);
+  --t1:#f1f5f9;--t2:#94a3b8;--t3:#94a3b8;--t4:#334155;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;--r:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:var(--sans);min-height:100vh;overflow-x:hidden;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 70% 40% at 15% 0%,rgba(167,139,250,0.1) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 30% at 85% 100%,rgba(200,39,61,0.06) 0%,transparent 60%);
+  pointer-events:none;z-index:0}
+
+.nav{position:sticky;top:0;z-index:200;height:56px;background:rgba(8,10,13,0.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 1.5rem;gap:1.25rem}
+.nav-back{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--t3);text-decoration:none;display:flex;align-items:center;gap:.4rem;
+  padding:.3rem .7rem;border:1px solid var(--bd2);border-radius:6px;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.nav-back:hover{color:var(--t1);border-color:var(--purple);background:var(--purple-d)}
+.nav-back svg{width:12px;height:12px;transition:transform .2s}
+.nav-back:hover svg{transform:translateX(-2px)}
+.nav-logo{font-family:var(--mono);font-size:.7rem;color:var(--purple);letter-spacing:.12em;white-space:nowrap}
+.nav-logo span{color:var(--t3)}
+.nav-bar{flex:1;height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.nav-fill{height:100%;background:linear-gradient(90deg,var(--purple),#c4b5fd);width:0%;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.nav-prog{font-family:var(--mono);font-size:.65rem;color:var(--t3);white-space:nowrap}
+
+.shell{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 1.25rem 8rem}
+
+.hero{padding:5rem 0 4rem;position:relative}
+.hero-glow{position:absolute;top:2rem;left:-4rem;width:400px;height:300px;
+  background:radial-gradient(ellipse,rgba(167,139,250,0.15) 0%,transparent 70%);pointer-events:none;filter:blur(40px)}
+.hero-tag{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--purple);
+  text-transform:uppercase;margin-bottom:1.4rem;display:flex;align-items:center;gap:.75rem}
+.hero-tag::before{content:'';width:28px;height:1px;background:var(--purple)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.8rem);font-weight:800;letter-spacing:-.03em;line-height:1;color:#fff;margin-bottom:1.25rem}
+.hero h1 em{color:var(--purple);font-style:normal;position:relative}
+.hero h1 em::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),transparent)}
+.hero-sub{font-size:1rem;color:var(--t2);max-width:560px;line-height:1.75;margin-bottom:2.5rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.3rem .8rem;border-radius:99px;border:1px solid var(--bd2);color:var(--t3)}
+.chip.hot{border-color:rgba(167,139,250,.4);color:var(--purple);background:rgba(167,139,250,.07)}
+.hero-divider{height:1px;background:linear-gradient(90deg,var(--purple) 0%,rgba(167,139,250,.2) 40%,transparent 80%);margin:3rem 0}
+
+.mod{position:relative;margin-bottom:.75rem;border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--bd);background:var(--s1);
+  opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .25s}
+.mod.vis{opacity:1;transform:none}
+.mod:hover{border-color:var(--bd2)}
+.mod.open{border-color:rgba(167,139,250,.35);box-shadow:0 0 0 1px rgba(167,139,250,.1),0 8px 32px rgba(0,0,0,.4)}
+.mod-hd{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;cursor:pointer;transition:background .2s;user-select:none}
+.mod-hd:hover{background:var(--s2)}
+.mod.open .mod-hd{border-bottom:1px solid var(--bd)}
+.mod-num{font-family:var(--mono);font-size:.6rem;color:var(--purple);
+  width:28px;height:28px;border-radius:50%;border:1px solid rgba(167,139,250,.3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(167,139,250,.06)}
+.mod-title{font-weight:600;font-size:.95rem;flex:1;color:var(--t1)}
+.mod-badge{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.25rem .65rem;border-radius:99px;background:var(--s3);color:var(--t3);border:1px solid var(--bd);flex-shrink:0}
+.mod-badge.done{background:rgba(34,197,94,.1);color:var(--green);border-color:rgba(34,197,94,.25)}
+.mod-chevron{width:16px;height:16px;color:var(--t3);transition:transform .3s;flex-shrink:0}
+.mod.open .mod-chevron{transform:rotate(180deg);color:var(--purple)}
+.mod-body{display:none;padding:1.75rem 1.5rem}
+.mod.open .mod-body{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.sec-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--purple);margin:0 0 .85rem;display:flex;align-items:center;gap:.6rem}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(167,139,250,.3),transparent)}
+p{font-size:.925rem;color:var(--t2);line-height:1.75;margin-bottom:.875rem}
+p:last-child{margin-bottom:0}
+strong{color:var(--t1);font-weight:600}
+em{color:var(--purple);font-style:normal}
+code{font-family:var(--mono);font-size:.78rem;background:rgba(0,0,0,.5);
+  color:var(--gold);padding:.1rem .45rem;border-radius:4px;border:1px solid rgba(240,192,64,.15)}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.75rem;margin:1.25rem 0}
+.ccard{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1.1rem;
+  transition:border-color .2s,transform .2s,box-shadow .2s}
+.ccard:hover{border-color:rgba(167,139,250,.3);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.ccard-icon{font-size:1.4rem;margin-bottom:.75rem}
+.ccard-title{font-weight:700;font-size:.88rem;color:var(--t1);margin-bottom:.35rem}
+.ccard-desc{font-size:.78rem;color:var(--t3);line-height:1.55}
+.ccard-code{font-family:var(--mono);font-size:.68rem;color:var(--purple);margin-top:.5rem;
+  padding:.25rem .5rem;background:rgba(167,139,250,.07);border-radius:4px;display:inline-block;border:1px solid rgba(167,139,250,.2)}
+
+.box{border-radius:8px;padding:1rem 1.15rem;margin:1.15rem 0}
+.box-lbl{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem;font-weight:600}
+.box p{font-size:.85rem;margin:0;color:var(--t2)}
+.box.info{background:var(--blue-d);border:1px solid rgba(96,165,250,.2);border-left:3px solid var(--blue)}
+.box.info .box-lbl{color:var(--blue)}
+.box.warn{background:var(--cr-d);border:1px solid rgba(200,39,61,.25);border-left:3px solid var(--cr)}
+.box.warn .box-lbl{color:var(--cr)}
+.box.ok{background:var(--green-d);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green)}
+.box.ok .box-lbl{color:var(--green)}
+.box.purple{background:var(--purple-d);border:1px solid rgba(167,139,250,.25);border-left:3px solid var(--purple)}
+.box.purple .box-lbl{color:var(--purple)}
+.box.gold{background:var(--gold-d);border:1px solid rgba(240,192,64,.2);border-left:3px solid var(--gold)}
+.box.gold .box-lbl{color:var(--gold)}
+
+.steps{list-style:none;counter-reset:s;margin:1rem 0}
+.steps li{counter-increment:s;display:flex;gap:.9rem;align-items:flex-start;
+  padding:.8rem 0;border-bottom:1px solid var(--bd);font-size:.885rem;line-height:1.65;color:var(--t2)}
+.steps li:last-child{border:none}
+.steps li::before{content:counter(s);font-family:var(--mono);font-size:.6rem;font-weight:600;
+  min-width:24px;height:24px;border-radius:50%;background:var(--purple-d);color:var(--purple);
+  border:1px solid rgba(167,139,250,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+.tabs{display:flex;border-bottom:1px solid var(--bd);gap:0}
+.tab{font-family:var(--mono);font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.65rem 1.1rem;cursor:pointer;background:none;border:none;color:var(--t3);
+  border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;white-space:nowrap}
+.tab.on{color:var(--t1);border-bottom-color:var(--purple)}
+.tab:hover:not(.on){color:var(--t2)}
+.tpanel{display:none;padding-top:1.5rem}
+.tpanel.on{display:block;animation:fadeUp .2s ease}
+
+.ps-block{background:#1a0a2e;border:1px solid rgba(167,139,250,.3);border-radius:8px;
+  padding:1rem 1.1rem;font-family:var(--mono);font-size:.78rem;margin:.75rem 0;overflow-x:auto}
+.ps-prompt{color:#c4b5fd;margin-bottom:.25rem}
+.ps-cmd{color:#e9d5ff}
+.ps-out{color:#a78bfa;margin-top:.4rem;font-size:.72rem;opacity:.9}
+.ps-comment{color:#6A9955;font-size:.72rem}
+
+.btn{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.7rem 1.6rem;border-radius:6px;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:.5rem}
+.btn-purple{background:var(--purple);color:#fff;box-shadow:0 4px 12px rgba(167,139,250,.3)}
+.btn-purple:hover{background:#9061f9;transform:translateY(-1px)}
+.btn-ghost{background:var(--s2);color:var(--t2);border:1px solid var(--bd2)}
+.btn-ghost:hover{border-color:var(--t3);color:var(--t1)}
+
+/* Teams UI mockup */
+.teams-wrap{background:#1a1a2e;border:1px solid rgba(167,139,250,.25);border-radius:10px;overflow:hidden;margin:1.25rem 0;box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.teams-titlebar{background:#141428;padding:.35rem .75rem;display:flex;align-items:center;gap:.5rem;border-bottom:1px solid rgba(167,139,250,.15)}
+.teams-dot{width:10px;height:10px;border-radius:50%}
+.teams-title{font-size:.65rem;color:rgba(255,255,255,.5);font-family:var(--mono);margin-left:.25rem}
+.teams-body{display:grid;grid-template-columns:56px 220px 1fr;height:340px}
+.teams-sidebar-icons{background:#1e1e3a;border-right:1px solid rgba(167,139,250,.1);padding:.5rem 0;
+  display:flex;flex-direction:column;align-items:center;gap:.25rem}
+.teams-icon-btn{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:1rem;cursor:pointer;transition:background .2s;color:rgba(255,255,255,.6)}
+.teams-icon-btn:hover,.teams-icon-btn.active{background:rgba(167,139,250,.2);color:#fff}
+.teams-icon-btn.active{border-left:3px solid var(--purple);border-radius:0 8px 8px 0}
+.teams-channels{background:#1a1a30;border-right:1px solid rgba(167,139,250,.1);overflow-y:auto;padding:.75rem 0}
+.teams-team-header{padding:.4rem .75rem;font-size:.65rem;font-weight:700;color:rgba(255,255,255,.8);
+  display:flex;align-items:center;gap:.35rem;cursor:pointer;user-select:none}
+.teams-team-header::before{content:'▾';font-size:.6rem;color:rgba(255,255,255,.4)}
+.teams-channel{padding:.3rem .75rem .3rem 1.5rem;font-size:.72rem;color:rgba(255,255,255,.55);cursor:pointer;
+  transition:background .15s;display:flex;align-items:center;gap:.35rem}
+.teams-channel:hover{background:rgba(255,255,255,.07);color:#fff}
+.teams-channel.active{background:rgba(167,139,250,.15);color:#e9d5ff}
+.teams-channel::before{content:'#';color:rgba(167,139,250,.5)}
+.teams-main{display:flex;flex-direction:column;background:#0f0f1e}
+.teams-main-header{padding:.6rem 1rem;border-bottom:1px solid rgba(167,139,250,.1);
+  display:flex;align-items:center;gap:.5rem}
+.teams-main-title{font-weight:700;font-size:.82rem;color:#fff}
+.teams-main-sub{font-size:.65rem;color:rgba(255,255,255,.4)}
+.teams-messages{flex:1;padding:.75rem 1rem;overflow-y:auto;display:flex;flex-direction:column;gap:.75rem}
+.teams-msg{display:flex;gap:.6rem;align-items:flex-start}
+.teams-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:700;flex-shrink:0;margin-top:1px}
+.teams-msg-body{flex:1}
+.teams-msg-name{font-size:.68rem;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:.15rem}
+.teams-msg-text{font-size:.72rem;color:rgba(255,255,255,.65);line-height:1.5}
+.teams-compose{padding:.65rem 1rem;border-top:1px solid rgba(167,139,250,.1);
+  background:rgba(167,139,250,.04)}
+.teams-compose-box{background:rgba(255,255,255,.07);border:1px solid rgba(167,139,250,.2);border-radius:6px;
+  padding:.45rem .75rem;font-size:.72rem;color:rgba(255,255,255,.35);font-family:var(--sans)}
+
+/* Duo animation */
+.duo-flow{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin:1.25rem 0}
+.duo-step{flex:1;min-width:110px;background:var(--s2);border:1px solid var(--bd);
+  border-radius:8px;padding:.85rem .75rem;text-align:center;position:relative}
+.duo-step-icon{font-size:1.4rem;margin-bottom:.35rem}
+.duo-step-title{font-size:.72rem;font-weight:700;color:var(--t1);margin-bottom:.2rem}
+.duo-step-desc{font-size:.62rem;color:var(--t3);line-height:1.4}
+.duo-arr{color:var(--t4);font-size:1.2rem;padding:0 .25rem;flex-shrink:0;align-self:center}
+.duo-step.deny{border-color:rgba(200,39,61,.3);background:rgba(200,39,61,.06)}
+.duo-step.allow{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.06)}
+
+/* Fix cards */
+.fix-card{background:var(--s2);border:1px solid var(--bd);border-radius:8px;
+  margin-bottom:.75rem;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.fix-card:hover{border-color:var(--bd2)}
+.fix-card.open{border-color:rgba(167,139,250,.3)}
+.fix-hd{display:flex;align-items:center;gap:.85rem;padding:1rem 1.1rem}
+.fix-icon{font-size:1.1rem;flex-shrink:0}
+.fix-title{font-weight:600;font-size:.9rem;color:var(--t1);flex:1}
+.fix-sev{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;
+  padding:.2rem .6rem;border-radius:99px;flex-shrink:0}
+.fix-sev.high{background:rgba(200,39,61,.12);color:var(--cr);border:1px solid rgba(200,39,61,.25)}
+.fix-sev.med{background:var(--gold-d);color:var(--gold);border:1px solid rgba(240,192,64,.25)}
+.fix-sev.low{background:var(--green-d);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.fix-body{display:none;padding:0 1.1rem 1.1rem;border-top:1px solid var(--bd)}
+.fix-card.open .fix-body{display:block;animation:fadeUp .2s ease}
+.fix-chevron{width:14px;height:14px;color:var(--t4);transition:transform .25s;flex-shrink:0}
+.fix-card.open .fix-chevron{transform:rotate(180deg)}
+
+/* Quiz */
+.qq{margin-bottom:1.75rem;padding:1.25rem;background:var(--s2);border:1px solid var(--bd);border-radius:8px}
+.qq-num{font-family:var(--mono);font-size:.58rem;color:var(--t4);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.5rem}
+.qq-text{font-weight:600;font-size:.92rem;color:var(--t1);margin-bottom:.85rem;line-height:1.45}
+.qq-opts{display:flex;flex-direction:column;gap:.45rem}
+.qq-opt{display:flex;align-items:center;gap:.75rem;padding:.7rem 1rem;border:1px solid var(--bd2);
+  border-radius:7px;cursor:pointer;background:var(--s3);transition:all .15s;font-size:.85rem;color:var(--t2)}
+.qq-opt:hover{border-color:var(--bd2);background:var(--s2);color:var(--t1)}
+.qq-opt input{accent-color:var(--purple);flex-shrink:0}
+.qq-opt.ok{border-color:rgba(34,197,94,.4)!important;background:rgba(34,197,94,.08)!important;color:var(--green)!important}
+.qq-opt.bad{border-color:rgba(200,39,61,.4)!important;background:rgba(200,39,61,.08)!important;color:#f87171!important}
+.qq-opt.rev{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.04);color:var(--green)}
+.qq-fb{font-family:var(--mono);font-size:.72rem;margin-top:.6rem;padding:.5rem .75rem;border-radius:5px;display:none;line-height:1.5}
+.qq-fb.ok{display:block;color:var(--green);background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2)}
+.qq-fb.bad{display:block;color:#f87171;background:rgba(200,39,61,.07);border:1px solid rgba(200,39,61,.2)}
+.score-wrap{display:none;text-align:center;padding:2.5rem 1rem;animation:fadeUp .4s ease}
+.score-wrap.on{display:block}
+.score-num{font-size:4rem;font-weight:800;color:var(--purple);line-height:1}
+.score-lbl{font-family:var(--mono);font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.15em;margin-bottom:1rem}
+.score-msg{font-size:.92rem;color:var(--t2);max-width:360px;margin:0 auto 1.5rem;line-height:1.7}
+.g-badge{display:inline-block;font-family:var(--mono);font-size:.65rem;text-transform:uppercase;
+  letter-spacing:.12em;padding:.5rem 1.25rem;border-radius:99px;
+  background:var(--purple-d);border:1px solid rgba(167,139,250,.3);color:var(--purple)}
+
+.done-banner{display:none;margin-top:3rem;padding:2.5rem;border-radius:12px;text-align:center;
+  background:linear-gradient(135deg,rgba(167,139,250,.06),rgba(196,181,253,.03));border:1px solid var(--bd)}
+.done-banner.on{display:block;animation:fadeUp .5s ease}
+.done-banner h2{font-size:1.5rem;font-weight:800;color:var(--t1);margin-bottom:.5rem}
+.done-banner p{color:var(--t2);font-size:.9rem}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-back" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>HUB
+  </a>
+  <div class="nav-logo">HUIT <span>/ Co-op 2025 /</span> Microsoft 365</div>
+  <div class="nav-bar"><div class="nav-fill" id="navFill"></div></div>
+  <div class="nav-prog" id="navProg">0 / 11</div>
+</nav>
+<div class="shell">
+<header class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">Harvard University IT &middot; Microsoft 365 Enterprise &middot; E3/E5 Licensing</div>
+  <h1>Microsoft <em>365</em></h1>
+  <p class="hero-sub">Harvard runs M365 E3/E5 enterprise — every co-op and staff member gets the full suite. But the Harvard tenant behaves differently from personal Microsoft accounts, and knowing those differences is what separates a good tech from a confused one.</p>
+  <div class="chips">
+    <span class="chip hot">M365 E3/E5</span>
+    <span class="chip hot">Harvard Tenant</span>
+    <span class="chip hot">Duo MFA</span>
+    <span class="chip">~90 min</span>
+    <span class="chip">11 modules</span>
+  </div>
+  <div class="hero-divider"></div>
+</header>
+
+<!-- MOD 1: M365 at Harvard -->
+<div class="mod open vis" id="mod1" data-i="1">
+  <div class="mod-hd" onclick="toggleMod('mod1')">
+    <div class="mod-num">01</div>
+    <div class="mod-title">Microsoft 365 at Harvard &mdash; What You're Working With</div>
+    <div class="mod-badge">Foundation</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">Harvard's M365 Licensing</div>
+    <p>Harvard runs <strong>Microsoft 365 E3/E5 enterprise licensing</strong> — this means every Harvard affiliate gets the complete suite: Outlook, Teams, Word, Excel, PowerPoint, OneDrive (1TB), SharePoint, and more. The apps are free to affiliates. The difference from what users know at home is the <em>Harvard tenant</em>.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">🏛️</div><div class="ccard-title">Harvard Tenant</div><div class="ccard-desc">All Harvard M365 data lives in the harvard.edu tenant on Microsoft's cloud. Think of it as Harvard's own private Microsoft universe — separate from personal accounts.</div><div class="ccard-code">harvard.edu</div></div>
+      <div class="ccard"><div class="ccard-icon">📧</div><div class="ccard-title">Harvard Email Format</div><div class="ccard-desc">Primary: firstname_lastname@harvard.edu — this is the canonical Harvard email address used everywhere.</div><div class="ccard-code">firstname_lastname@harvard.edu</div></div>
+      <div class="ccard"><div class="ccard-icon">🔑</div><div class="ccard-title">HarvardKey SSO</div><div class="ccard-desc">One set of credentials authenticates into all M365 apps. HarvardKey IS the M365 login — no separate Microsoft password.</div><div class="ccard-code">HarvardKey + Duo</div></div>
+      <div class="ccard"><div class="ccard-icon">🛡️</div><div class="ccard-title">Duo MFA</div><div class="ccard-desc">Every M365 sign-in requires Duo second factor. No exceptions. Lost phone = call HUIT for a bypass code before they can access anything.</div><div class="ccard-code">go.harvard.edu/duo</div></div>
+      <div class="ccard"><div class="ccard-icon">📦</div><div class="ccard-title">E3 Apps Included</div><div class="ccard-desc">Word, Excel, PowerPoint, Outlook, Teams, OneDrive, SharePoint, OneNote, Forms, Planner, Stream. All included, no extra cost to user.</div></div>
+      <div class="ccard"><div class="ccard-icon">🔒</div><div class="ccard-title">IT-Managed Policies</div><div class="ccard-desc">Tenant-level settings are controlled by HUIT central IT — users cannot change MFA requirements, data retention, or sharing policies.</div></div>
+    </div>
+    <div class="box warn"><div class="box-lbl">&#9888; The #1 Sign-In Mistake</div><p>Users frequently sign into M365 apps with a personal @outlook.com, @hotmail.com, or @gmail.com account by accident. They'll see their old personal OneDrive, not Harvard resources. Always verify they're signed in as firstname_lastname@harvard.edu — check the account avatar in the top-right of any M365 app.</p></div>
+    <div class="box purple"><div class="box-lbl">&#128161; HarvardKey vs Harvard Email</div><p>Users sometimes confuse their HarvardKey username (used for VPN, ClearPass, Harvard systems) with their email address. HarvardKey is just the username portion — firstname_lastname. The full email adds @harvard.edu. Both route to the same identity. When signing into M365: use the full email address format.</p></div>
+  </div>
+</div>
+
+<!-- MOD 2: Teams -->
+<div class="mod vis" id="mod2" data-i="2">
+  <div class="mod-hd" onclick="toggleMod('mod2')">
+    <div class="mod-num">02</div>
+    <div class="mod-title">Microsoft Teams &mdash; Harvard's Main Collaboration Tool</div>
+    <div class="mod-badge">Critical</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">Teams Architecture — Teams vs Channels vs Chats</div>
+    <p>These three concepts confuse every new user. Get this straight and you'll resolve 60% of Teams questions immediately.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#128101;</div><div class="ccard-title">Team</div><div class="ccard-desc">A group of people — like a department or project group. Has channels inside it. Must be a member to see it. Created by IT or team owners.</div></div>
+      <div class="ccard"><div class="ccard-icon">#</div><div class="ccard-title">Channel</div><div class="ccard-desc">A topic thread inside a Team. General channel is always there. Others are created by team owners. Channels can be public (to the team) or private (subset of members).</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128172;</div><div class="ccard-title">Chat</div><div class="ccard-desc">Direct messages between people. Not part of any Team. Good for quick 1:1 or small group conversations. Doesn't require team membership.</div></div>
+    </div>
+
+    <!-- Teams UI mockup -->
+    <div class="sec-label" style="margin-top:1.5rem">Teams Interface</div>
+    <div class="teams-wrap">
+      <div class="teams-titlebar">
+        <div class="teams-dot" style="background:#ff5f56"></div>
+        <div class="teams-dot" style="background:#ffbd2e"></div>
+        <div class="teams-dot" style="background:#27c93f"></div>
+        <div class="teams-title">Microsoft Teams &mdash; Harvard University</div>
+      </div>
+      <div class="teams-body">
+        <div class="teams-sidebar-icons">
+          <div class="teams-icon-btn active">&#128101;</div>
+          <div class="teams-icon-btn">&#128172;</div>
+          <div class="teams-icon-btn">&#128222;</div>
+          <div class="teams-icon-btn">&#128197;</div>
+          <div class="teams-icon-btn">&#8943;</div>
+        </div>
+        <div class="teams-channels">
+          <div class="teams-team-header">&#128205; HUIT Support</div>
+          <div class="teams-channel active">general</div>
+          <div class="teams-channel">announcements</div>
+          <div class="teams-channel">art-museum</div>
+          <div class="teams-channel">divinity</div>
+          <div class="teams-channel">lamont</div>
+          <div style="height:.5rem"></div>
+          <div class="teams-team-header">&#127979; Wentworth Co-ops</div>
+          <div class="teams-channel">general</div>
+          <div class="teams-channel">onboarding</div>
+          <div class="teams-channel">questions</div>
+        </div>
+        <div class="teams-main">
+          <div class="teams-main-header">
+            <div>
+              <div class="teams-main-title"># general &mdash; HUIT Support</div>
+              <div class="teams-main-sub">42 members &middot; This is the home base for HUIT co-op support staff</div>
+            </div>
+          </div>
+          <div class="teams-messages">
+            <div class="teams-msg">
+              <div class="teams-avatar" style="background:#7c3aed">JC</div>
+              <div class="teams-msg-body">
+                <div class="teams-msg-name">Jose Coss <span style="font-size:.58rem;color:rgba(255,255,255,.3);font-weight:400">Today 9:02 AM</span></div>
+                <div class="teams-msg-text">Art Museum printer is offline again &mdash; running the spooler fix now</div>
+              </div>
+            </div>
+            <div class="teams-msg">
+              <div class="teams-avatar" style="background:#1d4ed8">ML</div>
+              <div class="teams-msg-body">
+                <div class="teams-msg-name">Mike L. <span style="font-size:.58rem;color:rgba(255,255,255,.3);font-weight:400">9:04 AM</span></div>
+                <div class="teams-msg-text">Thanks &mdash; if it keeps happening log a ticket with networking, might be the port</div>
+              </div>
+            </div>
+            <div class="teams-msg">
+              <div class="teams-avatar" style="background:#065f46">SR</div>
+              <div class="teams-msg-body">
+                <div class="teams-msg-name">Sarah R. <span style="font-size:.58rem;color:rgba(255,255,255,.3);font-weight:400">9:11 AM</span></div>
+                <div class="teams-msg-text">Lamont circulation desk has a new hire who needs ClearPass registration &mdash; I'll handle it</div>
+              </div>
+            </div>
+          </div>
+          <div class="teams-compose"><div class="teams-compose-box">Type a message to HUIT Support &mdash; general...</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Common Teams Issues</div>
+    <div class="fix-card" id="tf1" onclick="toggleFix('tf1')">
+      <div class="fix-hd"><div class="fix-icon">&#10067;</div><div class="fix-title">"I can't find my team / I don't see my channels"</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>Check the account in the top-right avatar — are they signed in as @harvard.edu or a personal account? If personal, sign out and sign in with Harvard credentials.</li>
+          <li>Check if the team is hidden: click "..." next to Teams in the left sidebar &rarr; click hidden teams &rarr; show the team they need.</li>
+          <li>If a channel is missing from a team they're in: the channel is probably private. Team owner must add them to the private channel separately.</li>
+          <li>If they can't find the team at all: they need to be added by the team owner. IT cannot add users to Teams — only team owners can.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fix-card" id="tf2" onclick="toggleFix('tf2')">
+      <div class="fix-hd"><div class="fix-icon">&#128165;</div><div class="fix-title">Teams won't load or keeps crashing</div><div class="fix-sev high">High</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>Fully quit Teams: right-click the Teams icon in system tray &rarr; Quit. Don't just close the window.</li>
+          <li>Clear Teams cache: navigate to <code>%AppData%\Microsoft\Teams</code> &rarr; delete the contents of the <strong>Cache</strong>, <strong>blob_storage</strong>, <strong>databases</strong>, and <strong>GPUCache</strong> folders.</li>
+          <li>Restart Teams. It will rebuild the cache on launch (takes ~30 seconds).</li>
+          <li>If still broken: sign out of Teams completely &rarr; sign back in with Harvard credentials.</li>
+          <li>Last resort: uninstall Teams via Settings &rarr; Apps, reinstall from portal.office.com.</li>
+        </ol>
+        <div class="box purple"><div class="box-lbl">&#9889; Quick Fix Command</div><p><code>taskkill /F /IM Teams.exe</code> then navigate to <code>%AppData%\Microsoft\Teams</code> and clear the Cache folder. Faster than hunting through system tray.</p></div>
+      </div>
+    </div>
+    <div class="fix-card" id="tf3" onclick="toggleFix('tf3')">
+      <div class="fix-hd"><div class="fix-icon">&#127908;</div><div class="fix-title">Audio/video not working in meetings</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>In Teams: click your avatar &rarr; Settings &rarr; Devices. Verify the correct microphone and speaker are selected — especially after a new headset or dock is connected.</li>
+          <li>Check Windows Sound settings: right-click speaker icon in taskbar &rarr; Open Sound settings &rarr; verify input and output devices match what Teams shows.</li>
+          <li>If using a docking station: Dell docks sometimes require DCU driver updates for audio to work correctly.</li>
+          <li>Test with the built-in mic/speakers first to rule out the device vs Teams.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOD 3: Outlook -->
+<div class="mod vis" id="mod3" data-i="3">
+  <div class="mod-hd" onclick="toggleMod('mod3')">
+    <div class="mod-num">03</div>
+    <div class="mod-title">Outlook &amp; Harvard Email</div>
+    <div class="mod-badge">Critical</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">First-Time Outlook Setup</div>
+    <p>Outlook on a domain-joined Harvard machine will usually auto-configure via <strong>Autodiscover</strong> — it detects the Harvard Exchange/M365 settings automatically when the user enters their Harvard email. No manual server settings needed.</p>
+    <ol class="steps">
+      <li>Open Outlook. Enter full Harvard email: <code>firstname_lastname@harvard.edu</code></li>
+      <li>Autodiscover handles the rest &mdash; Outlook contacts Microsoft's servers and pulls configuration.</li>
+      <li>Duo MFA prompt will appear &mdash; approve it.</li>
+      <li>If Autodiscover fails (rare on domain machines): File &rarr; Account Settings &rarr; Add Account &rarr; manual setup &mdash; server type: Microsoft 365, email as above.</li>
+    </ol>
+
+    <div class="sec-label" style="margin-top:1.5rem">Shared Mailboxes</div>
+    <p>Departments often use shared mailboxes — a single email address monitored by multiple people (e.g., artmuseum-it@harvard.edu). Users need to add them manually.</p>
+    <ol class="steps">
+      <li>File &rarr; Account Settings &rarr; Account Settings &rarr; double-click the Harvard account</li>
+      <li>More Settings &rarr; Advanced tab &rarr; Add</li>
+      <li>Type the shared mailbox email address &rarr; OK &rarr; Apply</li>
+      <li>The shared mailbox appears in the left folder pane below their own mailbox</li>
+    </ol>
+    <div class="box warn"><div class="box-lbl">&#9888; Send As Permissions</div><p>"I can see the shared mailbox but can't send emails from it" &mdash; the user needs <strong>Send As</strong> permission on the mailbox, not just access. This is granted by the mailbox owner or IT admin via M365 admin portal &mdash; co-ops cannot grant this themselves.</p></div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Common Outlook Issues</div>
+    <div class="fix-card" id="of1" onclick="toggleFix('of1')">
+      <div class="fix-hd"><div class="fix-icon">&#128286;</div><div class="fix-title">"I'm not receiving emails" or emails going missing</div><div class="fix-sev high">High</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>Check <strong>Focused Inbox</strong>: Outlook splits inbox into Focused and Other tabs. Emails may be hiding in Other. View &rarr; Show Focused Inbox (toggle off to see everything together).</li>
+          <li>Check <strong>Junk Email</strong> folder &mdash; Proofpoint (Harvard's email filter) may have quarantined legitimate email.</li>
+          <li>Check <strong>Rules</strong>: File &rarr; Manage Rules &amp; Alerts. User may have accidentally created a rule moving emails.</li>
+          <li>Check <strong>Online Archive</strong>: older emails may have been auto-archived. Look for the "Online Archive" folder in the left pane.</li>
+          <li>Send a test email from another account to confirm delivery is working.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fix-card" id="of2" onclick="toggleFix('of2')">
+      <div class="fix-hd"><div class="fix-icon">&#128274;</div><div class="fix-title">Outlook keeps prompting for password</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>Open <strong>Credential Manager</strong>: Start &rarr; search "Credential Manager" &rarr; Windows Credentials tab.</li>
+          <li>Find and remove any entries containing "MicrosoftOffice", "outlook", or "microsoft.com".</li>
+          <li>Restart Outlook &mdash; it will prompt for credentials once cleanly and store them properly.</li>
+          <li>If still prompting: HarvardKey password may have recently changed and the cached token is stale. Have the user re-authenticate through portal.office.com first.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fix-card" id="of3" onclick="toggleFix('of3')">
+      <div class="fix-hd"><div class="fix-icon">&#128268;</div><div class="fix-title">Outlook profile corruption &mdash; won't open or errors on launch</div><div class="fix-sev high">High</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>Try safe mode first: <code>Win+R</code> &rarr; <code>outlook.exe /safe</code> &mdash; if it opens, a COM add-in is the culprit. Disable all add-ins in File &rarr; Options &rarr; Add-ins.</li>
+          <li>Reset nav pane: <code>outlook.exe /resetnavpane</code> &mdash; fixes "cannot open the Outlook window" errors.</li>
+          <li>Rebuild the Outlook profile: Control Panel &rarr; Mail &rarr; Show Profiles &rarr; Add a new profile &rarr; set it as default &rarr; launch Outlook fresh with the new profile.</li>
+          <li>If the .ost file is corrupted: close Outlook, navigate to <code>%LocalAppData%\Microsoft\Outlook</code>, rename or delete the .ost file. Outlook rebuilds it by syncing from server.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOD 4: OneDrive -->
+<div class="mod vis" id="mod4" data-i="4">
+  <div class="mod-hd" onclick="toggleMod('mod4')">
+    <div class="mod-num">04</div>
+    <div class="mod-title">OneDrive for Business &mdash; Harvard Cloud Storage</div>
+    <div class="mod-badge">Common Issue</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">Harvard OneDrive vs Personal OneDrive</div>
+    <p>Harvard users get <strong>1TB OneDrive for Business</strong> tied to their Harvard account. This is completely separate from any personal OneDrive they might have with a @hotmail.com account. If a user is signed into the wrong account, they'll see the wrong files. Always verify the OneDrive account is @harvard.edu.</p>
+
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#9729;&#65039;</div><div class="ccard-title">Files On-Demand</div><div class="ccard-desc">Harvard enables Files On-Demand by default. Files show a cloud icon — they exist in OneDrive but aren't downloaded locally. Click to open, it downloads instantly. Not missing.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128260;</div><div class="ccard-title">Sync Status Icons</div><div class="ccard-desc">Blue cloud = online only. Green check = synced locally. Sync arrows = currently syncing. Red X = sync error — needs attention. Check the system tray OneDrive icon.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128421;&#65039;</div><div class="ccard-title">Known Folder Move</div><div class="ccard-desc">Harvard policy moves Desktop, Documents, and Pictures to sync with OneDrive. This means user files survive a machine wipe — but also means Desktop is in the cloud.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#9888;&#65039;</div><div class="ccard-title">When Users Leave</div><div class="ccard-desc">Harvard deactivates OneDrive after a grace period when employment ends. Managers should transfer ownership of shared files before departure. Warn users to back up personal items.</div></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Common OneDrive Issues</div>
+    <div class="fix-card" id="od1" onclick="toggleFix('od1')">
+      <div class="fix-hd"><div class="fix-icon">&#128065;&#65039;</div><div class="fix-title">"My files disappeared" &mdash; OneDrive Files On-Demand</div><div class="fix-sev med">Very Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>Navigate to the folder in File Explorer. If you see cloud icons next to files, they're online-only &mdash; they exist, just not downloaded.</li>
+          <li>Right-click a file &rarr; "Always keep on this device" to force a local download.</li>
+          <li>To download an entire folder: right-click the folder &rarr; "Always keep on this device".</li>
+          <li>Verify OneDrive is signed in to the Harvard account: right-click the OneDrive icon in system tray &rarr; Settings &rarr; Account tab.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fix-card" id="od2" onclick="toggleFix('od2')">
+      <div class="fix-hd"><div class="fix-icon">&#128256;</div><div class="fix-title">OneDrive stuck syncing or showing red X</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>Right-click OneDrive tray icon &rarr; Pause Syncing (2 hours) &rarr; then Resume Syncing. Often clears a stuck queue.</li>
+          <li>If red X error: click the OneDrive icon &rarr; read the error message &mdash; it usually tells you exactly which file is causing the problem (file name too long, illegal character, file in use).</li>
+          <li>File name issues: Windows has a 260-character path limit. Files with names like <code>CON</code>, <code>PRN</code>, <code>AUX</code>, or trailing spaces won't sync.</li>
+          <li>If completely broken: right-click OneDrive tray &rarr; Settings &rarr; Account &rarr; "Unlink this PC" &rarr; sign back in. OneDrive re-syncs from scratch.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fix-card" id="od3" onclick="toggleFix('od3')">
+      <div class="fix-hd"><div class="fix-icon">&#128450;&#65039;</div><div class="fix-title">Two OneDrive icons in File Explorer (personal + Harvard)</div><div class="fix-sev low">Cosmetic</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <p style="font-size:.85rem;color:var(--t2);padding:.75rem 0">One says "OneDrive &mdash; Harvard University", the other says "OneDrive &mdash; Personal". The personal one is their own @hotmail.com or @gmail.com account. They should only use the Harvard one for work files. To remove the personal: right-click OneDrive tray icon &rarr; Settings &rarr; Account &rarr; Unlink personal account. This removes the personal sync, not the personal OneDrive itself.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOD 5: SharePoint -->
+<div class="mod vis" id="mod5" data-i="5">
+  <div class="mod-hd" onclick="toggleMod('mod5')">
+    <div class="mod-num">05</div>
+    <div class="mod-title">SharePoint &mdash; Department File Sharing</div>
+    <div class="mod-badge">Reference</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">What SharePoint Is at Harvard</div>
+    <p>SharePoint is Harvard's platform for <strong>team and department file sharing</strong>. When a user clicks the Files tab in a Teams channel, they're looking at SharePoint. When a department has a shared drive accessible via a URL, that's also SharePoint. It's the backbone of file collaboration.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#128101;</div><div class="ccard-title">Site Owner</div><div class="ccard-desc">Full control. Can add/remove members, change permissions, create subsites. Usually a department head or designated IT liaison.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#9998;&#65039;</div><div class="ccard-title">Site Member</div><div class="ccard-desc">Can read and edit files in the site. Default role for staff added to a department SharePoint. Cannot change permissions.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128065;&#65039;</div><div class="ccard-title">Site Visitor</div><div class="ccard-desc">Read-only access. Can view but not edit files. Used for reference documents or public-facing department sites.</div></div>
+    </div>
+    <div class="box warn"><div class="box-lbl">&#9888; IT Cannot Grant SharePoint Access</div><p>"I need access to this SharePoint site" &mdash; co-ops and HUIT cannot grant access to SharePoint sites. Only the <strong>site owner</strong> can add members. Direct the user to contact whoever runs the site (usually their manager or department admin). IT can only intervene at the tenant-admin level for serious issues.</p></div>
+    <div class="sec-label" style="margin-top:1.5rem">Sync SharePoint to Local OneDrive</div>
+    <ol class="steps">
+      <li>Navigate to the SharePoint site in a browser (share the URL with the user)</li>
+      <li>Click <strong>Sync</strong> in the top toolbar &mdash; this opens OneDrive and sets up the sync</li>
+      <li>The SharePoint library now appears in File Explorer under OneDrive &mdash; Harvard University</li>
+      <li>Files work like local files but sync with the SharePoint site</li>
+    </ol>
+    <div class="box purple"><div class="box-lbl">&#128161; Teams Files Tab IS SharePoint</div><p>Every Teams channel has a Files tab. Behind the scenes, that's a SharePoint document library. If a user needs to access those files in File Explorer, they can click the Files tab &rarr; "Open in SharePoint" &rarr; then click Sync. The files appear locally in OneDrive just like personal files.</p></div>
+  </div>
+</div>
+
+<!-- MOD 6: Duo MFA -->
+<div class="mod vis" id="mod6" data-i="6">
+  <div class="mod-hd" onclick="toggleMod('mod6')">
+    <div class="mod-num">06</div>
+    <div class="mod-title">Duo MFA &mdash; Harvard's Second Factor</div>
+    <div class="mod-badge">Critical</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">How Duo Works at Harvard</div>
+    <p>Every Harvard M365 sign-in requires a Duo second factor after the HarvardKey password. Duo is non-negotiable &mdash; there is no MFA-exempt path for regular users. Co-ops will handle Duo questions constantly.</p>
+
+    <!-- Duo flow -->
+    <div class="duo-flow">
+      <div class="duo-step"><div class="duo-step-icon">&#128272;</div><div class="duo-step-title">Enter Password</div><div class="duo-step-desc">HarvardKey username + password at Harvard login page</div></div>
+      <div class="duo-arr">&#8594;</div>
+      <div class="duo-step"><div class="duo-step-icon">&#128241;</div><div class="duo-step-title">Duo Push</div><div class="duo-step-desc">Push notification sent to enrolled device (phone/tablet)</div></div>
+      <div class="duo-arr">&#8594;</div>
+      <div class="duo-step allow"><div class="duo-step-icon">&#9989;</div><div class="duo-step-title">Approve</div><div class="duo-step-desc">Tap Approve in Duo app &rarr; access granted</div></div>
+      <div class="duo-arr" style="color:var(--cr)">or</div>
+      <div class="duo-step deny"><div class="duo-step-icon">&#10060;</div><div class="duo-step-title">Deny</div><div class="duo-step-desc">Tap Deny if you didn't initiate this &rarr; then change password immediately</div></div>
+    </div>
+
+    <div class="sec-label" style="margin-top:1.5rem">Scenarios You'll Handle</div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#128241;</div><div class="ccard-title">New Device Enrollment</div><div class="ccard-desc">User got a new phone. Send them to go.harvard.edu/duo &mdash; they can add new devices through the Duo self-service portal. Old device stays active until removed.</div><div class="ccard-code">go.harvard.edu/duo</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128683;</div><div class="ccard-title">Lost/Broken Phone</div><div class="ccard-desc">User can't get a Duo push. They need a temporary bypass code from the HUIT helpdesk. Call 617-495-7777 or submit an emergency ticket. Cannot be self-served.</div><div class="ccard-code">617-495-7777</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128268;</div><div class="ccard-title">Duo Passcode</div><div class="ccard-desc">If no internet on the phone, Duo app generates a 6-digit TOTP passcode. Open Duo app &rarr; tap the key icon &rarr; use that passcode at the login page.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#9888;&#65039;</div><div class="ccard-title">Duo Fatigue Attack</div><div class="ccard-desc">User gets repeated Duo pushes they didn't initiate. This means someone has their password and is trying to log in. Deny every push. Change password immediately. Escalate to security@huit.harvard.edu.</div></div>
+    </div>
+    <div class="box warn"><div class="box-lbl">&#128680; Duo Fatigue is a Real Attack</div><p>Attackers who have stolen a Harvard password will send dozens of Duo push requests hoping the user gets tired and taps Approve by mistake. If a user reports unsolicited Duo pushes: (1) tell them to deny everything, (2) have them change their HarvardKey password immediately at key.harvard.edu, (3) report to security@huit.harvard.edu. Do not wait.</p></div>
+  </div>
+</div>
+
+<!-- MOD 7: PowerShell for M365 -->
+<div class="mod vis" id="mod7" data-i="7">
+  <div class="mod-hd" onclick="toggleMod('mod7')">
+    <div class="mod-num">07</div>
+    <div class="mod-title">PowerShell for M365 &mdash; When the Portal Isn't Enough</div>
+    <div class="mod-badge">Reference</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">Connecting to M365 PowerShell</div>
+    <p>M365 PowerShell modules let you query and manage Harvard's tenant from the command line. Requires the right modules and Harvard admin credentials. Most co-ops will be observers, not admins &mdash; but knowing these commands helps you understand what Tier 2 is doing and what information to gather.</p>
+    <div class="box warn"><div class="box-lbl">&#9888; Admin Rights Required</div><p>These commands require M365 admin roles. Co-ops don't have tenant admin rights in most cases. Learn the syntax so you can assist Tier 2 and know what information to gather before escalating.</p></div>
+
+    <div class="tabs">
+      <button class="tab on" onclick="switchTab(this,'t-exo')">Exchange Online</button>
+      <button class="tab" onclick="switchTab(this,'t-msol')">User Queries</button>
+      <button class="tab" onclick="switchTab(this,'t-teams365')">Teams</button>
+    </div>
+    <div class="tpanel on" id="t-exo">
+      <div class="ps-block">
+        <div class="ps-comment"># Connect to Exchange Online</div>
+        <div class="ps-cmd">Connect-ExchangeOnline -UserPrincipalName jose_coss@harvard.edu</div>
+        <div class="ps-out"># Prompts for Harvard credentials + Duo MFA</div>
+        <div class="ps-comment" style="margin-top:.75rem"># Check mailbox quota</div>
+        <div class="ps-cmd">Get-Mailbox -Identity firstname_lastname@harvard.edu | Select ProhibitSendQuota, IssueWarningQuota</div>
+        <div class="ps-out">ProhibitSendQuota   IssueWarningQuota<br>-----------------   -----------------<br>49.5 GB (53,150...)  49 GB (52,613...)</div>
+        <div class="ps-comment" style="margin-top:.75rem"># Set Out of Office</div>
+        <div class="ps-cmd">Set-MailboxAutoReplyConfiguration -Identity user@harvard.edu -AutoReplyState Enabled -InternalMessage "Out until 5/12"</div>
+        <div class="ps-comment" style="margin-top:.75rem"># Check if user has Send As permission on a shared mailbox</div>
+        <div class="ps-cmd">Get-RecipientPermission -Identity sharedmailbox@harvard.edu | Where Trustee -like "*lastname*"</div>
+      </div>
+    </div>
+    <div class="tpanel" id="t-msol">
+      <div class="ps-block">
+        <div class="ps-comment"># Connect to M365</div>
+        <div class="ps-cmd">Connect-MgGraph -Scopes "User.Read.All"</div>
+        <div class="ps-comment" style="margin-top:.75rem"># Look up a user</div>
+        <div class="ps-cmd">Get-MgUser -UserId firstname_lastname@harvard.edu | Select DisplayName, AccountEnabled, UserPrincipalName</div>
+        <div class="ps-out">DisplayName    AccountEnabled  UserPrincipalName<br>-----------    --------------  -----------------<br>Jose Coss      True            jose_coss@harvard.edu</div>
+        <div class="ps-comment" style="margin-top:.75rem"># Check what licenses a user has</div>
+        <div class="ps-cmd">Get-MgUserLicenseDetail -UserId firstname_lastname@harvard.edu | Select SkuPartNumber</div>
+        <div class="ps-out">SkuPartNumber<br>-------------<br>ENTERPRISEPACK &nbsp;# = E3</div>
+        <div class="ps-comment" style="margin-top:.75rem"># List members of a distribution group</div>
+        <div class="ps-cmd">Get-DistributionGroupMember -Identity groupname@harvard.edu | Select Name, PrimarySmtpAddress</div>
+      </div>
+    </div>
+    <div class="tpanel" id="t-teams365">
+      <div class="ps-block">
+        <div class="ps-comment"># Connect to Teams</div>
+        <div class="ps-cmd">Connect-MicrosoftTeams</div>
+        <div class="ps-comment" style="margin-top:.75rem"># List all teams a user is a member of</div>
+        <div class="ps-cmd">Get-Team | Where DisplayName -like "*HUIT*"</div>
+        <div class="ps-out">GroupId                              DisplayName       Visibility<br>-------                              -----------       ----------<br>3a7f2b1c-...                         HUIT Support      Private</div>
+        <div class="ps-comment" style="margin-top:.75rem"># Get team members</div>
+        <div class="ps-cmd">Get-TeamUser -GroupId "3a7f2b1c-..." | Select User, Role</div>
+        <div class="ps-out">User                          Role<br>----                          ----<br>jose_coss@harvard.edu         Member<br>admin@harvard.edu             Owner</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOD 8: Common M365 Fixes -->
+<div class="mod vis" id="mod8" data-i="8">
+  <div class="mod-hd" onclick="toggleMod('mod8')">
+    <div class="mod-num">08</div>
+    <div class="mod-title">Common M365 Fixes &mdash; Your Daily Playbook</div>
+    <div class="mod-badge">Critical</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <p style="font-size:.83rem;color:var(--t3);margin-bottom:1.25rem">These are the calls you'll get every week. Expand each one for the exact fix procedure.</p>
+    <div class="fix-card" id="mf1" onclick="toggleFix('mf1')">
+      <div class="fix-hd"><div class="fix-icon">&#128165;</div><div class="fix-title">Teams cache cleared but still won't launch</div><div class="fix-sev high">High</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>Kill all Teams processes: <code>taskkill /F /IM Teams.exe</code></li>
+          <li>Delete entire Teams folder: <code>%AppData%\Microsoft\Teams</code> &mdash; delete all contents</li>
+          <li>Also check: <code>%LocalAppData%\Microsoft\Teams</code> &mdash; clear this too</li>
+          <li>If on new Teams (Teams 2.0): look in <code>%LocalAppData%\Packages\MSTeams_8wekyb3d8bbwe</code></li>
+          <li>Relaunch Teams. If still failing: uninstall via Apps &amp; Features, redownload from teams.microsoft.com</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fix-card" id="mf2" onclick="toggleFix('mf2')">
+      <div class="fix-hd"><div class="fix-icon">&#128274;</div><div class="fix-title">Outlook not connecting &mdash; spinning or offline</div><div class="fix-sev high">High</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>Check network: can they reach outlook.office365.com in a browser? If not, it's a network issue, not Outlook.</li>
+          <li>Clear cached Office credentials: Credential Manager &rarr; Windows Credentials &rarr; remove all "MicrosoftOffice" entries.</li>
+          <li>Sign out of Office: any Office app &rarr; File &rarr; Account &rarr; Sign Out &rarr; sign back in.</li>
+          <li>Delete and recreate the Outlook profile via Control Panel &rarr; Mail &rarr; Show Profiles.</li>
+          <li>Check status.harvard.edu &mdash; if there's an M365 incident, there's nothing to fix locally.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fix-card" id="mf3" onclick="toggleFix('mf3')">
+      <div class="fix-hd"><div class="fix-icon">&#128256;</div><div class="fix-title">OneDrive won't sync &mdash; reset it</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>Right-click OneDrive tray icon &rarr; Settings &rarr; Account &rarr; <strong>Unlink this PC</strong>.</li>
+          <li>Close OneDrive completely.</li>
+          <li>Reopen OneDrive from Start menu &rarr; sign back in with Harvard email.</li>
+          <li>OneDrive re-syncs from cloud. No data is lost &mdash; it's already in the cloud.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fix-card" id="mf4" onclick="toggleFix('mf4')">
+      <div class="fix-hd"><div class="fix-icon">&#128233;</div><div class="fix-title">Shared mailbox not appearing in Outlook</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <ol class="steps">
+          <li>Confirm the user has been granted access to the shared mailbox (by the mailbox owner, not IT).</li>
+          <li>File &rarr; Account Settings &rarr; Account Settings &rarr; double-click the Harvard Exchange account.</li>
+          <li>More Settings &rarr; Advanced &rarr; Add &rarr; type the shared mailbox address &rarr; OK.</li>
+          <li>If it doesn't appear after restarting Outlook: remove and re-add the user's permission on the shared mailbox (requires mailbox owner or Exchange admin).</li>
+        </ol>
+      </div>
+    </div>
+    <div class="fix-card" id="mf5" onclick="toggleFix('mf5')">
+      <div class="fix-hd"><div class="fix-icon">&#128683;</div><div class="fix-title">"Your organization's policies are preventing..." error</div><div class="fix-sev low">Policy</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body">
+        <p style="font-size:.85rem;color:var(--t2);padding:.75rem 0">This is a <strong>Conditional Access or Microsoft Intune</strong> policy blocking a feature or app. Common triggers: trying to access M365 from a personal (unmanaged) device, trying to use a feature restricted by HUIT policy (e.g., forwarding all email externally). Co-ops cannot override these policies &mdash; they're tenant-level security controls. If the restriction is blocking legitimate work, the user needs to submit a request through ServiceNow for IT policy review.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOD 9: M365 Admin Portal -->
+<div class="mod vis" id="mod9" data-i="9">
+  <div class="mod-hd" onclick="toggleMod('mod9')">
+    <div class="mod-num">09</div>
+    <div class="mod-title">M365 Admin Portal &mdash; What Exists, What Co-ops Can Do</div>
+    <div class="mod-badge">Reference</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">admin.microsoft.com</div>
+    <p>The M365 Admin Portal is where Harvard IT manages users, licenses, groups, and settings. Most co-ops won't have admin portal access &mdash; but knowing what's there means you know exactly what information to pull and send to Tier 2.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#128101;</div><div class="ccard-title">User Management</div><div class="ccard-desc">View user accounts, check license assignment, see sign-in status (enabled/blocked). Password reset for M365 goes through HarvardKey self-service, NOT the admin portal.</div><div class="ccard-code">admin.microsoft.com/Users</div></div>
+      <div class="ccard"><div class="ccard-icon">&#127970;</div><div class="ccard-title">Groups &amp; Distribution Lists</div><div class="ccard-desc">M365 groups, distribution lists, mail-enabled security groups. Adding users to distribution lists is often an admin task co-ops can handle if given limited admin role.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128203;</div><div class="ccard-title">License Assignment</div><div class="ccard-desc">Which licenses a user has (E3, E5, Power BI, etc.). License changes go through HUIT process &mdash; submit a ticket, don't self-serve.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128200;</div><div class="ccard-title">Service Health</div><div class="ccard-desc">admin.microsoft.com/ServiceHealth &mdash; live status of all M365 services. Check this before assuming it's a local issue.</div></div>
+    </div>
+    <div class="box warn"><div class="box-lbl">&#9888; Password Resets Are NOT in M365 Admin</div><p>Harvard password resets happen through <strong>HarvardKey</strong> at key.harvard.edu &mdash; not through the M365 admin portal. This confuses a lot of people. The HarvardKey system controls authentication; M365 just trusts it. Co-ops cannot reset HarvardKey passwords &mdash; users must use the self-service tool or contact the Identity team.</p></div>
+  </div>
+</div>
+
+<!-- MOD 10: License Reference -->
+<div class="mod vis" id="mod10" data-i="10">
+  <div class="mod-hd" onclick="toggleMod('mod10')">
+    <div class="mod-num">10</div>
+    <div class="mod-title">M365 License Reference &mdash; E3 vs E5</div>
+    <div class="mod-badge">Reference</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div class="sec-label">What Each License Gets You</div>
+    <div style="overflow-x:auto;margin:1rem 0">
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+        <thead>
+          <tr style="background:var(--s3);text-align:left">
+            <th style="padding:.6rem .85rem;color:var(--t2);font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--bd)">Feature</th>
+            <th style="padding:.6rem .85rem;color:var(--purple);font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--bd)">E3</th>
+            <th style="padding:.6rem .85rem;color:var(--gold);font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--bd)">E5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--bd)"><td style="padding:.55rem .85rem;color:var(--t2)">Office apps (Word, Excel, PPT, Outlook)</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td></tr>
+          <tr style="border-bottom:1px solid var(--bd);background:var(--s2)"><td style="padding:.55rem .85rem;color:var(--t2)">Teams</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td></tr>
+          <tr style="border-bottom:1px solid var(--bd)"><td style="padding:.55rem .85rem;color:var(--t2)">Exchange Online (email)</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td></tr>
+          <tr style="border-bottom:1px solid var(--bd);background:var(--s2)"><td style="padding:.55rem .85rem;color:var(--t2)">OneDrive for Business (1TB)</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td></tr>
+          <tr style="border-bottom:1px solid var(--bd)"><td style="padding:.55rem .85rem;color:var(--t2)">SharePoint</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td></tr>
+          <tr style="border-bottom:1px solid var(--bd);background:var(--s2)"><td style="padding:.55rem .85rem;color:var(--t2)">Defender for Endpoint (advanced security)</td><td style="padding:.55rem .85rem;color:var(--t4)">&#8212;</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td></tr>
+          <tr style="border-bottom:1px solid var(--bd)"><td style="padding:.55rem .85rem;color:var(--t2)">Azure AD P2 (advanced identity)</td><td style="padding:.55rem .85rem;color:var(--t4)">&#8212;</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td></tr>
+          <tr style="border-bottom:1px solid var(--bd);background:var(--s2)"><td style="padding:.55rem .85rem;color:var(--t2)">Power BI Pro</td><td style="padding:.55rem .85rem;color:var(--t4)">&#8212;</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td></tr>
+          <tr style="border-bottom:1px solid var(--bd)"><td style="padding:.55rem .85rem;color:var(--t2)">Audio Conferencing (dial-in numbers)</td><td style="padding:.55rem .85rem;color:var(--t4)">Add-on</td><td style="padding:.55rem .85rem;color:var(--green)">&#10003;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box info"><div class="box-lbl">&#128161; Most Harvard Staff = E3</div><p>The majority of Harvard staff and faculty have E3. Researchers and senior IT staff may have E5. If a user is missing a feature, check their license level before assuming it's a bug &mdash; it may simply not be in their license tier.</p></div>
+  </div>
+</div>
+
+<!-- MOD 11: QUIZ -->
+<div class="mod vis" id="modQ" data-i="11">
+  <div class="mod-hd" onclick="toggleMod('modQ')">
+    <div class="mod-num">11</div>
+    <div class="mod-title">Knowledge Check</div>
+    <div class="mod-badge" id="qBadge">8 Questions</div>
+    <svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mod-body">
+    <div id="quizForm">
+      <p style="font-size:.83rem;color:var(--t3);margin-bottom:1.5rem">Answers lock on selection. Submit all 8 for your score.</p>
+      <div class="qq"><div class="qq-num">Question 1 of 8</div><div class="qq-text">A user signs into Teams and sees their old personal files, not Harvard resources. What's the most likely cause?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q1" value="a"> Teams is not installed correctly</label><label class="qq-opt"><input type="radio" name="q1" value="b"> They're signed in with a personal Microsoft account instead of their Harvard email</label><label class="qq-opt"><input type="radio" name="q1" value="c"> Their license has expired</label><label class="qq-opt"><input type="radio" name="q1" value="d"> OneDrive is disconnected</label></div><div class="qq-fb" id="q1fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 2 of 8</div><div class="qq-text">A user's files in OneDrive show cloud icons and they think their files are gone. What's actually happening?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q2" value="a"> The files were deleted during a sync error</label><label class="qq-opt"><input type="radio" name="q2" value="b"> Files On-Demand is enabled &mdash; files exist in the cloud but aren't downloaded locally yet</label><label class="qq-opt"><input type="radio" name="q2" value="c"> OneDrive is out of storage</label><label class="qq-opt"><input type="radio" name="q2" value="d"> The user's license was removed</label></div><div class="qq-fb" id="q2fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 3 of 8</div><div class="qq-text">A user keeps receiving Duo push notifications they didn't request. What should they do FIRST?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q3" value="a"> Approve one to stop the notifications</label><label class="qq-opt"><input type="radio" name="q3" value="b"> Deny all pushes, change their HarvardKey password immediately, and report to security@huit.harvard.edu</label><label class="qq-opt"><input type="radio" name="q3" value="c"> Uninstall and reinstall the Duo app</label><label class="qq-opt"><input type="radio" name="q3" value="d"> Call Microsoft support</label></div><div class="qq-fb" id="q3fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 4 of 8</div><div class="qq-text">A user needs access to a SharePoint site. Who grants that access?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q4" value="a"> Any HUIT co-op with admin credentials</label><label class="qq-opt"><input type="radio" name="q4" value="b"> The SharePoint site owner (usually the department manager or IT liaison)</label><label class="qq-opt"><input type="radio" name="q4" value="c"> The user can request access through the M365 admin portal</label><label class="qq-opt"><input type="radio" name="q4" value="d"> Microsoft support</label></div><div class="qq-fb" id="q4fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 5 of 8</div><div class="qq-text">A user wants to reset their Harvard account password. Where do they go?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q5" value="a"> admin.microsoft.com &mdash; M365 admin portal password reset</label><label class="qq-opt"><input type="radio" name="q5" value="b"> key.harvard.edu &mdash; HarvardKey self-service password reset</label><label class="qq-opt"><input type="radio" name="q5" value="c"> Any co-op can reset it using HUITtoolkit.exe</label><label class="qq-opt"><input type="radio" name="q5" value="d"> outlook.office.com &mdash; account settings</label></div><div class="qq-fb" id="q5fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 6 of 8</div><div class="qq-text">Outlook keeps prompting a user for their password every time they open it. What's the fix?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q6" value="a"> Reinstall Windows</label><label class="qq-opt"><input type="radio" name="q6" value="b"> Remove stale Office credential entries from Windows Credential Manager, then relaunch Outlook</label><label class="qq-opt"><input type="radio" name="q6" value="c"> Change their M365 password</label><label class="qq-opt"><input type="radio" name="q6" value="d"> Delete and reinstall Outlook</label></div><div class="qq-fb" id="q6fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 7 of 8</div><div class="qq-text">A user says they can see a shared mailbox in Outlook but can't send emails from it. What do they need?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q7" value="a"> A new Outlook profile</label><label class="qq-opt"><input type="radio" name="q7" value="b"> Send As permission on the mailbox, granted by the mailbox owner or Exchange admin</label><label class="qq-opt"><input type="radio" name="q7" value="c"> An E5 license</label><label class="qq-opt"><input type="radio" name="q7" value="d"> To be added as a Member in the Teams channel</label></div><div class="qq-fb" id="q7fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 8 of 8</div><div class="qq-text">A user's Teams is crashing. You've already cleared the cache. What's the next step?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q8" value="a"> Rebuild the Windows Search index</label><label class="qq-opt"><input type="radio" name="q8" value="b"> Sign Teams out completely, then sign back in with Harvard credentials; if still broken, uninstall and reinstall from teams.microsoft.com</label><label class="qq-opt"><input type="radio" name="q8" value="c"> Reinstall Windows</label><label class="qq-opt"><input type="radio" name="q8" value="d"> Reset the user's M365 license</label></div><div class="qq-fb" id="q8fb"></div></div>
+      <div style="display:flex;gap:.75rem;margin-top:1.5rem">
+        <button class="btn btn-purple" onclick="submitQuiz()">Submit Answers</button>
+        <button class="btn btn-ghost" onclick="resetQuiz()">Reset</button>
+      </div>
+    </div>
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-num" id="scoreNum">--</div>
+      <div class="score-lbl">out of 8 correct</div>
+      <p class="score-msg" id="scoreMsg"></p>
+      <div class="g-badge" id="scoreBadge"></div>
+      <div style="margin-top:1.5rem"><button class="btn btn-ghost" onclick="resetQuiz()">Retake</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="done-banner" id="doneBanner">
+  <div style="font-size:2.5rem;margin-bottom:.75rem">&#128187;</div>
+  <h2>Microsoft 365 Complete</h2>
+  <p>You can now troubleshoot Teams, Outlook, OneDrive, and SharePoint issues for Harvard affiliates &mdash; and know when something requires a Tier 2 escalation vs a quick fix.</p>
+</div>
+</div><!-- /shell -->
+
+<script>
+const qA={
+  q1:{c:'b',fb:{b:'Correct. Signed into a personal Microsoft account instead of their Harvard email is by far the most common cause. Check the account avatar in the top-right of any M365 app.',_:'The account signed in is almost certainly a personal @outlook.com or @hotmail.com account. Check the avatar in the top-right corner and sign out, then back in with firstname_lastname@harvard.edu.'}},
+  q2:{c:'b',fb:{b:'Correct. Files On-Demand shows files as cloud icons when they exist online but are not cached locally. They are not gone. Click the cloud icon or right-click to keep on device.',_:'Files On-Demand is enabled. Cloud icons mean the files exist in OneDrive but are not downloaded yet. They are not deleted. Click to open and it downloads automatically.'}},
+  q3:{c:'b',fb:{b:'Correct. This is a Duo fatigue attack. Deny everything, change HarvardKey password at key.harvard.edu immediately, and report to security@huit.harvard.edu.',_:'Unsolicited Duo pushes = someone has your password and is trying to log in. DENY all pushes, change HarvardKey password at key.harvard.edu immediately, report to security@huit.harvard.edu.'}},
+  q4:{c:'b',fb:{b:'Correct. Only the SharePoint site owner can grant access. IT cannot grant SharePoint permissions at the site level. Direct the user to their department manager or whoever owns the site.',_:'Only the site owner can grant SharePoint access. HUIT co-ops cannot do this. Direct the user to contact whoever manages that SharePoint site (usually their manager or department admin).'}},
+  q5:{c:'b',fb:{b:'Correct. Harvard password resets go through HarvardKey at key.harvard.edu, not the M365 admin portal. The two systems are separate.',_:'Harvard passwords are managed by HarvardKey, not Microsoft. Go to key.harvard.edu for self-service password reset. The M365 admin portal cannot reset HarvardKey passwords.'}},
+  q6:{c:'b',fb:{b:'Correct. Stale cached credentials in Windows Credential Manager cause repeated password prompts. Remove all MicrosoftOffice entries from Credential Manager and relaunch Outlook.',_:'The fix is Credential Manager: Start > Credential Manager > Windows Credentials > remove all entries containing MicrosoftOffice. Relaunch Outlook and it will prompt once cleanly.'}},
+  q7:{c:'b',fb:{b:'Correct. Seeing a shared mailbox and sending from it are different permissions. Send As must be explicitly granted by the mailbox owner or Exchange admin.',_:'The user needs Send As permission on the shared mailbox, which is different from just being able to open it. This is granted by the mailbox owner or Exchange admin, not by co-ops.'}},
+  q8:{c:'b',fb:{b:'Correct. After clearing cache, the next step is a full sign-out/sign-in. If that fails, uninstall and reinstall Teams fresh from teams.microsoft.com.',_:'After clearing cache, fully sign out of Teams and sign back in with Harvard credentials. If still failing, uninstall via Apps and Features and reinstall from teams.microsoft.com.'}}
+};
+let qDone=false;
+function toggleMod(id){const m=document.getElementById(id);if(m)m.classList.toggle('open');}
+function switchTab(btn,pid){
+  const body=btn.closest('.mod-body');
+  body.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  body.querySelectorAll('.tpanel').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  const p=document.getElementById(pid);if(p)p.classList.add('on');
+}
+function toggleFix(id){
+  const c=document.getElementById(id);if(!c)return;
+  const was=c.classList.contains('open');
+  document.querySelectorAll('.fix-card').forEach(f=>f.classList.remove('open'));
+  if(!was)c.classList.add('open');
+}
+function updateProgress(){
+  const done=document.querySelectorAll('.mod-badge.done').length;
+  const pct=Math.round(done/11*100);
+  document.getElementById('navFill').style.width=pct+'%';
+  document.getElementById('navProg').textContent=done+' / 11';
+}
+function submitQuiz(){
+  if(qDone)return;
+  let score=0,all=true;
+  Object.keys(qA).forEach(q=>{
+    const sel=document.querySelector('input[name="'+q+'"]:checked');
+    if(!sel){all=false;return;}
+    const v=sel.value,{c,fb}=qA[q];
+    document.querySelectorAll('input[name="'+q+'"]').forEach(opt=>{
+      const lbl=opt.parentElement;lbl.style.pointerEvents='none';
+      if(opt.value===c)lbl.classList.add('rev');
+      if(opt.value===v&&v!==c)lbl.classList.add('bad');
+      if(opt.value===v&&v===c){lbl.classList.remove('rev');lbl.classList.add('ok');}
+    });
+    const fbd=document.getElementById(q+'fb');
+    fbd.textContent=fb[v]||fb['_'];
+    fbd.className='qq-fb '+(v===c?'ok':'bad');
+    if(v===c)score++;
+  });
+  if(!all){alert('Answer all 8 questions first.');return;}
+  qDone=true;
+  setTimeout(()=>{
+    document.getElementById('quizForm').style.display='none';
+    const sw=document.getElementById('scoreWrap');sw.classList.add('on');
+    document.getElementById('scoreNum').textContent=score;
+    const p=score/8;
+    document.getElementById('scoreMsg').textContent=p===1?'Perfect. You know the M365 Harvard environment cold.':p>=.75?'Solid. Review the ones you missed before your first day.':p>=.5?'Getting there. Revisit Modules 2, 3, and 6 — Teams, Outlook, and Duo are daily tools.':'Take another pass. Focus on the common fixes and Duo fatigue response.';
+    document.getElementById('scoreBadge').textContent=p===1?'M365 Expert':p>=.75?'M365 Certified':p>=.5?'Keep Studying':'Revisit Material';
+    document.getElementById('qBadge').textContent=score+'/8';
+    document.getElementById('qBadge').className='mod-badge done';
+    updateProgress();
+    if(score>=6)document.getElementById('doneBanner').classList.add('on');
+  },400);
+}
+function resetQuiz(){
+  qDone=false;
+  document.querySelectorAll('.qq-opt').forEach(o=>{o.className='qq-opt';o.style.pointerEvents='';});
+  document.querySelectorAll('.qq-fb').forEach(f=>f.className='qq-fb');
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.getElementById('quizForm').style.display='block';
+  document.getElementById('scoreWrap').classList.remove('on');
+  document.getElementById('qBadge').textContent='8 Questions';
+  document.getElementById('qBadge').className='mod-badge';
+}
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.05});
+document.querySelectorAll('.mod').forEach(m=>obs.observe(m));
+</script>
+</body>
+</html>

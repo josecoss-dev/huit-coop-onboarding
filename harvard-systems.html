@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HUIT Co-op Onboarding -- Harvard Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cr:#C8273D;--cr-d:rgba(200,39,61,0.12);
+  --gold:#F0C040;--gold-d:rgba(240,192,64,0.1);
+  --green:#22c55e;--green-d:rgba(34,197,94,0.1);
+  --blue:#60a5fa;--blue-d:rgba(96,165,250,0.1);
+  --purple:#a78bfa;--purple-d:rgba(167,139,250,0.1);
+  --bg:#080a0d;--s1:#0e1117;--s2:#131820;--s3:#1a2030;
+  --bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.12);
+  --t1:#f1f5f9;--t2:#94a3b8;--t3:#94a3b8;--t4:#334155;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;--r:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:var(--sans);min-height:100vh;overflow-x:hidden;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 40% at 20% 0%,rgba(240,192,64,0.08) 0%,transparent 65%),radial-gradient(ellipse 50% 30% at 85% 100%,rgba(200,39,61,0.05) 0%,transparent 60%);pointer-events:none;z-index:0}
+.nav{position:sticky;top:0;z-index:200;height:56px;background:rgba(8,10,13,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 1.5rem;gap:1.25rem}
+.nav-back{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);text-decoration:none;display:flex;align-items:center;gap:.4rem;padding:.3rem .7rem;border:1px solid var(--bd2);border-radius:6px;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.nav-back:hover{color:var(--t1);border-color:var(--gold);background:var(--gold-d)}
+.nav-back svg{width:12px;height:12px;transition:transform .2s}
+.nav-back:hover svg{transform:translateX(-2px)}
+.nav-logo{font-family:var(--mono);font-size:.7rem;color:var(--gold);letter-spacing:.12em;white-space:nowrap}
+.nav-logo span{color:var(--t3)}
+.nav-bar{flex:1;height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.nav-fill{height:100%;background:linear-gradient(90deg,var(--gold),#fde68a);width:0%;transition:width .6s}
+.nav-prog{font-family:var(--mono);font-size:.65rem;color:var(--t3);white-space:nowrap}
+.shell{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 1.25rem 8rem}
+.hero{padding:5rem 0 4rem;position:relative}
+.hero-glow{position:absolute;top:2rem;left:-4rem;width:400px;height:300px;background:radial-gradient(ellipse,rgba(240,192,64,0.12) 0%,transparent 70%);pointer-events:none;filter:blur(40px)}
+.hero-tag{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:1.4rem;display:flex;align-items:center;gap:.75rem}
+.hero-tag::before{content:'';width:28px;height:1px;background:var(--gold)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.8rem);font-weight:800;letter-spacing:-.03em;line-height:1;color:#fff;margin-bottom:1.25rem}
+.hero h1 em{color:var(--gold);font-style:normal;position:relative}
+.hero h1 em::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+.hero-sub{font-size:1rem;color:var(--t2);max-width:560px;line-height:1.75;margin-bottom:2.5rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .8rem;border-radius:99px;border:1px solid var(--bd2);color:var(--t3)}
+.chip.hot{border-color:rgba(240,192,64,.4);color:var(--gold);background:rgba(240,192,64,.06)}
+.hero-divider{height:1px;background:linear-gradient(90deg,var(--gold) 0%,rgba(240,192,64,.2) 40%,transparent 80%);margin:3rem 0}
+.mod{position:relative;margin-bottom:.75rem;border-radius:var(--r);overflow:hidden;border:1px solid var(--bd);background:var(--s1);opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .25s}
+.mod.vis{opacity:1;transform:none}
+.mod:hover{border-color:var(--bd2)}
+.mod.open{border-color:rgba(240,192,64,.3);box-shadow:0 0 0 1px rgba(240,192,64,.08),0 8px 32px rgba(0,0,0,.4)}
+.mod-hd{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;cursor:pointer;transition:background .2s;user-select:none}
+.mod-hd:hover{background:var(--s2)}
+.mod.open .mod-hd{border-bottom:1px solid var(--bd)}
+.mod-num{font-family:var(--mono);font-size:.6rem;color:var(--gold);width:28px;height:28px;border-radius:50%;border:1px solid rgba(240,192,64,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(240,192,64,.06)}
+.mod-title{font-weight:600;font-size:.95rem;flex:1;color:var(--t1)}
+.mod-badge{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .65rem;border-radius:99px;background:var(--s3);color:var(--t3);border:1px solid var(--bd);flex-shrink:0}
+.mod-badge.done{background:rgba(34,197,94,.1);color:var(--green);border-color:rgba(34,197,94,.25)}
+.mod-chevron{width:16px;height:16px;color:var(--t3);transition:transform .3s;flex-shrink:0}
+.mod.open .mod-chevron{transform:rotate(180deg);color:var(--gold)}
+.mod-body{display:none;padding:1.75rem 1.5rem}
+.mod.open .mod-body{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sec-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 .85rem;display:flex;align-items:center;gap:.6rem}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(240,192,64,.3),transparent)}
+p{font-size:.925rem;color:var(--t2);line-height:1.75;margin-bottom:.875rem}
+p:last-child{margin-bottom:0}
+strong{color:var(--t1);font-weight:600}
+em{color:var(--gold);font-style:normal}
+code{font-family:var(--mono);font-size:.78rem;background:rgba(0,0,0,.5);color:var(--gold);padding:.1rem .45rem;border-radius:4px;border:1px solid rgba(240,192,64,.15)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.75rem;margin:1.25rem 0}
+.ccard{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1.1rem;transition:border-color .2s,transform .2s}
+.ccard:hover{border-color:rgba(240,192,64,.25);transform:translateY(-2px)}
+.ccard-icon{font-size:1.4rem;margin-bottom:.75rem}
+.ccard-title{font-weight:700;font-size:.88rem;color:var(--t1);margin-bottom:.35rem}
+.ccard-desc{font-size:.78rem;color:var(--t3);line-height:1.55}
+.ccard-code{font-family:var(--mono);font-size:.62rem;color:var(--gold);margin-top:.5rem;padding:.2rem .45rem;background:rgba(240,192,64,.07);border-radius:4px;display:inline-block;border:1px solid rgba(240,192,64,.2)}
+.box{border-radius:8px;padding:1rem 1.15rem;margin:1.15rem 0}
+.box-lbl{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem;font-weight:600}
+.box p{font-size:.85rem;margin:0;color:var(--t2)}
+.box.warn{background:var(--cr-d);border:1px solid rgba(200,39,61,.25);border-left:3px solid var(--cr)}
+.box.warn .box-lbl{color:var(--cr)}
+.box.ok{background:var(--green-d);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green)}
+.box.ok .box-lbl{color:var(--green)}
+.box.gold{background:var(--gold-d);border:1px solid rgba(240,192,64,.2);border-left:3px solid var(--gold)}
+.box.gold .box-lbl{color:var(--gold)}
+.box.info{background:var(--blue-d);border:1px solid rgba(96,165,250,.2);border-left:3px solid var(--blue)}
+.box.info .box-lbl{color:var(--blue)}
+.steps{list-style:none;counter-reset:s;margin:1rem 0}
+.steps li{counter-increment:s;display:flex;gap:.9rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--bd);font-size:.885rem;line-height:1.65;color:var(--t2)}
+.steps li:last-child{border:none}
+.steps li::before{content:counter(s);font-family:var(--mono);font-size:.6rem;font-weight:600;min-width:24px;height:24px;border-radius:50%;background:var(--gold-d);color:var(--gold);border:1px solid rgba(240,192,64,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.fix-card{background:var(--s2);border:1px solid var(--bd);border-radius:8px;margin-bottom:.75rem;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.fix-card:hover{border-color:var(--bd2)}
+.fix-card.open{border-color:rgba(240,192,64,.3)}
+.fix-hd{display:flex;align-items:center;gap:.85rem;padding:1rem 1.1rem}
+.fix-icon{font-size:1.1rem;flex-shrink:0}
+.fix-title{font-weight:600;font-size:.9rem;color:var(--t1);flex:1}
+.fix-sev{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;padding:.2rem .6rem;border-radius:99px;flex-shrink:0}
+.fix-sev.high{background:rgba(200,39,61,.12);color:var(--cr);border:1px solid rgba(200,39,61,.25)}
+.fix-sev.med{background:var(--gold-d);color:var(--gold);border:1px solid rgba(240,192,64,.25)}
+.fix-sev.low{background:var(--green-d);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.fix-body{display:none;padding:0 1.1rem 1.1rem;border-top:1px solid var(--bd)}
+.fix-card.open .fix-body{display:block;animation:fadeUp .2s ease}
+.fix-chevron{width:14px;height:14px;color:var(--t4);transition:transform .25s;flex-shrink:0}
+.fix-card.open .fix-chevron{transform:rotate(180deg)}
+.hub-diagram{position:relative;height:260px;margin:1.5rem 0;background:var(--s2);border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.hub-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#c89000);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;color:#000;text-align:center;z-index:2;box-shadow:0 0 0 8px rgba(240,192,64,.1),0 0 0 16px rgba(240,192,64,.04);line-height:1.2}
+.hub-node{position:absolute;transform:translate(-50%,-50%);background:var(--s3);border:1px solid rgba(240,192,64,.25);border-radius:8px;padding:.3rem .6rem;font-size:.62rem;font-family:var(--mono);color:var(--t2);white-space:nowrap;z-index:2;text-align:center;line-height:1.4}
+.hub-node strong{display:block;color:var(--gold);font-size:.6rem;font-weight:700}
+.vpn-flow{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;margin:1.25rem 0;background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1.1rem}
+.vpn-step{flex:1;min-width:100px;background:var(--s3);border:1px solid var(--bd);border-radius:8px;padding:.75rem .65rem;text-align:center}
+.vpn-step-icon{font-size:1.2rem;margin-bottom:.3rem}
+.vpn-step-title{font-size:.68rem;font-weight:700;color:var(--t1);margin-bottom:.2rem}
+.vpn-step-desc{font-size:.6rem;color:var(--t3);line-height:1.35}
+.vpn-step.connected{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.05)}
+.vpn-arr{color:var(--t4);font-size:1rem;padding:0 .15rem;align-self:center;flex-shrink:0}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.75rem;margin:1.25rem 0}
+.tool-card{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1rem 1.1rem;transition:border-color .2s}
+.tool-card:hover{border-color:rgba(240,192,64,.25)}
+.tool-url{font-family:var(--mono);font-size:.62rem;color:var(--gold);margin-bottom:.35rem}
+.tool-name{font-weight:700;font-size:.88rem;color:var(--t1);margin-bottom:.3rem}
+.tool-what{font-size:.75rem;color:var(--t3);line-height:1.5}
+.tool-who{font-family:var(--mono);font-size:.58rem;color:var(--t4);margin-top:.4rem;text-transform:uppercase;letter-spacing:.08em}
+.qq{margin-bottom:1.75rem;padding:1.25rem;background:var(--s2);border:1px solid var(--bd);border-radius:8px}
+.qq-num{font-family:var(--mono);font-size:.58rem;color:var(--t4);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.5rem}
+.qq-text{font-weight:600;font-size:.92rem;color:var(--t1);margin-bottom:.85rem;line-height:1.45}
+.qq-opts{display:flex;flex-direction:column;gap:.45rem}
+.qq-opt{display:flex;align-items:center;gap:.75rem;padding:.7rem 1rem;border:1px solid var(--bd2);border-radius:7px;cursor:pointer;background:var(--s3);transition:all .15s;font-size:.85rem;color:var(--t2)}
+.qq-opt:hover{background:var(--s2);color:var(--t1)}
+.qq-opt input{accent-color:var(--gold);flex-shrink:0}
+.qq-opt.ok{border-color:rgba(34,197,94,.4)!important;background:rgba(34,197,94,.08)!important;color:var(--green)!important}
+.qq-opt.bad{border-color:rgba(200,39,61,.4)!important;background:rgba(200,39,61,.08)!important;color:#f87171!important}
+.qq-opt.rev{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.04);color:var(--green)}
+.qq-fb{font-family:var(--mono);font-size:.72rem;margin-top:.6rem;padding:.5rem .75rem;border-radius:5px;display:none;line-height:1.5}
+.qq-fb.ok{display:block;color:var(--green);background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2)}
+.qq-fb.bad{display:block;color:#f87171;background:rgba(200,39,61,.07);border:1px solid rgba(200,39,61,.2)}
+.score-wrap{display:none;text-align:center;padding:2.5rem 1rem}
+.score-wrap.on{display:block;animation:fadeUp .4s ease}
+.score-num{font-size:4rem;font-weight:800;color:var(--gold);line-height:1}
+.score-lbl{font-family:var(--mono);font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.15em;margin-bottom:1rem}
+.score-msg{font-size:.92rem;color:var(--t2);max-width:360px;margin:0 auto 1.5rem;line-height:1.7}
+.g-badge{display:inline-block;font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;padding:.5rem 1.25rem;border-radius:99px;background:var(--gold-d);border:1px solid rgba(240,192,64,.3);color:var(--gold)}
+.btn{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.7rem 1.6rem;border-radius:6px;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:.5rem}
+.btn-gold{background:var(--gold);color:#000;font-weight:700}
+.btn-gold:hover{background:#d4a000;transform:translateY(-1px)}
+.btn-ghost{background:var(--s2);color:var(--t2);border:1px solid var(--bd2)}
+.btn-ghost:hover{border-color:var(--t3);color:var(--t1)}
+.done-banner{display:none;margin-top:3rem;padding:2.5rem;border-radius:12px;text-align:center;background:linear-gradient(135deg,rgba(240,192,64,.05),rgba(253,230,138,.03));border:1px solid var(--bd)}
+.done-banner.on{display:block;animation:fadeUp .5s ease}
+.done-banner h2{font-size:1.5rem;font-weight:800;color:var(--t1);margin-bottom:.5rem}
+.done-banner p{color:var(--t2);font-size:.9rem}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-back" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>HUB</a>
+  <div class="nav-logo">HUIT <span>/ Co-op 2025 /</span> Harvard Systems</div>
+  <div class="nav-bar"><div class="nav-fill" id="navFill"></div></div>
+  <div class="nav-prog" id="navProg">0 / 10</div>
+</nav>
+<div class="shell">
+<header class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">Harvard University IT &middot; HarvardKey &middot; VPN &middot; HUIT Tools</div>
+  <h1>Harvard <em>Systems</em></h1>
+  <p class="hero-sub">Before you can help anyone at Harvard, you need to understand how Harvard's own infrastructure works. HarvardKey is the master key. GlobalProtect is the tunnel. PaperCut is the printer. These systems are Harvard-specific.</p>
+  <div class="chips">
+    <span class="chip hot">HarvardKey SSO</span><span class="chip hot">GlobalProtect VPN</span><span class="chip hot">PaperCut</span><span class="chip">~60 min</span><span class="chip">10 modules</span>
+  </div>
+  <div class="hero-divider"></div>
+</header>
+
+<!-- MOD 1: HarvardKey -->
+<div class="mod open vis" id="mod1" data-i="1">
+  <div class="mod-hd" onclick="toggleMod('mod1')"><div class="mod-num">01</div><div class="mod-title">HarvardKey -- Your Users' Master Key</div><div class="mod-badge">Foundation</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">What HarvardKey Is</div>
+    <p><strong>HarvardKey</strong> is Harvard's Single Sign-On identity system. One set of credentials authenticates into virtually every Harvard digital system: M365 email, VPN, Canvas, ClearPass, library resources, and more. When a user can't log into anything at Harvard, HarvardKey is almost always where to start.</p>
+    <div class="hub-diagram">
+      <div class="hub-center">Harvard<br>Key</div>
+      <div class="hub-node" style="top:15%;left:50%"><strong>M365 / Email</strong>Teams, Outlook</div>
+      <div class="hub-node" style="top:33%;left:83%"><strong>VPN</strong>GlobalProtect</div>
+      <div class="hub-node" style="top:67%;left:83%"><strong>ClearPass</strong>Wi-Fi / NAC</div>
+      <div class="hub-node" style="top:85%;left:50%"><strong>Canvas</strong>LMS</div>
+      <div class="hub-node" style="top:67%;left:17%"><strong>Library</strong>Resources</div>
+      <div class="hub-node" style="top:33%;left:17%"><strong>HR / Finance</strong>PeopleSoft</div>
+    </div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#128273;</div><div class="ccard-title">HarvardKey Username</div><div class="ccard-desc">Format: firstname_lastname (underscore, lowercase). Example: jose_coss. Add @harvard.edu for email format.</div><div class="ccard-code">firstname_lastname</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128272;</div><div class="ccard-title">HarvardKey Locked</div><div class="ccard-desc">Too many failed logins locks the account temporarily. Self-service unlock at key.harvard.edu. If that fails, HUIT Identity team unlocks it.</div><div class="ccard-code">key.harvard.edu</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128683;</div><div class="ccard-title">HarvardKey Disabled</div><div class="ccard-desc">Disabled = employment ended or security hold. Different from locked. Requires HUIT Identity team or HR action. Co-ops cannot re-enable.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#8635;</div><div class="ccard-title">Password Sync</div><div class="ccard-desc">HarvardKey password syncs to Windows domain and M365. If password changes, cached Windows credentials need updating too -- lock/unlock screen to trigger sync.</div></div>
+    </div>
+    <div class="box warn"><div class="box-lbl">&#9888; Co-ops Cannot Reset HarvardKey Passwords</div><p>Password reset is self-service at key.harvard.edu, or through the HUIT Identity team helpdesk. Co-ops do not have access to reset HarvardKey accounts. Submit a ticket to Identity if the user is locked out and can't self-serve.</p></div>
+    <div class="box gold"><div class="box-lbl">&#128161; HarvardKey vs HUID -- Critical Difference</div><p><strong>HarvardKey</strong> = username string (jose_coss) used for system login. <strong>HUID</strong> = 8-digit number on the Harvard ID card (12345678) used for ClearPass, library, HR. Completely different. Users confuse these constantly -- clarify before troubleshooting.</p></div>
+  </div>
+</div>
+
+<!-- MOD 2: VPN -->
+<div class="mod vis" id="mod2" data-i="2">
+  <div class="mod-hd" onclick="toggleMod('mod2')"><div class="mod-num">02</div><div class="mod-title">GlobalProtect VPN -- Accessing Harvard Remotely</div><div class="mod-badge">Critical</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">Why VPN Exists</div>
+    <p>Many Harvard systems are only accessible from the Harvard network -- either on campus or via VPN. VPN creates an encrypted tunnel from a remote device into Harvard's network. Client: <strong>GlobalProtect</strong> by Palo Alto Networks. Gateway: <code>vpn.harvard.edu</code>.</p>
+    <div class="vpn-flow">
+      <div class="vpn-step"><div class="vpn-step-icon">&#128187;</div><div class="vpn-step-title">Your Device</div><div class="vpn-step-desc">Off-campus, any internet</div></div>
+      <div class="vpn-arr">&#8594;</div>
+      <div class="vpn-step"><div class="vpn-step-icon">&#128274;</div><div class="vpn-step-title">GlobalProtect</div><div class="vpn-step-desc">HarvardKey + Duo MFA</div></div>
+      <div class="vpn-arr">&#8594;</div>
+      <div class="vpn-step"><div class="vpn-step-icon">&#127760;</div><div class="vpn-step-title">Encrypted Tunnel</div><div class="vpn-step-desc">vpn.harvard.edu gateway</div></div>
+      <div class="vpn-arr">&#8594;</div>
+      <div class="vpn-step connected"><div class="vpn-step-icon">&#127970;</div><div class="vpn-step-title">Harvard Network</div><div class="vpn-step-desc">Full internal access</div></div>
+    </div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#10003;</div><div class="ccard-title">Needs VPN</div><div class="ccard-desc">HUIT internal tools, research databases, network management systems, tools.noc.harvard.edu, RDP to Harvard machines.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#10007;</div><div class="ccard-title">Does NOT Need VPN</div><div class="ccard-desc">Microsoft 365, Teams, Outlook, OneDrive, SharePoint, Canvas, HarvardKey self-service, most Harvard web portals.</div></div>
+    </div>
+    <div class="box gold"><div class="box-lbl">&#128161; Split Tunnel</div><p>Harvard VPN is split-tunnel -- only Harvard-bound traffic goes through the VPN. Regular internet (Google, Netflix, etc.) goes directly through your ISP. VPN doesn't slow down general browsing.</p></div>
+    <div class="sec-label" style="margin-top:1.5rem">Common VPN Issues</div>
+    <div class="fix-card" id="vf1" onclick="toggleFix('vf1')">
+      <div class="fix-hd"><div class="fix-icon">&#128683;</div><div class="fix-title">VPN stuck on "Connecting..." or won't connect</div><div class="fix-sev high">High</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body"><ol class="steps"><li>Check internet first: can they reach google.com? No internet = VPN can't connect regardless.</li><li>Disconnect and reconnect in GlobalProtect -- wait 5 seconds between.</li><li>Restart GlobalProtect service: Task Manager &rarr; Services tab &rarr; find PanGPS &rarr; right-click &rarr; Restart.</li><li>Elevated PowerShell: <code>net stop PanGPS</code> then <code>net start PanGPS</code>.</li><li>Uninstall and reinstall from vpn.harvard.edu (requires Harvard credentials to download the installer).</li></ol></div>
+    </div>
+    <div class="fix-card" id="vf2" onclick="toggleFix('vf2')">
+      <div class="fix-hd"><div class="fix-icon">&#127760;</div><div class="fix-title">VPN connects but can't reach a specific system</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="fix-body"><ol class="steps"><li>Confirm VPN is actually connected -- GlobalProtect icon shows connected shield.</li><li>Verify the target system actually requires VPN -- many Harvard portals are cloud-based and don't need it.</li><li>Try pinging a Harvard internal address to confirm tunnel routing.</li><li>Escalate to HUIT networking if VPN confirms connected but specific resource is unreachable -- may need firewall rule or different VPN gateway profile.</li></ol></div>
+    </div>
+  </div>
+</div>
+
+<!-- MOD 3: Printing -->
+<div class="mod vis" id="mod3" data-i="3">
+  <div class="mod-hd" onclick="toggleMod('mod3')"><div class="mod-num">03</div><div class="mod-title">Harvard Printing -- PaperCut &amp; PrintAnywhere</div><div class="mod-badge">Common Issue</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">How Harvard Printing Works</div>
+    <p>Harvard uses <strong>PaperCut NG</strong> for print management. Every job is logged, charged to a department code, and released at the printer with a Harvard PIN. <strong>PrintAnywhere</strong> at print.harvard.edu lets users upload documents and release them at any Harvard printer.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#128203;</div><div class="ccard-title">PaperCut</div><div class="ccard-desc">Backend print management. Tracks every job, charges per page to department accounts. Jobs expire after 24 hours if uncollected.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128241;</div><div class="ccard-title">PrintAnywhere</div><div class="ccard-desc">Upload any document at print.harvard.edu, release at any Harvard PrintAnywhere printer with your PIN. No driver install needed.</div><div class="ccard-code">print.harvard.edu</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128274;</div><div class="ccard-title">Harvard PIN</div><div class="ccard-desc">4-digit numeric PIN to release print jobs. Separate from HarvardKey password. Reset at pin.harvard.edu. Self-service only -- co-ops cannot reset PINs.</div><div class="ccard-code">pin.harvard.edu</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128179;</div><div class="ccard-title">Department Codes</div><div class="ccard-desc">Print costs charged to department budget codes. User doesn't pay directly -- their department does. Color costs more than B&amp;W.</div></div>
+    </div>
+    <div class="sec-label" style="margin-top:1.5rem">Common Print Issues</div>
+    <div class="fix-card" id="pf1" onclick="toggleFix('pf1')"><div class="fix-hd"><div class="fix-icon">&#128203;</div><div class="fix-title">"My print job disappeared"</div><div class="fix-sev low">Quick</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fix-body"><p style="font-size:.85rem;color:var(--t2);padding:.75rem 0">PaperCut expires uncollected jobs after <strong>24 hours</strong>. The job is gone -- reprint it. Tell users to collect same day they print.</p></div></div>
+    <div class="fix-card" id="pf2" onclick="toggleFix('pf2')"><div class="fix-hd"><div class="fix-icon">&#128274;</div><div class="fix-title">Wrong PIN / Forgotten PIN at printer</div><div class="fix-sev low">Quick</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fix-body"><p style="font-size:.85rem;color:var(--t2);padding:.75rem 0">Harvard PIN is NOT the HarvardKey password. Separate 4-digit PIN managed at <code>pin.harvard.edu</code>. Users reset it themselves -- co-ops cannot reset PINs on their behalf.</p></div></div>
+    <div class="fix-card" id="pf3" onclick="toggleFix('pf3')"><div class="fix-hd"><div class="fix-icon">&#128424;</div><div class="fix-title">Job stuck in Windows print queue</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fix-body"><ol class="steps"><li>Don't try to delete from the Windows queue -- PaperCut manages the job.</li><li>Cancel from PaperCut web interface or at the printer touchscreen.</li><li>If Windows queue is also stuck: Stop Spooler service, clear spool folder, restart Spooler (see Windows Basics, Mod 07, Fix 6).</li></ol></div></div>
+  </div>
+</div>
+
+<!-- MOD 4: Directory -->
+<div class="mod vis" id="mod4" data-i="4">
+  <div class="mod-hd" onclick="toggleMod('mod4')"><div class="mod-num">04</div><div class="mod-title">Harvard Directory &amp; Identity Lookup</div><div class="mod-badge">Reference</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">Finding People at Harvard</div>
+    <p><strong>directory.harvard.edu</strong> is Harvard's people directory. Search by name, department, or email. Shows name, Harvard email, department, office, and phone (where allowed). Use to verify user identity and find correct email before opening a ticket.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#128100;</div><div class="ccard-title">Harvard Directory</div><div class="ccard-desc">Public directory for Harvard affiliates. Some users restrict their listing. Useful for verifying a user's correct email before logging a ticket.</div><div class="ccard-code">directory.harvard.edu</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128269;</div><div class="ccard-title">Outlook/Teams GAL</div><div class="ccard-desc">Outlook and Teams auto-complete Harvard addresses from the Global Address List -- same data as the directory, searchable without leaving the app.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128274;</div><div class="ccard-title">Privacy Settings</div><div class="ccard-desc">Some affiliates opt out of the directory. Try Outlook GAL search or the department website if directory shows no results.</div></div>
+    </div>
+    <div class="box gold"><div class="box-lbl">&#128161; Verify Before You Ticket</div><p>Verify the user's full name and correct Harvard email before opening a ticket. Tickets with wrong emails fail to link to the account. A 30-second directory check prevents that delay.</p></div>
+  </div>
+</div>
+
+<!-- MOD 5: HUIT Tools -->
+<div class="mod vis" id="mod5" data-i="5">
+  <div class="mod-hd" onclick="toggleMod('mod5')"><div class="mod-num">05</div><div class="mod-title">HUIT Tools You'll Use Every Day</div><div class="mod-badge">Critical</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">Your Daily Toolkit</div>
+    <div class="tool-grid">
+      <div class="tool-card"><div class="tool-url">HUITtoolkit.exe</div><div class="tool-name">HUIT Toolkit</div><div class="tool-what">Desktop app on domain machines. Contains LAPS password retrieval, asset information, and HUIT-specific IT tools. Required for pulling admin passwords for UAC elevation.</div><div class="tool-who">Domain machines only &bull; Co-op daily use</div></div>
+      <div class="tool-card"><div class="tool-url">getonline.harvard.edu</div><div class="tool-name">Wi-Fi Certificate Portal</div><div class="tool-what">Where users go to get the Harvard Secure Wi-Fi certificate. Generates and installs the cert for Harvard Secure and eduroam. Walk new users through this on Day 1.</div><div class="tool-who">All Harvard affiliates &bull; Wi-Fi setup</div></div>
+      <div class="tool-card"><div class="tool-url">tools.noc.harvard.edu</div><div class="tool-name">NOC Tools / Ethernet Reg</div><div class="tool-what">Register Ethernet port MACs in ClearPass. Used for wired connections needing port-level registration. Also shows port status and switch info.</div><div class="tool-who">On Harvard network &bull; Wired connections</div></div>
+      <div class="tool-card"><div class="tool-url">harvard.service-now.com</div><div class="tool-name">ServiceNow</div><div class="tool-what">HUIT's ticketing system. Every user interaction needs a ticket. Create incidents, submit requests, track escalations, document all work.</div><div class="tool-who">All HUIT staff &bull; Every interaction</div></div>
+      <div class="tool-card"><div class="tool-url">status.harvard.edu</div><div class="tool-name">Harvard Status Page</div><div class="tool-what">Check before troubleshooting anything. If a service has a known outage, nothing to fix locally. Always check first for "nothing is working" calls.</div><div class="tool-who">All HUIT staff &bull; First check always</div></div>
+      <div class="tool-card"><div class="tool-url">clearpass.huit.harvard.edu</div><div class="tool-name">ClearPass Admin</div><div class="tool-what">Aruba ClearPass NAC admin portal. Register and manage device MACs, check registration status, troubleshoot Wi-Fi auth. Requires Mobility Admin role.</div><div class="tool-who">HUIT Mobility Admin role required</div></div>
+      <div class="tool-card"><div class="tool-url">Software Center (local)</div><div class="tool-name">SCCM Software Center</div><div class="tool-what">On domain Windows machines. Browse and install HUIT-approved software without admin credentials. Check here before any internet download.</div><div class="tool-who">Domain machines &bull; Software installs</div></div>
+      <div class="tool-card"><div class="tool-url">Dell Command Update (local)</div><div class="tool-name">Dell Command Update</div><div class="tool-what">Keep Dell hardware drivers and BIOS current. Run on every new machine before deployment. Required for resolving Wi-Fi, display, and dock issues on Dells.</div><div class="tool-who">Dell machines only &bull; Driver management</div></div>
+    </div>
+    <div class="box warn"><div class="box-lbl">&#9888; Status Page First -- Always</div><p>When multiple users report the same issue, your first reflex is status.harvard.edu. If there's a P1 incident in progress, opening individual tickets generates noise. Acknowledge the known issue, point users to the status page, wait for resolution.</p></div>
+  </div>
+</div>
+
+<!-- MOD 6: Software -->
+<div class="mod vis" id="mod6" data-i="6">
+  <div class="mod-hd" onclick="toggleMod('mod6')"><div class="mod-num">06</div><div class="mod-title">Harvard Software Catalog -- What's Available &amp; How to Get It</div><div class="mod-badge">Reference</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">Licensed Software at Harvard</div>
+    <p>Harvard has enterprise licenses for software that affiliates can use at no personal cost. The correct install path is <strong>Software Center</strong> (SCCM) or an officially licensed source -- never a random download.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon">&#127384;</div><div class="ccard-title">Microsoft 365</div><div class="ccard-desc">Included for all affiliates. Install on up to 5 personal devices via portal.office.com. On Harvard machines, deployed via SCCM.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128247;</div><div class="ccard-title">Adobe Creative Cloud</div><div class="ccard-desc">Available to some departments (Arts, Design, certain schools). Not universal -- confirm the user's department has a license before requesting.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#128222;</div><div class="ccard-title">Zoom</div><div class="ccard-desc">Harvard-licensed Zoom with unlimited duration. Install from Harvard's Zoom page, not zoom.us directly, for proper licensing and SSO.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#129518;</div><div class="ccard-title">MATLAB / SPSS / Stata</div><div class="ccard-desc">Available to researchers and students. Licensed per department. Request through ServiceNow with department head approval.</div></div>
+      <div class="ccard"><div class="ccard-icon">&#9888;&#65039;</div><div class="ccard-title">Unapproved Software</div><div class="ccard-desc">Random downloads are not permitted. Can conflict with CrowdStrike, SCCM, domain policy. Always use Software Center or submit a ServiceNow request.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MOD 7: Status Page -->
+<div class="mod vis" id="mod7" data-i="7">
+  <div class="mod-hd" onclick="toggleMod('mod7')"><div class="mod-num">07</div><div class="mod-title">Harvard Status Page -- Outage Awareness</div><div class="mod-badge">Critical</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">status.harvard.edu</div>
+    <p>Check this <strong>before you touch anything</strong> when users report broad issues. If it's on the status page, you don't troubleshoot -- you acknowledge, document, and wait.</p>
+    <div class="cgrid">
+      <div class="ccard"><div class="ccard-icon" style="color:var(--green)">&#9679;</div><div class="ccard-title">Operational</div><div class="ccard-desc">Service working normally. User issues are likely local to their machine or account.</div></div>
+      <div class="ccard"><div class="ccard-icon" style="color:var(--gold)">&#9679;</div><div class="ccard-title">Degraded</div><div class="ccard-desc">Partial outage or performance issues. Some users affected. Don't escalate locally -- central team is on it.</div></div>
+      <div class="ccard"><div class="ccard-icon" style="color:var(--cr)">&#9679;</div><div class="ccard-title">Major Outage</div><div class="ccard-desc">Service down. Do not troubleshoot. Acknowledge, point to status page, log a ticket referencing the incident number.</div></div>
+    </div>
+    <div class="box ok"><div class="box-lbl">&#10003; The Right Workflow</div><p>User reports issue &rarr; Check status.harvard.edu &rarr; If outage: "There's a known issue with [service] that Harvard IT is actively working on" &rarr; Log ticket, reference the incident &rarr; No further local troubleshooting.</p></div>
+  </div>
+</div>
+
+<!-- MOD 8: Common Fixes -->
+<div class="mod vis" id="mod8" data-i="8">
+  <div class="mod-hd" onclick="toggleMod('mod8')"><div class="mod-num">08</div><div class="mod-title">Common Harvard System Issues -- Fix Playbook</div><div class="mod-badge">Playbook</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="fix-card" id="hf1" onclick="toggleFix('hf1')"><div class="fix-hd"><div class="fix-icon">&#128683;</div><div class="fix-title">"I can't log into any Harvard system"</div><div class="fix-sev high">High</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fix-body"><ol class="steps"><li>Check status.harvard.edu for a HarvardKey or identity system outage.</li><li>Have them try key.harvard.edu directly. If it loads and they can log in, account is active -- issue is application-specific.</li><li>If key.harvard.edu also fails: account may be locked. Try self-service at key.harvard.edu/unlock. If that fails, escalate to HUIT Identity team.</li><li>Did they recently change their password? New password may not have synced to Windows -- lock and unlock screen to force sync.</li><li>Do they have a Duo device enrolled? No Duo = no MFA = can't log in anywhere.</li></ol></div></div>
+    <div class="fix-card" id="hf2" onclick="toggleFix('hf2')"><div class="fix-hd"><div class="fix-icon">&#128241;</div><div class="fix-title">"I forgot my PIN and can't print"</div><div class="fix-sev low">Quick</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fix-body"><p style="font-size:.85rem;color:var(--t2);padding:.75rem 0">Harvard PIN reset is self-service only at <code>pin.harvard.edu</code>. Co-ops cannot reset PINs. Requires HarvardKey login. Takes under 2 minutes.</p></div></div>
+    <div class="fix-card" id="hf3" onclick="toggleFix('hf3')"><div class="fix-hd"><div class="fix-icon">&#127760;</div><div class="fix-title">VPN connects but a specific system is still unreachable</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fix-body"><ol class="steps"><li>Confirm VPN is actually connected -- check GlobalProtect icon state.</li><li>Verify the target system actually requires VPN -- many Harvard portals are cloud-based.</li><li>Try pinging the system hostname to confirm routing.</li><li>Escalate to HUIT networking if VPN confirmed connected but specific resource unreachable -- may need firewall rule or different VPN gateway.</li></ol></div></div>
+    <div class="fix-card" id="hf4" onclick="toggleFix('hf4')"><div class="fix-hd"><div class="fix-icon">&#128274;</div><div class="fix-title">"My Harvard ID doesn't open the door"</div><div class="fix-sev low">Refer</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fix-body"><p style="font-size:.85rem;color:var(--t2);padding:.75rem 0">Physical card access is managed by <strong>HUPD and the Access Control office</strong> -- not HUIT IT. Refer to department admin or HUPD. Lost/damaged cards: Holyoke Center HUID Office. This is not an IT issue.</p></div></div>
+    <div class="fix-card" id="hf5" onclick="toggleFix('hf5')"><div class="fix-hd"><div class="fix-icon">&#128193;</div><div class="fix-title">"I can't access the department SharePoint"</div><div class="fix-sev med">Common</div><svg class="fix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fix-body"><p style="font-size:.85rem;color:var(--t2);padding:.75rem 0">SharePoint access is granted by the site owner -- not IT. Co-ops cannot grant SharePoint permissions. Direct the user to contact their manager or the department IT liaison who owns the site.</p></div></div>
+  </div>
+</div>
+
+<!-- MOD 9: Identity Reference -->
+<div class="mod vis" id="mod9" data-i="9">
+  <div class="mod-hd" onclick="toggleMod('mod9')"><div class="mod-num">09</div><div class="mod-title">Identity Quick Reference -- HUID, HarvardKey, PIN &amp; LAPS</div><div class="mod-badge">Reference</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div class="sec-label">Harvard Identity at a Glance</div>
+    <div style="overflow-x:auto;margin:1rem 0">
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+        <thead><tr style="background:var(--s3)">
+          <th style="padding:.6rem .85rem;color:var(--t2);font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--bd);text-align:left">Identifier</th>
+          <th style="padding:.6rem .85rem;color:var(--t2);font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--bd);text-align:left">Format</th>
+          <th style="padding:.6rem .85rem;color:var(--t2);font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--bd);text-align:left">Used For</th>
+          <th style="padding:.6rem .85rem;color:var(--t2);font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--bd);text-align:left">Reset / Help</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--bd)"><td style="padding:.55rem .85rem;color:var(--gold);font-family:var(--mono);font-size:.75rem">HarvardKey</td><td style="padding:.55rem .85rem;color:var(--t2)">firstname_lastname</td><td style="padding:.55rem .85rem;color:var(--t2)">SSO login for all Harvard systems</td><td style="padding:.55rem .85rem;color:var(--t2)">key.harvard.edu</td></tr>
+          <tr style="border-bottom:1px solid var(--bd);background:var(--s2)"><td style="padding:.55rem .85rem;color:var(--gold);font-family:var(--mono);font-size:.75rem">HUID</td><td style="padding:.55rem .85rem;color:var(--t2)">8-digit number (12345678)</td><td style="padding:.55rem .85rem;color:var(--t2)">ClearPass MAC Owner, library, HR</td><td style="padding:.55rem .85rem;color:var(--t2)">HUPD / Registrar (not IT)</td></tr>
+          <tr style="border-bottom:1px solid var(--bd)"><td style="padding:.55rem .85rem;color:var(--gold);font-family:var(--mono);font-size:.75rem">Harvard PIN</td><td style="padding:.55rem .85rem;color:var(--t2)">4-digit number</td><td style="padding:.55rem .85rem;color:var(--t2)">Print job release at printers</td><td style="padding:.55rem .85rem;color:var(--t2)">pin.harvard.edu (self-service)</td></tr>
+          <tr style="border-bottom:1px solid var(--bd);background:var(--s2)"><td style="padding:.55rem .85rem;color:var(--gold);font-family:var(--mono);font-size:.75rem">Harvard Email</td><td style="padding:.55rem .85rem;color:var(--t2)">firstname_lastname@harvard.edu</td><td style="padding:.55rem .85rem;color:var(--t2)">Email, M365 sign-in</td><td style="padding:.55rem .85rem;color:var(--t2)">key.harvard.edu (same as HarvardKey)</td></tr>
+          <tr><td style="padding:.55rem .85rem;color:var(--gold);font-family:var(--mono);font-size:.75rem">LAPS Password</td><td style="padding:.55rem .85rem;color:var(--t2)">Random string, rotates</td><td style="padding:.55rem .85rem;color:var(--t2)">HUITadmin local account on each machine</td><td style="padding:.55rem .85rem;color:var(--t2)">HUITtoolkit.exe (pull fresh each use)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box gold"><div class="box-lbl">&#128161; Pull LAPS Fresh Every Time</div><p>LAPS passwords rotate. Never write them down after use -- they may already be different next time. Always open HUITtoolkit.exe, pull the current password, use it, close it.</p></div>
+  </div>
+</div>
+
+<!-- MOD 10: QUIZ -->
+<div class="mod vis" id="modQ" data-i="10">
+  <div class="mod-hd" onclick="toggleMod('modQ')"><div class="mod-num">10</div><div class="mod-title">Knowledge Check</div><div class="mod-badge" id="qBadge">8 Questions</div><svg class="mod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+  <div class="mod-body">
+    <div id="quizForm">
+      <p style="font-size:.83rem;color:var(--t3);margin-bottom:1.5rem">Answers lock on selection. Submit all 8 for your score.</p>
+      <div class="qq"><div class="qq-num">Question 1 of 8</div><div class="qq-text">A user can't log into any Harvard system. status.harvard.edu shows no outage. What's your next step?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q1" value="a"> Reinstall Windows</label><label class="qq-opt"><input type="radio" name="q1" value="b"> Have them try key.harvard.edu to check if HarvardKey is accessible or locked</label><label class="qq-opt"><input type="radio" name="q1" value="c"> Reset their M365 password from the admin portal</label><label class="qq-opt"><input type="radio" name="q1" value="d"> Check ClearPass registration</label></div><div class="qq-fb" id="q1fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 2 of 8</div><div class="qq-text">What is the difference between a Harvard HUID and a HarvardKey?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q2" value="a"> They are the same thing, different names</label><label class="qq-opt"><input type="radio" name="q2" value="b"> HUID is an 8-digit number on the ID card for ClearPass/library; HarvardKey is the login username</label><label class="qq-opt"><input type="radio" name="q2" value="c"> HarvardKey is the email; HUID is the password</label><label class="qq-opt"><input type="radio" name="q2" value="d"> HUID is for VPN; HarvardKey is for printing</label></div><div class="qq-fb" id="q2fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 3 of 8</div><div class="qq-text">What is Harvard's VPN client called and what is the gateway address?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q3" value="a"> Cisco AnyConnect at connect.harvard.edu</label><label class="qq-opt"><input type="radio" name="q3" value="b"> GlobalProtect by Palo Alto Networks at vpn.harvard.edu</label><label class="qq-opt"><input type="radio" name="q3" value="c"> Pulse Secure at remote.harvard.edu</label><label class="qq-opt"><input type="radio" name="q3" value="d"> Zscaler at secure.harvard.edu</label></div><div class="qq-fb" id="q3fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 4 of 8</div><div class="qq-text">A user's PaperCut print jobs keep disappearing before they collect them. What's the cause?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q4" value="a"> The printer driver needs updating</label><label class="qq-opt"><input type="radio" name="q4" value="b"> PaperCut deletes uncollected print jobs after 24 hours</label><label class="qq-opt"><input type="radio" name="q4" value="c"> Their department print quota is exceeded</label><label class="qq-opt"><input type="radio" name="q4" value="d"> Their Harvard PIN is wrong</label></div><div class="qq-fb" id="q4fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 5 of 8</div><div class="qq-text">Multiple users report the same service is down. What do you check FIRST?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q5" value="a"> Restart the switch in the IDF</label><label class="qq-opt"><input type="radio" name="q5" value="b"> status.harvard.edu for a known outage</label><label class="qq-opt"><input type="radio" name="q5" value="c"> Open individual tickets for each user</label><label class="qq-opt"><input type="radio" name="q5" value="d"> Check ClearPass for registration issues</label></div><div class="qq-fb" id="q5fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 6 of 8</div><div class="qq-text">A user forgot their Harvard PIN and can't release print jobs. What do you tell them?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q6" value="a"> Use HUITtoolkit.exe to retrieve it</label><label class="qq-opt"><input type="radio" name="q6" value="b"> Go to pin.harvard.edu and reset it using their HarvardKey</label><label class="qq-opt"><input type="radio" name="q6" value="c"> Their PIN is the same as their HarvardKey password</label><label class="qq-opt"><input type="radio" name="q6" value="d"> Submit a ticket to the Identity team</label></div><div class="qq-fb" id="q6fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 7 of 8</div><div class="qq-text">Which services do NOT require VPN when off-campus?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q7" value="a"> HUIT internal tools and RDP to Harvard machines</label><label class="qq-opt"><input type="radio" name="q7" value="b"> Microsoft 365 (Teams, Outlook, OneDrive), Canvas, and most Harvard web portals</label><label class="qq-opt"><input type="radio" name="q7" value="c"> Everything requires VPN off-campus</label><label class="qq-opt"><input type="radio" name="q7" value="d"> Only email works without VPN</label></div><div class="qq-fb" id="q7fb"></div></div>
+      <div class="qq"><div class="qq-num">Question 8 of 8</div><div class="qq-text">Where do you go to install software on a Harvard domain machine?</div><div class="qq-opts"><label class="qq-opt"><input type="radio" name="q8" value="a"> Download from the software vendor's website</label><label class="qq-opt"><input type="radio" name="q8" value="b"> Check Software Center (SCCM) first; if not there, submit a ServiceNow request</label><label class="qq-opt"><input type="radio" name="q8" value="c"> Use HUITtoolkit to bypass software restrictions</label><label class="qq-opt"><input type="radio" name="q8" value="d"> Install from a USB drive you prepared</label></div><div class="qq-fb" id="q8fb"></div></div>
+      <div style="display:flex;gap:.75rem;margin-top:1.5rem">
+        <button class="btn btn-gold" onclick="submitQuiz()">Submit Answers</button>
+        <button class="btn btn-ghost" onclick="resetQuiz()">Reset</button>
+      </div>
+    </div>
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-num" id="scoreNum">--</div>
+      <div class="score-lbl">out of 8 correct</div>
+      <p class="score-msg" id="scoreMsg"></p>
+      <div class="g-badge" id="scoreBadge"></div>
+      <div style="margin-top:1.5rem"><button class="btn btn-ghost" onclick="resetQuiz()">Retake</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="done-banner" id="doneBanner">
+  <div style="font-size:2.5rem;margin-bottom:.75rem">&#127970;</div>
+  <h2>Harvard Systems Complete</h2>
+  <p>You know the full Harvard identity stack: HarvardKey, HUID, PIN, VPN, PaperCut, and the tools you'll use every shift. You're ready to work the floor.</p>
+</div>
+</div>
+<script>
+const qA={
+  q1:{c:'b',fb:{b:'Correct. key.harvard.edu is the first diagnostic step for authentication problems after ruling out a status.harvard.edu outage.',_:'After checking status.harvard.edu, try key.harvard.edu. If they can log in there, HarvardKey is active and the issue is application-specific.'}},
+  q2:{c:'b',fb:{b:'Correct. HUID = 8-digit number on the ID card for ClearPass, library, HR. HarvardKey = firstname_lastname username for system login. Completely different identifiers.',_:'HUID is the 8-digit number on the Harvard ID card (ClearPass, library, HR). HarvardKey is the username string like jose_coss (system login). Users confuse these constantly.'}},
+  q3:{c:'b',fb:{b:'Correct. GlobalProtect by Palo Alto Networks, gateway vpn.harvard.edu. Authenticate with HarvardKey + Duo MFA.',_:'Harvard uses GlobalProtect by Palo Alto Networks. Gateway: vpn.harvard.edu. Login with HarvardKey credentials plus Duo MFA.'}},
+  q4:{c:'b',fb:{b:'Correct. PaperCut deletes uncollected jobs after 24 hours by design. User must reprint and collect same day.',_:'PaperCut automatically expires uncollected print jobs after 24 hours. The job is gone and must be reprinted.'}},
+  q5:{c:'b',fb:{b:'Correct. status.harvard.edu is always the first check when multiple users report the same issue.',_:'When multiple users report the same issue, always check status.harvard.edu first. Known outage = acknowledge and wait, not troubleshoot.'}},
+  q6:{c:'b',fb:{b:'Correct. Harvard PIN reset is self-service at pin.harvard.edu using HarvardKey. Co-ops cannot reset PINs.',_:'Harvard PIN is reset at pin.harvard.edu using HarvardKey credentials. Co-ops cannot reset PINs. The PIN is not the same as the HarvardKey password.'}},
+  q7:{c:'b',fb:{b:'Correct. Cloud-based services like M365, Canvas, and most Harvard web portals do not require VPN. VPN is needed for internal tools, RDP, and some research systems.',_:'M365 (Teams, Outlook, OneDrive), Canvas, and most Harvard web portals are cloud-based and do not require VPN. VPN is for internal HUIT tools, RDP, and research databases.'}},
+  q8:{c:'b',fb:{b:'Correct. Always check Software Center (SCCM) first. If not available, submit a ServiceNow request. Never download from the internet on Harvard machines.',_:'Software on Harvard machines comes from Software Center (SCCM) first. If not there, submit a ServiceNow request. Random internet downloads are not permitted.'}}
+};
+let qDone=false;
+function toggleMod(id){const m=document.getElementById(id);if(m)m.classList.toggle('open');}
+function toggleFix(id){const c=document.getElementById(id);if(!c)return;const was=c.classList.contains('open');document.querySelectorAll('.fix-card').forEach(f=>f.classList.remove('open'));if(!was)c.classList.add('open');}
+function submitQuiz(){
+  if(qDone)return;let score=0,all=true;
+  Object.keys(qA).forEach(q=>{
+    const sel=document.querySelector('input[name="'+q+'"]:checked');
+    if(!sel){all=false;return;}
+    const v=sel.value,{c,fb}=qA[q];
+    document.querySelectorAll('input[name="'+q+'"]').forEach(opt=>{const lbl=opt.parentElement;lbl.style.pointerEvents='none';if(opt.value===c)lbl.classList.add('rev');if(opt.value===v&&v!==c)lbl.classList.add('bad');if(opt.value===v&&v===c){lbl.classList.remove('rev');lbl.classList.add('ok');}});
+    const fbd=document.getElementById(q+'fb');fbd.textContent=fb[v]||fb['_'];fbd.className='qq-fb '+(v===c?'ok':'bad');
+    if(v===c)score++;
+  });
+  if(!all){alert('Answer all 8 questions first.');return;}
+  qDone=true;
+  setTimeout(()=>{
+    document.getElementById('quizForm').style.display='none';
+    const sw=document.getElementById('scoreWrap');sw.classList.add('on');
+    document.getElementById('scoreNum').textContent=score;
+    const p=score/8;
+    document.getElementById('scoreMsg').textContent=p===1?'Perfect. You know the Harvard stack cold.':p>=.75?'Solid. Review the ones you missed.':p>=.5?'Getting there. Focus on HarvardKey vs HUID, VPN, and the status page workflow.':'Take another pass through the material.';
+    document.getElementById('scoreBadge').textContent=p===1?'Harvard Expert':p>=.75?'Harvard Certified':p>=.5?'Keep Studying':'Revisit Material';
+    document.getElementById('qBadge').textContent=score+'/8';
+    document.getElementById('qBadge').className='mod-badge done';
+    if(score>=6)document.getElementById('doneBanner').classList.add('on');
+  },400);
+}
+function resetQuiz(){
+  qDone=false;
+  document.querySelectorAll('.qq-opt').forEach(o=>{o.className='qq-opt';o.style.pointerEvents='';});
+  document.querySelectorAll('.qq-fb').forEach(f=>f.className='qq-fb');
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.getElementById('quizForm').style.display='block';
+  document.getElementById('scoreWrap').classList.remove('on');
+  document.getElementById('qBadge').textContent='8 Questions';
+  document.getElementById('qBadge').className='mod-badge';
+}
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');});},{threshold:.05});
+document.querySelectorAll('.mod').forEach(m=>obs.observe(m));
+</script>
+</body>
+</html>
